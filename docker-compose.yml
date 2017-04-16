@@ -1,0 +1,21 @@
+web:
+  restart: always
+  build: ./app
+  expose:
+    - "8080"
+  volumes:
+    - /app
+  env_file: .env
+  command: bash -c "python -m sanic main.APP --host=0.0.0.0 --port=8080 --workers=4"
+
+nginx:
+  restart: always
+  build: ./nginx/
+  ports:
+    - "80:80"
+  volumes:
+    - /etc/nginx/conf.d
+  volumes_from:
+    - web
+  links:
+    - web:web
