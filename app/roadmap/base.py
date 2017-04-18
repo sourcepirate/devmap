@@ -11,6 +11,9 @@ class Map(object):
         self.children = {}
         self._nodes = set()
 
+    def __hash__(self):
+        return hash(self.id)
+
     def add_node(self, node):
         """Add node to root"""
         self.children[node.id] = node
@@ -95,10 +98,9 @@ class Map(object):
         _map = None
         for key in dct:
             _map = cls.load(dct[key])
-            children = dct["children"]
-            for child in children:
-                value = children[child]
-                node = cls.loads(value)
+            children = dct[key]["children"]
+            for child, value in children.items():
+                node = cls.loads({child: value})
                 _map.add_node(node)
         return _map
 
@@ -109,6 +111,14 @@ class Map(object):
         name = dct_unit.get("label")
         description = dct_unit.get("description")
         return Map(_id, name, description)
+
+    @property
+    def layers(self):
+        """get layers"""
+        result = {}
+        for i in range(self.depth):
+            result[i] = self.level(i)
+        return result
 
 
 class RoadMap(object):
