@@ -4,8 +4,10 @@ from sanic import Sanic
 from sanic.response import html
 from sanic_compress import Compress
 from jinja2 import Environment, PackageLoader
+from roadmap.blueprint import endpoints
 
 APP = Sanic("Roadmap")
+APP.blueprint(endpoints)
 JINJA = Environment(loader=PackageLoader('main', 'templates'))
 Compress(APP)
 APP.static('/static', os.path.join(os.path.dirname(__file__), 'build'))
