@@ -66,8 +66,8 @@ class Map(object):
         for child in self._nodes:
             if child == node:
                 child.change(**kwargs)
-            else:
-                child.update_node(node, **kwargs)
+        for child in self._nodes:
+            child.update_node(node, **kwargs)
 
     def to_dict(self):
         """serialize the entire map to dict"""
