@@ -39,6 +39,8 @@ class Map(object):
 
     def find_node(self, node):
         """Find a node in a tree"""
+        if node == self:
+            return self
         if node in self._nodes:
             return self.children[node.id]
         else:
@@ -136,10 +138,13 @@ class RoadMap(object):
         self.name = name
         self.root = Map(no_id, start[0], start[1])
 
-    def create(self, *args):
+    def create(self, _id, *args):
         """Adding a new entry to the tree"""
         _map = Map(*args)
-        self.root.add_node(_map)
+        parent = self.get(_id)
+        if not parent:
+            return None
+        parent.add_node(_map)
         return _map
 
     def get(self, _id):
@@ -184,8 +189,8 @@ class RoadMap(object):
 ##test
 if __name__ == "__main__":
     root = RoadMap("1", "hackmap", start=("2015", "Start of 2015"))
-    root.create("1.1", "Web Dev", "Web Development")
-    root.create("1.2", "Machine Learning", "ML")
+    root.create("1", "1.1", "Web Dev", "Web Development")
+    root.create("1", "1.2", "Machine Learning", "ML")
     print(root.to_dict())
     root.put()
     mapped = RoadMap.get_map("1")
