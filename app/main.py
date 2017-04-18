@@ -4,7 +4,6 @@ from sanic import Sanic
 from sanic.response import html
 from sanic_compress import Compress
 from jinja2 import Environment, PackageLoader
-from tinydb import TinyDB
 
 APP = Sanic("Roadmap")
 JINJA = Environment(loader=PackageLoader('main', 'templates'))
@@ -27,6 +26,4 @@ async def bind_render_env(app, loop):
         _content = _html.render(**kwargs)
         return html(_content)
     app.render_template = inner
-    join_dir = os.path.join(os.path.dirname(__file__), 'data/data.json')
-    app.db = TinyDB(join_dir)
 

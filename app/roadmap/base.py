@@ -1,5 +1,10 @@
 """ base objects for the app"""
+import os
+from tinydb import TinyDB, Query
 
+def touch_db(path):
+    join_dir = os.path.join(os.path.dirname(__file__), path)
+    return TinyDB(join_dir)
 
 class Map(object):
     """Map Object"""
@@ -123,9 +128,12 @@ class Map(object):
 
 class RoadMap(object):
     """Adding RoadMap base object"""
+    
+    db = touch_db("../data/data.json")
 
-    def __init__(self, no_id, start=(None, None)):
+    def __init__(self, no_id, name, start=(None, None)):
         self._id = no_id
+        self.name = name
         self.root = Map(no_id, start[0], start[1])
 
     def create(self, *args):
@@ -152,3 +160,33 @@ class RoadMap(object):
     def to_dict(self):
         """Get the dict"""
         return self.root.to_dict()
+        
+    def put(self):
+        return self.db.insert({
+            "id": self._id,
+            "name": self.name,
+            "map": self.root.to_dict()
+        })
+        
+    @classmethod
+    def get_map(cls, _id):
+        _map = Query()
+        _dict = cls.db.search(_map.id == _id)
+        if len(_dict) > 0:
+            _dict = _dict[0]
+            _root = Map.loads(_dict["map"])
+            _instance = cls(_dict["id"], _dict["name"])
+            _instance.root = _root
+            return _instance
+        return None
+        
+
+##test
+if __name__ == "__main__":
+    root = RoadMap("1", "hackmap", start=("2015", "Start of 2015"))
+    root.create("1.1", "Web Dev", "Web Development")
+    root.create("1.2", "Machine Learning", "ML")
+    print(root.to_dict())
+    root.put()
+    mapped = RoadMap.get_map("1")
+    print(mapped.name)
