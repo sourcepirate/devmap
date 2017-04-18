@@ -3,6 +3,7 @@ import os
 from tinydb import TinyDB, Query
 
 def touch_db(path):
+    """get new database file"""
     join_dir = os.path.join(os.path.dirname(__file__), path)
     return TinyDB(join_dir)
 
@@ -60,6 +61,8 @@ class Map(object):
 
     def update_node(self, node, **kwargs):
         """Update a node in a tree"""
+        if node == self:
+            return self.change(**kwargs)
         for child in self._nodes:
             if child == node:
                 child.change(**kwargs)
@@ -130,13 +133,14 @@ class Map(object):
 
 class RoadMap(object):
     """Adding RoadMap base object"""
-    
+
     db = touch_db("../data/data.json")
 
     def __init__(self, no_id, name, start=(None, None)):
         self._id = no_id
         self.name = name
         self.root = Map(no_id, start[0], start[1])
+        self.sno = None
 
     def create(self, _id, *args):
         """Adding a new entry to the tree"""
@@ -165,16 +169,22 @@ class RoadMap(object):
     def to_dict(self):
         """Get the dict"""
         return self.root.to_dict()
-        
+
     def put(self):
-        return self.db.insert({
-            "id": self._id,
-            "name": self.name,
-            "map": self.root.to_dict()
-        })
-        
+        """put it to disk"""
+        payload = {"id": self._id,
+                   "name": self.name,
+                   "map": self.root.to_dict()}
+        if self.sno:
+            self.db.update(payload, eids=[self.sno])
+            return self
+        else:
+            self.sno = self.db.insert(payload)
+            return self
+
     @classmethod
     def get_map(cls, _id):
+        """getting the class map object"""
         _map = Query()
         _dict = cls.db.search(_map.id == _id)
         if len(_dict) > 0:
@@ -182,9 +192,10 @@ class RoadMap(object):
             _root = Map.loads(_dict["map"])
             _instance = cls(_dict["id"], _dict["name"])
             _instance.root = _root
+            _instance.sno = _dict.eid
             return _instance
         return None
-        
+
 
 ##test
 if __name__ == "__main__":
