@@ -1,6 +1,7 @@
 let baseConfig = require('./webpack.config');
 let webpack = require('webpack');
 var CompressionPlugin = require("compression-webpack-plugin");
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = Object.assign({}, baseConfig, {
     watch: true,
@@ -16,6 +17,17 @@ module.exports = Object.assign({}, baseConfig, {
         }),
         new webpack.ProvidePlugin({
             "React": "react",
-        })
+        }),
+        new BundleAnalyzerPlugin({
+            analyzerMode: 'static'
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            filename: 'lib.js',
+            minChunks(module, count) {
+                var context = module.context;
+                return context && context.indexOf('node_modules') >= 0;
+            },
+        }),
     ]
 });

@@ -9,6 +9,12 @@ module.exports = {
         filename: 'bundle.js',
         publicPath: '/build/js'
     },
+    resolve: {
+        modules: [
+            path.resolve('./'),
+            path.resolve('./node_modules')
+        ]
+    },
     module: {
         loaders: [{
                 test: /\.js$/,

@@ -35,6 +35,14 @@ module.exports = Object.assign({}, baseConfig, {
         }),
         new webpack.ProvidePlugin({
             "React": "react",
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            filename: 'lib.js',
+            minChunks(module, count) {
+                var context = module.context;
+                return context && context.indexOf('node_modules') >= 0;
+            },
         })
     ]
 });
