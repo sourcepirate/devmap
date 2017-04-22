@@ -1,4 +1,4 @@
-var cacheName = "devmap-v3"
+var cacheName = "devmap-v4";
 
 this.addEventListener('install', function(event) {
     event.waitUntil(
@@ -44,6 +44,7 @@ this.addEventListener('fetch', function(event) {
 
             return fetch(fetchRequest).then(
                 function(response) {
+                    console.log("response");
                     // Check if we received a valid response
                     if (!response || response.status !== 200 || response.type !== 'basic') {
                         return response;
@@ -55,7 +56,7 @@ this.addEventListener('fetch', function(event) {
                     // to clone it so we have two streams.
                     var responseToCache = response.clone();
 
-                    caches.open("devmap")
+                    caches.open(cacheName)
                         .then(function(cache) {
                             cache.put(event.request, responseToCache);
                         });
@@ -67,3 +68,9 @@ this.addEventListener('fetch', function(event) {
     );
 
 });
+
+this.addEventListener('message', function(event){
+    //proceed with update
+    if(event.data.action == 'skip')
+       this.skipWaiting();
+})
