@@ -6,7 +6,7 @@ class App extends Component{
     }
 
     render(){
-        return (<div>madara and obito!</div>);
+        return (<div>tailed beast bomb</div>);
     }
 }
 
