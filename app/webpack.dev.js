@@ -3,6 +3,7 @@ let webpack = require('webpack');
 let CompressionPlugin = require("compression-webpack-plugin");
 let BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 let ManifestPlugin = require('webpack-manifest-plugin');
+// let CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = Object.assign({}, baseConfig, {
     watch: true,

@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --inline --colors",
-    "build-prop": "webpack --config ./webpack.prod.js",
-    "build-dev": "webpack --config ./webpack.dev.js"
+    "build-prop": "webpack --config ./webpack.prod.js && npm run precache",
+    "build-dev": "webpack --config ./webpack.dev.js",
+    "precache": "cp -rf serviceworker.js build/sw.js"
   },
   "babel": {
     "presets": [
@@ -26,6 +27,7 @@
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-0": "^6.22.0",
     "compression-webpack-plugin": "^0.3.2",
+    "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.26.2",
     "extract-text-webpack-plugin": "^2.0.0",
     "file-loader": "^0.10.1",
@@ -35,7 +37,8 @@
     "url-loader": "^0.5.8",
     "webpack": "^2.2.1",
     "webpack-bundle-analyzer": "^2.4.0",
-    "webpack-dev-server": "^2.4.1"
+    "webpack-dev-server": "^2.4.1",
+    "webpack-manifest-plugin": "latest"
   },
   "dependencies": {
     "axios": "^0.15.3",

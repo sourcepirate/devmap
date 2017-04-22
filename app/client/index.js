@@ -1,9 +1,20 @@
 import React from 'react';
-import {render} from 'react-dom';
+import {
+    render
+}
+from 'react-dom';
 import routes from './routes';
-import {Provider} from 'react-redux';
+import {
+    Provider
+}
+from 'react-redux';
 import store from './store';
-import * as OfflinePluginRuntime from 'offline-plugin/runtime';
-OfflinePluginRuntime.install();
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+        .then(() => console.log('Service worker registered'))
+        .catch(err => console.log(`Service worker registration failed! ${err}`))
+}
+
 
 render((<Provider store={store}>{routes}</Provider>), document.getElementById("app"));

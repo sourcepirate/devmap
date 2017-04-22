@@ -10,7 +10,7 @@ APP = Sanic("Roadmap")
 APP.blueprint(endpoints)
 JINJA = Environment(loader=PackageLoader('main', 'templates'))
 Compress(APP)
-APP.static('/static', os.path.join(os.path.dirname(__file__), 'build'))
+APP.static('/', os.path.join(os.path.dirname(__file__), 'build'))
 APP.config['COMPRESS_LEVEL'] = 9
 
 @APP.route("/")

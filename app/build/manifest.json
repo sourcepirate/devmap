@@ -1,0 +1,12 @@
+{
+  "name": "DevMap",
+  "short_name": "DevMap",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "Maintain a mind map",
+  "/build/main.js": "/build/bundle.js",
+  "/build/main.js.map": "/build/bundle.js.map",
+  "/build/vendor.js": "/build/lib.js",
+  "/build/vendor.js.map": "/build/lib.js.map"
+}
