@@ -2,3 +2,4 @@
 node_modules
 venv
 app/data
+__pycache__
