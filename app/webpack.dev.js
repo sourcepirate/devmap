@@ -2,7 +2,7 @@ let baseConfig = require('./webpack.config');
 let webpack = require('webpack');
 let CompressionPlugin = require("compression-webpack-plugin");
 let BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-let OfflinePlugin = require('offline-plugin')
+let ManifestPlugin = require('webpack-manifest-plugin');
 
 module.exports = Object.assign({}, baseConfig, {
     watch: true,
@@ -30,18 +30,16 @@ module.exports = Object.assign({}, baseConfig, {
                 return context && context.indexOf('node_modules') >= 0;
             },
         }),
-        new OfflinePlugin({
-            afeToUseOptionalCaches: true,
-            externals: ['/'],
-            caches: 'all',
-            publicPath: "/static/",
-            ServiceWorker: {
-                // publicPath: '/sw.js',
-                events: true,
-                // navigateFallbackURL: '/'
-            },
-            AppCache: {
-                events: true
+        new ManifestPlugin({
+            fileName: 'manifest.json',
+            basePath: '/build/',
+            cache: {
+                "name": "DevMap",
+                "short_name": "DevMap",
+                "start_url": ".",
+                "display": "standalone",
+                "background_color": "#fff",
+                "description": "Maintain a mind map"
             }
         })
     ]
