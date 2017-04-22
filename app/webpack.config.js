@@ -5,9 +5,9 @@ module.exports = {
         './client/index.js'
     ],
     output: {
-        path: path.join(__dirname, 'build', 'js'),
+        path: path.join(__dirname, 'build'),
         filename: 'bundle.js',
-        publicPath: '/build/js'
+        publicPath: '/build/'
     },
     resolve: {
         modules: [
