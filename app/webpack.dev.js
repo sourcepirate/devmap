@@ -20,9 +20,9 @@ module.exports = Object.assign({}, baseConfig, {
         new webpack.ProvidePlugin({
             "React": "react",
         }),
-        new BundleAnalyzerPlugin({
-            analyzerMode: 'static'
-        }),
+        // new BundleAnalyzerPlugin({
+        //     analyzerMode: 'static'
+        // }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
             filename: 'lib.js',

@@ -1,3 +1,10 @@
-export default function* rootSaga(){
-  console.log("hello saga");
+import {
+  createMapSaga
+} from './mapsaga';
+
+export default function* rootSaga() {
+  console.log("sagas spawned");
+  yield [
+    createMapSaga()
+  ];
 }

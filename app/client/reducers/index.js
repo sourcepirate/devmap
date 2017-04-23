@@ -1,2 +1,3 @@
 import { combineReducers } from "redux";
-export const reducers = combineReducers({});
+import maps from './maps';
+export const reducers = combineReducers({maps});

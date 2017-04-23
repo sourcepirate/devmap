@@ -196,6 +196,11 @@ class RoadMap(object):
             return _instance
         return None
 
+    @classmethod
+    def list(cls):
+        """getting list of classes"""
+        return cls.db.all()
+
 
 ##test
 if __name__ == "__main__":

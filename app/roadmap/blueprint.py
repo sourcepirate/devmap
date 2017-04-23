@@ -76,3 +76,10 @@ def edit_child(request, _id, _node):
     dct.put()
     return response.json(dct.to_dict(), status=200)
 
+@endpoints.get('/api/list')
+def list_maps(request):
+    """list all the maps"""
+    dct = RoadMap.list()
+    if not dct:
+        return response.json({"Error": "Not Found"}, status=404)
+    return response.json(dct, status=200)
