@@ -12,17 +12,17 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = __webpack_require__(24);
 
-var _routes = __webpack_require__(373);
+var _routes = __webpack_require__(376);
 
 var _routes2 = _interopRequireDefault(_routes);
 
-var _reactRedux = __webpack_require__(319);
+var _reactRedux = __webpack_require__(193);
 
-var _store = __webpack_require__(377);
+var _store = __webpack_require__(380);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _serviceloader = __webpack_require__(376);
+var _serviceloader = __webpack_require__(379);
 
 var _serviceloader2 = _interopRequireDefault(_serviceloader);
 
@@ -56,6 +56,48 @@ if ('serviceWorker' in navigator) {
 
 
 Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _mapaction = __webpack_require__(368);
+
+Object.keys(_mapaction).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _mapaction[key];
+    }
+  });
+});
+
+/***/ }),
+
+/***/ 368:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.update = update;
+function update() {
+    return {
+        type: 'FETCH_MAPS'
+    };
+}
+
+/***/ }),
+
+/***/ 369:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
@@ -67,17 +109,17 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMdl = __webpack_require__(190);
+var _reactMdl = __webpack_require__(191);
 
-var _mapdetail = __webpack_require__(369);
+var _mapdetail = __webpack_require__(372);
 
 var _mapdetail2 = _interopRequireDefault(_mapdetail);
 
-var _reactRedux = __webpack_require__(319);
+var _reactRedux = __webpack_require__(193);
 
-var _redux = __webpack_require__(201);
+var _redux = __webpack_require__(128);
 
-var _actions = __webpack_require__(935);
+var _actions = __webpack_require__(367);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
@@ -144,7 +186,7 @@ exports.default = GridList;
 
 /***/ }),
 
-/***/ 368:
+/***/ 370:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -153,7 +195,7 @@ exports.default = GridList;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.GridList = exports.App = undefined;
+exports.Map = exports.GridList = exports.App = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -161,11 +203,15 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMdl = __webpack_require__(190);
+var _reactMdl = __webpack_require__(191);
 
-var _grid = __webpack_require__(367);
+var _grid = __webpack_require__(369);
 
 var _grid2 = _interopRequireDefault(_grid);
+
+var _map = __webpack_require__(371);
+
+var _map2 = _interopRequireDefault(_map);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -205,10 +251,11 @@ var App = function (_Component) {
 
 exports.App = App;
 exports.GridList = _grid2.default;
+exports.Map = _map2.default;
 
 /***/ }),
 
-/***/ 369:
+/***/ 371:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -224,7 +271,93 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMdl = __webpack_require__(190);
+var _reactRedux = __webpack_require__(193);
+
+var _redux = __webpack_require__(128);
+
+var _actions = __webpack_require__(367);
+
+var actionCreators = _interopRequireWildcard(_actions);
+
+var _maps = __webpack_require__(939);
+
+var canvasMaps = _interopRequireWildcard(_maps);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Map = function (_Component) {
+    _inherits(Map, _Component);
+
+    function Map(props) {
+        _classCallCheck(this, Map);
+
+        return _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
+    }
+
+    _createClass(Map, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var canvas = this.refs.can;
+            var params = this.props.params;
+
+            var maps = this.props.maps.filter(function (x) {
+                return x.id == params.id;
+            });
+            console.log(maps[0].map);
+            var treedata = canvasMaps.transform(maps[0].map);
+            canvasMaps.draw(canvas, treedata);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement('canvas', { ref: 'can' });
+        }
+    }]);
+
+    return Map;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        maps: state.maps
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)(actionCreators, dispatch);
+};
+
+Map = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Map);
+
+exports.default = Map;
+
+/***/ }),
+
+/***/ 372:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactMdl = __webpack_require__(191);
 
 var _reactRouter = __webpack_require__(329);
 
@@ -291,7 +424,7 @@ exports.default = MapDetail;
 
 /***/ }),
 
-/***/ 370:
+/***/ 373:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -307,19 +440,19 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reduxDevtools = __webpack_require__(124);
 
-var _reduxDevtoolsLogMonitor = __webpack_require__(910);
+var _reduxDevtoolsLogMonitor = __webpack_require__(913);
 
 var _reduxDevtoolsLogMonitor2 = _interopRequireDefault(_reduxDevtoolsLogMonitor);
 
-var _reduxDevtoolsDockMonitor = __webpack_require__(901);
+var _reduxDevtoolsDockMonitor = __webpack_require__(904);
 
 var _reduxDevtoolsDockMonitor2 = _interopRequireDefault(_reduxDevtoolsDockMonitor);
 
-var _reduxDevtoolsDispatch = __webpack_require__(899);
+var _reduxDevtoolsDispatch = __webpack_require__(902);
 
 var _reduxDevtoolsDispatch2 = _interopRequireDefault(_reduxDevtoolsDispatch);
 
-var _reduxSliderMonitor = __webpack_require__(925);
+var _reduxSliderMonitor = __webpack_require__(928);
 
 var _reduxSliderMonitor2 = _interopRequireDefault(_reduxSliderMonitor);
 
@@ -343,7 +476,7 @@ exports.default = (0, _reduxDevtools.createDevTools)(_react2.default.createEleme
 
 /***/ }),
 
-/***/ 371:
+/***/ 374:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -354,9 +487,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.reducers = undefined;
 
-var _redux = __webpack_require__(201);
+var _redux = __webpack_require__(128);
 
-var _maps = __webpack_require__(372);
+var _maps = __webpack_require__(375);
 
 var _maps2 = _interopRequireDefault(_maps);
 
@@ -366,7 +499,7 @@ var reducers = exports.reducers = (0, _redux.combineReducers)({ maps: _maps2.def
 
 /***/ }),
 
-/***/ 372:
+/***/ 375:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -385,7 +518,7 @@ function maps() {
 
     switch (action.type) {
         case 'UPDATE_MAPS':
-            return [].concat(_toConsumableArray(state), _toConsumableArray(action.maps));
+            return [].concat(_toConsumableArray(action.maps));
         default:
             return state;
     }
@@ -393,28 +526,29 @@ function maps() {
 
 /***/ }),
 
-/***/ 373:
+/***/ 376:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(React) {
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+   value: true
 });
 
 var _reactRouter = __webpack_require__(329);
 
-var _components = __webpack_require__(368);
+var _components = __webpack_require__(370);
 
 var routes = React.createElement(
-  _reactRouter.Router,
-  { history: _reactRouter.browserHistory },
-  React.createElement(
-    _reactRouter.Route,
-    { path: '/', component: _components.App },
-    React.createElement(_reactRouter.IndexRoute, { component: _components.GridList })
-  )
+   _reactRouter.Router,
+   { history: _reactRouter.browserHistory },
+   React.createElement(
+      _reactRouter.Route,
+      { path: '/', component: _components.App },
+      React.createElement(_reactRouter.IndexRoute, { component: _components.GridList }),
+      React.createElement(_reactRouter.Route, { path: '/view/:id', component: _components.Map })
+   )
 );
 
 exports.default = routes;
@@ -422,7 +556,7 @@ exports.default = routes;
 
 /***/ }),
 
-/***/ 374:
+/***/ 377:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -433,7 +567,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = rootSaga;
 
-var _mapsaga = __webpack_require__(375);
+var _mapsaga = __webpack_require__(378);
 
 var _marked = [rootSaga].map(regeneratorRuntime.mark);
 
@@ -456,7 +590,7 @@ function rootSaga() {
 
 /***/ }),
 
-/***/ 375:
+/***/ 378:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -524,7 +658,7 @@ function createMapSaga() {
 
 /***/ }),
 
-/***/ 376:
+/***/ 379:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -536,7 +670,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _events = __webpack_require__(593);
+var _events = __webpack_require__(596);
 
 var _events2 = _interopRequireDefault(_events);
 
@@ -620,7 +754,7 @@ exports.default = ServiceLoader;
 
 /***/ }),
 
-/***/ 377:
+/***/ 380:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -630,23 +764,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _redux = __webpack_require__(201);
+var _redux = __webpack_require__(128);
 
-var _devtool = __webpack_require__(370);
+var _devtool = __webpack_require__(373);
 
 var _devtool2 = _interopRequireDefault(_devtool);
 
-var _index = __webpack_require__(371);
+var _index = __webpack_require__(374);
 
-var _reduxLogger = __webpack_require__(918);
+var _reduxLogger = __webpack_require__(921);
 
 var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-var _reduxSaga = __webpack_require__(919);
+var _reduxSaga = __webpack_require__(922);
 
 var _reduxSaga2 = _interopRequireDefault(_reduxSaga);
 
-var _sagas = __webpack_require__(374);
+var _sagas = __webpack_require__(377);
 
 var _sagas2 = _interopRequireDefault(_sagas);
 
@@ -667,7 +801,7 @@ exports.default = store;
 
 /***/ }),
 
-/***/ 934:
+/***/ 937:
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(348);
@@ -676,7 +810,490 @@ module.exports = __webpack_require__(347);
 
 /***/ }),
 
-/***/ 935:
+/***/ 938:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports.textFilter = { label: 'Text Filter (regex)', type: 'text', val: "." };
+module.exports.fontSize = { label: "Font size", model: "fontSize", min: 5, max: 50, val: 13 };
+module.exports.connectorWidth = { label: 'Connector width', model: "connectorWidth", min: 20, max: 100, val: 65 };
+module.exports.connectorSteepness = { label: 'Connector steepness', min: 0.1, max: 1, step: 0.01, val: 0.65 };
+module.exports.connectorLineWidth = { label: 'Line width', min: 0.5, max: 10, step: 0.25, val: 4.5 };
+module.exports.nodeMarginTop = { label: ' Top margin', min: 0, max: 50, val: 5 };
+module.exports.nodeMarginBottom = { label: ' Bottom margin', min: 0, max: 50, val: 5 };
+module.exports.useGrayscale = { label: 'Use grayscale', type: 'boolean', val: 0 };
+
+/***/ }),
+
+/***/ 939:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.parseObjectTree = parseObjectTree;
+exports.parseTree = parseTree;
+exports.draw = draw;
+exports.transform = transform;
+
+var _properties = __webpack_require__(938);
+
+var props = _interopRequireWildcard(_properties);
+
+var _node = __webpack_require__(940);
+
+var _node2 = _interopRequireDefault(_node);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function parseObjectTree(branch) {
+    var isRoot = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+    var node = new _node2.default(branch.name, isRoot);
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+        for (var _iterator = branch.children[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var child = _step.value;
+
+            node.addChild(parseObjectTree(child, false));
+        }
+    } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+                _iterator.return();
+            }
+        } finally {
+            if (_didIteratorError) {
+                throw _iteratorError;
+            }
+        }
+    }
+
+    return node;
+}
+
+function parseTree(data) {
+    if (data.children.length == 0) return;
+    return parseObjectTree(data, true);
+}
+
+function draw(canvas, data) {
+    var ctx = canvas.getContext('2d');
+    var tree = parseTree(data);
+    console.log(tree);
+    var context = tree.draw();
+    // resize the canvas to fit the drawing...
+    canvas.width = context.width + 25;
+    canvas.height = context.height + 25;
+    ctx.drawImage(context, 25, 25);
+}
+
+function transform(data) {
+    var result = {};
+    for (var key in data) {
+        var pair = data[key];
+        console.log(pair);
+        result["name"] = pair["label"];
+        result["id"] = pair["id"];
+        result["description"] = pair["description"];
+        result["children"] = [];
+        var childs = data[key]["children"];
+        for (var child_key in childs) {
+            var new_pair = {};
+            new_pair[child_key] = childs[child_key];
+            result["children"].push(transform(new_pair));
+        }
+    }
+    return result;
+}
+
+/***/ }),
+
+/***/ 940:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _utils = __webpack_require__(942);
+
+var utils = _interopRequireWildcard(_utils);
+
+var _properties = __webpack_require__(938);
+
+var _properties2 = _interopRequireDefault(_properties);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var fontFamily = "Open Sans";
+
+var labelPaddingBottom = 8;
+var labelPaddingRight = 10;
+
+var DEBUG = false;
+
+var TreeNode = function () {
+    function TreeNode(label) {
+        var isRoot = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+        _classCallCheck(this, TreeNode);
+
+        this.name = label;
+        this.labelLines = this.name.split("\n");
+        this.isRoot = isRoot;
+        this.parent = undefined;
+        this.children = [];
+    }
+
+    _createClass(TreeNode, [{
+        key: 'addChild',
+        value: function addChild(child) {
+            child.parent = this;
+            this.children.push(child);
+        }
+    }, {
+        key: 'addChildren',
+        value: function addChildren() {
+            for (var _len = arguments.length, children = Array(_len), _key = 0; _key < _len; _key++) {
+                children[_key] = arguments[_key];
+            }
+
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = children[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var child = _step.value;
+
+                    this.addChild(child);
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+        }
+    }, {
+        key: 'draw',
+        value: function draw(currentBranchColor) {
+            var _this = this;
+
+            var that = this;
+
+            var dl = function dl(x, y) {
+                var c = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "#00ff00";
+                var w = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
+
+                that.ctx.fillStyle = c;
+                that.ctx.fillRect(x, y, w, 1);
+            };
+
+            var dr = function dr(x, y, w, h) {
+                var c = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : "#00ff00";
+
+                that.ctx.lineWidth = 1;
+                that.ctx.strokeStyle = c;
+                that.ctx.rect(x, y, w, h);
+                that.ctx.stroke();
+            };
+
+            this.canvas = document.createElement("canvas");
+            this.ctx = this.canvas.getContext("2d");
+
+            // The width of the label will be the width of the widest line
+            this.ctx.font = _properties2.default.fontSize.val + "px " + fontFamily;
+
+            // The height of the lines of text (only)
+            this.textHeight = _properties2.default.fontSize.val * this.labelLines.length;
+
+            // The height of the text + the separation from the line + the line height + the label margin
+            this.composedHeight = this.textHeight + labelPaddingBottom + _properties2.default.connectorLineWidth.val;
+
+            // The composed height plus the margin
+            this.paddedHeight = this.composedHeight + _properties2.default.nodeMarginTop.val;
+
+            this.labelHeight = _properties2.default.nodeMarginTop.val + // top margin
+            _properties2.default.fontSize.val * (this.labelLines.length + 1) + // text lines' height
+            _properties2.default.nodeMarginBottom.val // bottom margin
+            ;
+
+            this.labelWidth = Math.ceil(Math.max.apply(Math, _toConsumableArray(this.labelLines.map(function (c) {
+                return _this.ctx.measureText(c).width;
+            }))));
+
+            if (this.isLeaf) {
+                // Resize the canvas
+                this.canvas.width = this.labelWidth + labelPaddingRight * 2;
+                this.canvas.height = this.labelHeight;
+
+                // Set the font
+                this.ctx.font = _properties2.default.fontSize.val + "px " + fontFamily;
+
+                // Draw the text lines
+                for (var i = 0; i < this.labelLines.length; i++) {
+                    this.ctx.fillText(this.labelLines[i], 0, _properties2.default.fontSize.val * (i + 1) + _properties2.default.nodeMarginTop.val);
+                }
+
+                // The anchorPoint defines where the line should start
+                this.anchorPoint = {
+                    x: 0,
+                    y: this.labelLines.length * _properties2.default.fontSize.val + labelPaddingBottom + _properties2.default.nodeMarginTop.val
+                };
+            } else {
+                // If this is the root, we need to generate a random color for each branch
+                if (this.isRoot) {
+                    var branchColors = this.children.map(function (c) {
+                        return utils.generateRandomColor(_properties2.default.useGrayscale);
+                    });
+                    var canvases = this.children.map(function (c, i) {
+                        return c.draw(branchColors[i]);
+                    });
+                }
+
+                // Otherwise, use the received branchColor
+                else {
+                        var canvases = this.children.map(function (c, i) {
+                            return c.draw(currentBranchColor);
+                        });
+                    }
+
+                // Get the vertical positions for the children
+                var childrenVerticalPositions = [0];
+
+                // Each position is the sum of the acumulated heights of the previous elements
+                for (var i = 0; i < canvases.length; i++) {
+                    childrenVerticalPositions[i + 1] = childrenVerticalPositions[i] + canvases[i].height;
+                }
+
+                var childrenHeight = childrenVerticalPositions[canvases.length];
+
+                this.anchorPoint = {
+                    x: this.isRoot ? 10 : 0,
+                    y: 0
+                };
+
+                /*
+                 If the height of the children is smaller than the height of the node, take the height of the node and
+                 don't center it vertically.
+                 Otherwise, take the max between 2*height of the node and the children height, and center it vertically.
+                 */
+
+                if (childrenHeight < this.composedHeight + _properties2.default.nodeMarginTop.val * 2) {
+                    this.canvas.height = this.composedHeight + _properties2.default.nodeMarginTop.val * 2;
+                    this.anchorPoint.y = this.canvas.height / 2 + this.composedHeight / 2;
+                } else {
+                    this.canvas.height = Math.max(childrenVerticalPositions[canvases.length], this.composedHeight * 2);
+                    this.anchorPoint.y = this.canvas.height / 2;
+                }
+
+                console.log(this.label, this.canvas.height, childrenVerticalPositions[canvases.length]);
+
+                // Compute left margin (label width + separation)
+                var leftMargin = 10 + this.labelWidth + _properties2.default.connectorWidth.val;
+
+                // Set the width to the leftMargin plus the width of the widest child branch
+                this.canvas.width = leftMargin + Math.max.apply(Math, _toConsumableArray(canvases.map(function (c) {
+                    return c.width;
+                })));
+                this.ctx.font = _properties2.default.fontSize.val + "px " + fontFamily;
+
+                // Draw each child
+                for (var i = 0; i < canvases.length; i++) {
+                    if (this.isRoot) {
+                        currentBranchColor = branchColors[i];
+                    }
+
+                    this.ctx.drawImage(canvases[i], leftMargin, childrenVerticalPositions[i]);
+
+                    var connector_a = {
+                        x: this.anchorPoint.x + this.labelWidth + labelPaddingRight,
+                        y: this.anchorPoint.y
+                    };
+
+                    var connector_b = {
+                        x: leftMargin,
+                        y: childrenVerticalPositions[i] + this.children[i].anchorPoint.y
+                    };
+
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(connector_a.x, connector_a.y);
+
+                    this.ctx.bezierCurveTo(connector_a.x + _properties2.default.connectorSteepness.val * _properties2.default.connectorWidth.val, connector_a.y, connector_b.x - _properties2.default.connectorSteepness.val * _properties2.default.connectorWidth.val, connector_b.y, connector_b.x, connector_b.y);
+
+                    this.ctx.lineTo(connector_b.x + this.children[i].labelWidth + labelPaddingRight, connector_b.y);
+                    this.ctx.lineWidth = _properties2.default.connectorLineWidth.val;
+                    this.ctx.lineCap = "round";
+                    this.ctx.strokeStyle = currentBranchColor;
+                    this.ctx.stroke();
+                }
+
+                // For the root node, print a containing rectangle and always center the text
+                if (this.isRoot) {
+                    this.ctx.fillStyle = "#ffffff";
+                    this.ctx.lineWidth = 3;
+                    utils.roundRect(this.ctx, 2, this.canvas.height / 2 - this.labelLines.length * _properties2.default.fontSize.val, this.labelWidth + 18, _properties2.default.fontSize.val * (this.labelLines.length + 1.5), 5, true, true);
+
+                    this.ctx.fillStyle = "#000000";
+
+                    for (var i = 0; i < this.labelLines.length; i++) {
+                        this.ctx.fillText(this.labelLines[i], 10, // Fixed margin from the left
+                        this.canvas.height / 2 // Vertical center
+                        + _properties2.default.fontSize.val / 2 // Middle of the line height
+                        - _properties2.default.fontSize.val * (this.labelLines.length - i - 1) // Correctly account for multilines
+                        );
+                    }
+                } else {
+                    this.ctx.fillStyle = "#000000";
+
+                    for (var i = 0; i < this.labelLines.length; i++) {
+                        this.ctx.fillText(this.labelLines[i], 10, // Fixed margin from the left
+                        this.anchorPoint.y // From the anchor point
+                        - labelPaddingBottom // Move up the padding
+                        - _properties2.default.fontSize.val * (this.labelLines.length - i - 1));
+                    }
+                }
+            }
+
+            if (DEBUG) {
+                dr(1, 1, this.canvas.width - 1, this.canvas.height - 1);
+            }
+
+            return this.canvas;
+        }
+    }, {
+        key: 'isLeaf',
+        get: function get() {
+            return this.children.length == 0;
+        }
+    }]);
+
+    return TreeNode;
+}();
+
+exports.default = TreeNode;
+;
+
+/***/ }),
+
+/***/ 941:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.roundRect = roundRect;
+exports.getRandomInt = getRandomInt;
+exports.generateRandomColor = generateRandomColor;
+function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+    if (typeof stroke == 'undefined') {
+        stroke = true;
+    }
+    if (typeof radius === 'undefined') {
+        radius = 5;
+    }
+    if (typeof radius === 'number') {
+        radius = { tl: radius, tr: radius, br: radius, bl: radius };
+    } else {
+        var defaultRadius = { tl: 0, tr: 0, br: 0, bl: 0 };
+        for (var side in defaultRadius) {
+            radius[side] = radius[side] || defaultRadius[side];
+        }
+    }
+    ctx.beginPath();
+    ctx.moveTo(x + radius.tl, y);
+    ctx.lineTo(x + width - radius.tr, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+    ctx.lineTo(x + width, y + height - radius.br);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
+    ctx.lineTo(x + radius.bl, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+    ctx.lineTo(x, y + radius.tl);
+    ctx.quadraticCurveTo(x, y, x + radius.tl, y);
+    ctx.closePath();
+    if (fill) {
+        ctx.fill();
+    }
+    if (stroke) {
+        ctx.stroke();
+    }
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+function generateRandomColor(useGrayscale) {
+
+    var baseColor = [256, 256, 256];
+    var red = getRandomInt(0, 256);
+    var green = getRandomInt(0, 256);
+    var blue = getRandomInt(0, 256);
+
+    // mix the color
+
+    var mixture = 0.7;
+
+    red = Math.round(red * mixture + baseColor[0] * (1 - mixture));
+    green = Math.round(green * mixture + baseColor[1] * (1 - mixture));
+    blue = Math.round(blue * mixture + baseColor[2] * (1 - mixture));
+
+    if (useGrayscale.val == 1) {
+        return rgbToHex(red, red, red);
+    } else {
+        return rgbToHex(red, green, blue);
+    }
+}
+
+/***/ }),
+
+/***/ 942:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -686,37 +1303,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _mapaction = __webpack_require__(936);
+var _canvas = __webpack_require__(941);
 
-Object.keys(_mapaction).forEach(function (key) {
+Object.keys(_canvas).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
-      return _mapaction[key];
+      return _canvas[key];
     }
   });
 });
 
-/***/ }),
-
-/***/ 936:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.update = update;
-function update() {
-    return {
-        type: 'FETCH_MAPS'
-    };
-}
-
 /***/ })
 
-},[934]);
+},[937]);
 //# sourceMappingURL=bundle.js.map

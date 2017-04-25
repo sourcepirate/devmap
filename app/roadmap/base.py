@@ -46,7 +46,7 @@ class Map(object):
             return self.children[node.id]
         else:
             for child in self._nodes:
-                value = child.remove_node(node)
+                value = child.find_node(node)
                 if value:
                     return value
         return None

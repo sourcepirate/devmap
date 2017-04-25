@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Layout, Header, Navigation, Content} from 'react-mdl';
 import GridList from './grid';
+import Map from './map';
 
 class App extends Component{
     constructor(props){
@@ -19,3 +20,4 @@ class App extends Component{
 
 export {App};
 export {GridList};
+export {Map};
