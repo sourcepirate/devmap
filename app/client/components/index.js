@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Layout, Header, Navigation, Content} from 'react-mdl';
 import GridList from './grid';
 import Map from './map';
+import Edit from './edit';
 
 class App extends Component{
     constructor(props){

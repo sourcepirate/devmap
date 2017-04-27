@@ -19,7 +19,7 @@ class Map extends Component {
     }
 
     render(){
-        return (<canvas ref="can"></canvas>);
+        return (<canvas ref="can" style={{ display: "block", margin: "auto" }}></canvas>);
     }
 }
 
