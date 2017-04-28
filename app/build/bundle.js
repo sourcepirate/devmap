@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 132:
+/***/ 128:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10,7 +10,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _mapaction = __webpack_require__(370);
+var _mapaction = __webpack_require__(369);
 
 Object.keys(_mapaction).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -24,7 +24,7 @@ Object.keys(_mapaction).forEach(function (key) {
 
 /***/ }),
 
-/***/ 209:
+/***/ 206:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38,11 +38,11 @@ exports.parseTree = parseTree;
 exports.draw = draw;
 exports.transform = transform;
 
-var _properties = __webpack_require__(210);
+var _properties = __webpack_require__(207);
 
 var props = _interopRequireWildcard(_properties);
 
-var _node = __webpack_require__(377);
+var _node = __webpack_require__(376);
 
 var _node2 = _interopRequireDefault(_node);
 
@@ -119,7 +119,7 @@ function transform(data) {
 
 /***/ }),
 
-/***/ 210:
+/***/ 207:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -136,7 +136,7 @@ module.exports.useGrayscale = { label: 'Use grayscale', type: 'boolean', val: 0 
 
 /***/ }),
 
-/***/ 350:
+/***/ 349:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -146,19 +146,19 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(24);
+var _reactDom = __webpack_require__(23);
 
-var _routes = __webpack_require__(380);
+var _routes = __webpack_require__(379);
 
 var _routes2 = _interopRequireDefault(_routes);
 
-var _reactRedux = __webpack_require__(87);
+var _reactRedux = __webpack_require__(86);
 
-var _store = __webpack_require__(384);
+var _store = __webpack_require__(383);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _serviceloader = __webpack_require__(383);
+var _serviceloader = __webpack_require__(382);
 
 var _serviceloader2 = _interopRequireDefault(_serviceloader);
 
@@ -185,7 +185,7 @@ if ('serviceWorker' in navigator) {
 
 /***/ }),
 
-/***/ 370:
+/***/ 369:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -203,7 +203,7 @@ function update() {
 
 /***/ }),
 
-/***/ 371:
+/***/ 370:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -219,15 +219,17 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(87);
+var _reactMdl = __webpack_require__(118);
+
+var _reactRedux = __webpack_require__(86);
 
 var _redux = __webpack_require__(71);
 
-var _actions = __webpack_require__(132);
+var _actions = __webpack_require__(128);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
-var _maps = __webpack_require__(209);
+var _maps = __webpack_require__(206);
 
 var canvasMaps = _interopRequireWildcard(_maps);
 
@@ -241,32 +243,61 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var EditMap = function EditMap(props) {
-    var data = props.data,
-        offset = props.offset;
+var EditMap = function (_Component) {
+    _inherits(EditMap, _Component);
 
-    return _react2.default.createElement(
-        'div',
-        { style: { marginLeft: offset } },
-        _react2.default.createElement(
-            'span',
-            null,
-            ' ',
-            data.name,
-            ' '
-        ),
-        data.children.map(function (child) {
-            return _react2.default.createElement(EditMap, { data: child, offset: offset + 5 });
-        })
-    );
-};
+    function EditMap(props) {
+        _classCallCheck(this, EditMap);
+
+        return _possibleConstructorReturn(this, (EditMap.__proto__ || Object.getPrototypeOf(EditMap)).call(this, props));
+    }
+
+    _createClass(EditMap, [{
+        key: 'render',
+        value: function render() {
+            var _props = this.props,
+                data = _props.data,
+                offset = _props.offset,
+                offsetWidth = _props.offsetWidth;
+
+            return _react2.default.createElement(
+                _reactMdl.Card,
+                { shadow: 0, style: { marginLeft: offset, display: "inline-block", width: offsetWidth } },
+                _react2.default.createElement(
+                    _reactMdl.CardTitle,
+                    null,
+                    ' ',
+                    data.name,
+                    ' '
+                ),
+                data.children.map(function (child) {
+                    return _react2.default.createElement(EditMap, { data: child, key: child.id, offset: offset + 5, offsetWidth: offsetWidth - 9 });
+                }),
+                _react2.default.createElement(
+                    _reactMdl.CardText,
+                    null,
+                    data.description
+                ),
+                _react2.default.createElement(
+                    _reactMdl.CardMenu,
+                    { style: { color: 'black' } },
+                    _react2.default.createElement(_reactMdl.IconButton, { name: 'edit' }),
+                    _react2.default.createElement(_reactMdl.IconButton, { name: 'add' })
+                )
+            );
+        }
+    }]);
+
+    return EditMap;
+}(_react.Component);
 
 EditMap.defaultProps = {
-    offset: 0
+    offset: 0,
+    offsetWidth: 900
 };
 
-var Edit = function (_Component) {
-    _inherits(Edit, _Component);
+var Edit = function (_Component2) {
+    _inherits(Edit, _Component2);
 
     function Edit(props) {
         _classCallCheck(this, Edit);
@@ -285,7 +316,11 @@ var Edit = function (_Component) {
             var data = canvasMaps.transform(maps[0].map);
             console.log(data);
             console.log("rendering");
-            return _react2.default.createElement(EditMap, { data: data, offset: 0 });
+            return _react2.default.createElement(
+                'div',
+                { style: { margin: "auto", textAlign: "center", width: "50%", marginTop: 10 } },
+                _react2.default.createElement(EditMap, { data: data, offset: 0 })
+            );
         }
     }]);
 
@@ -308,7 +343,7 @@ exports.default = Edit;
 
 /***/ }),
 
-/***/ 372:
+/***/ 371:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -326,17 +361,17 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMdl = __webpack_require__(193);
+var _reactMdl = __webpack_require__(118);
 
-var _mapdetail = __webpack_require__(375);
+var _mapdetail = __webpack_require__(374);
 
 var _mapdetail2 = _interopRequireDefault(_mapdetail);
 
-var _reactRedux = __webpack_require__(87);
+var _reactRedux = __webpack_require__(86);
 
 var _redux = __webpack_require__(71);
 
-var _actions = __webpack_require__(132);
+var _actions = __webpack_require__(128);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
@@ -403,7 +438,7 @@ exports.default = GridList;
 
 /***/ }),
 
-/***/ 373:
+/***/ 372:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -420,17 +455,17 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMdl = __webpack_require__(193);
+var _reactMdl = __webpack_require__(118);
 
-var _grid = __webpack_require__(372);
+var _grid = __webpack_require__(371);
 
 var _grid2 = _interopRequireDefault(_grid);
 
-var _map = __webpack_require__(374);
+var _map = __webpack_require__(373);
 
 var _map2 = _interopRequireDefault(_map);
 
-var _edit = __webpack_require__(371);
+var _edit = __webpack_require__(370);
 
 var _edit2 = _interopRequireDefault(_edit);
 
@@ -477,7 +512,7 @@ exports.Edit = _edit2.default;
 
 /***/ }),
 
-/***/ 374:
+/***/ 373:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -493,15 +528,15 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(87);
+var _reactRedux = __webpack_require__(86);
 
 var _redux = __webpack_require__(71);
 
-var _actions = __webpack_require__(132);
+var _actions = __webpack_require__(128);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
-var _maps = __webpack_require__(209);
+var _maps = __webpack_require__(206);
 
 var canvasMaps = _interopRequireWildcard(_maps);
 
@@ -563,7 +598,7 @@ exports.default = Map;
 
 /***/ }),
 
-/***/ 375:
+/***/ 374:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -579,9 +614,9 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMdl = __webpack_require__(193);
+var _reactMdl = __webpack_require__(118);
 
-var _reactRouter = __webpack_require__(332);
+var _reactRouter = __webpack_require__(331);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -656,7 +691,7 @@ exports.default = MapDetail;
 
 /***/ }),
 
-/***/ 376:
+/***/ 375:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -670,21 +705,21 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reduxDevtools = __webpack_require__(126);
+var _reduxDevtools = __webpack_require__(122);
 
-var _reduxDevtoolsLogMonitor = __webpack_require__(919);
+var _reduxDevtoolsLogMonitor = __webpack_require__(900);
 
 var _reduxDevtoolsLogMonitor2 = _interopRequireDefault(_reduxDevtoolsLogMonitor);
 
-var _reduxDevtoolsDockMonitor = __webpack_require__(910);
+var _reduxDevtoolsDockMonitor = __webpack_require__(891);
 
 var _reduxDevtoolsDockMonitor2 = _interopRequireDefault(_reduxDevtoolsDockMonitor);
 
-var _reduxDevtoolsDispatch = __webpack_require__(908);
+var _reduxDevtoolsDispatch = __webpack_require__(889);
 
 var _reduxDevtoolsDispatch2 = _interopRequireDefault(_reduxDevtoolsDispatch);
 
-var _reduxSliderMonitor = __webpack_require__(934);
+var _reduxSliderMonitor = __webpack_require__(915);
 
 var _reduxSliderMonitor2 = _interopRequireDefault(_reduxSliderMonitor);
 
@@ -708,7 +743,7 @@ exports.default = (0, _reduxDevtools.createDevTools)(_react2.default.createEleme
 
 /***/ }),
 
-/***/ 377:
+/***/ 376:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -720,11 +755,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _utils = __webpack_require__(386);
+var _utils = __webpack_require__(385);
 
 var utils = _interopRequireWildcard(_utils);
 
-var _properties = __webpack_require__(210);
+var _properties = __webpack_require__(207);
 
 var _properties2 = _interopRequireDefault(_properties);
 
@@ -996,7 +1031,7 @@ exports.default = TreeNode;
 
 /***/ }),
 
-/***/ 378:
+/***/ 377:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1009,7 +1044,7 @@ exports.reducers = undefined;
 
 var _redux = __webpack_require__(71);
 
-var _maps = __webpack_require__(379);
+var _maps = __webpack_require__(378);
 
 var _maps2 = _interopRequireDefault(_maps);
 
@@ -1019,7 +1054,7 @@ var reducers = exports.reducers = (0, _redux.combineReducers)({ maps: _maps2.def
 
 /***/ }),
 
-/***/ 379:
+/***/ 378:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1046,7 +1081,7 @@ function maps() {
 
 /***/ }),
 
-/***/ 380:
+/***/ 379:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1056,9 +1091,9 @@ Object.defineProperty(exports, "__esModule", {
    value: true
 });
 
-var _reactRouter = __webpack_require__(332);
+var _reactRouter = __webpack_require__(331);
 
-var _components = __webpack_require__(373);
+var _components = __webpack_require__(372);
 
 var routes = React.createElement(
    _reactRouter.Router,
@@ -1077,7 +1112,7 @@ exports.default = routes;
 
 /***/ }),
 
-/***/ 381:
+/***/ 380:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1088,7 +1123,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = rootSaga;
 
-var _mapsaga = __webpack_require__(382);
+var _mapsaga = __webpack_require__(381);
 
 var _marked = [rootSaga].map(regeneratorRuntime.mark);
 
@@ -1111,7 +1146,7 @@ function rootSaga() {
 
 /***/ }),
 
-/***/ 382:
+/***/ 381:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1122,11 +1157,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createMapSaga = createMapSaga;
 
-var _axios = __webpack_require__(352);
+var _axios = __webpack_require__(351);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _effects = __webpack_require__(343);
+var _effects = __webpack_require__(342);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1179,7 +1214,7 @@ function createMapSaga() {
 
 /***/ }),
 
-/***/ 383:
+/***/ 382:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1191,7 +1226,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _events = __webpack_require__(602);
+var _events = __webpack_require__(582);
 
 var _events2 = _interopRequireDefault(_events);
 
@@ -1275,7 +1310,7 @@ exports.default = ServiceLoader;
 
 /***/ }),
 
-/***/ 384:
+/***/ 383:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1287,21 +1322,21 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(71);
 
-var _devtool = __webpack_require__(376);
+var _devtool = __webpack_require__(375);
 
 var _devtool2 = _interopRequireDefault(_devtool);
 
-var _index = __webpack_require__(378);
+var _index = __webpack_require__(377);
 
-var _reduxLogger = __webpack_require__(927);
+var _reduxLogger = __webpack_require__(908);
 
 var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-var _reduxSaga = __webpack_require__(928);
+var _reduxSaga = __webpack_require__(909);
 
 var _reduxSaga2 = _interopRequireDefault(_reduxSaga);
 
-var _sagas = __webpack_require__(381);
+var _sagas = __webpack_require__(380);
 
 var _sagas2 = _interopRequireDefault(_sagas);
 
@@ -1322,7 +1357,7 @@ exports.default = store;
 
 /***/ }),
 
-/***/ 385:
+/***/ 384:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1405,7 +1440,7 @@ function generateRandomColor(useGrayscale) {
 
 /***/ }),
 
-/***/ 386:
+/***/ 385:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1415,7 +1450,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _canvas = __webpack_require__(385);
+var _canvas = __webpack_require__(384);
 
 Object.keys(_canvas).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1429,14 +1464,14 @@ Object.keys(_canvas).forEach(function (key) {
 
 /***/ }),
 
-/***/ 943:
+/***/ 924:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(351);
-module.exports = __webpack_require__(350);
+__webpack_require__(350);
+module.exports = __webpack_require__(349);
 
 
 /***/ })
 
-},[943]);
+},[924]);
 //# sourceMappingURL=bundle.js.map

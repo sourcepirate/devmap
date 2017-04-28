@@ -1,22 +1,35 @@
 import React, {Component, PropTypes} from 'react';
+import {Card, CardTitle, CardActions, CardMenu, IconButton, CardText} from 'react-mdl';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../actions';
 import * as canvasMaps from '../maps';
 
-
-const EditMap = (props) => {
-    const {data, offset} = props;
-    return (<div style={{marginLeft: offset}}>
-               <span> {data.name} </span>
+class EditMap extends Component{
+    constructor(props){
+        super(props);
+    }
+    
+    render(){
+    
+    const {data, offset, offsetWidth} = this.props;
+    return (<Card shadow={0} style={{marginLeft: offset, display: "inline-block", width: offsetWidth}}>
+               <CardTitle> {data.name} </CardTitle>
                {
-                   data.children.map((child) => <EditMap data={child} offset={offset + 5} />)
+                   data.children.map((child) => <EditMap data={child} key={child.id} offset={offset + 5} offsetWidth={offsetWidth - 9}/>)
                }
-           </div>)
+               <CardText>{data.description}</CardText>
+               <CardMenu style={{color: 'black'}}>
+                    <IconButton name="edit" />
+                    <IconButton name="add" />
+              </CardMenu>
+           </Card>)
+    }
 }
 
 EditMap.defaultProps = {
-    offset: 0
+    offset: 0,
+    offsetWidth: 900
 }
 
 
@@ -31,7 +44,7 @@ class Edit extends Component{
         const data = canvasMaps.transform(maps[0].map);
         console.log(data);
         console.log("rendering");
-        return (<EditMap data={data} offset={0} />)
+        return (<div style={{margin: "auto", textAlign: "center", width: "50%", marginTop: 10}}><EditMap data={data} offset={0} /></div>)
     }
 }
 
