@@ -284,6 +284,7 @@ var Edit = function (_Component) {
             });
             var data = canvasMaps.transform(maps[0].map);
             console.log(data);
+            console.log("rendering");
             return _react2.default.createElement(EditMap, { data: data, offset: 0 });
         }
     }]);
@@ -411,7 +412,7 @@ exports.default = GridList;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Map = exports.GridList = exports.App = undefined;
+exports.Edit = exports.Map = exports.GridList = exports.App = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -472,6 +473,7 @@ var App = function (_Component) {
 exports.App = App;
 exports.GridList = _grid2.default;
 exports.Map = _map2.default;
+exports.Edit = _edit2.default;
 
 /***/ }),
 

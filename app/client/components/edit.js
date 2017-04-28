@@ -30,6 +30,7 @@ class Edit extends Component{
         const maps = this.props.maps.filter((x) => x.id == params.id);
         const data = canvasMaps.transform(maps[0].map);
         console.log(data);
+        console.log("rendering");
         return (<EditMap data={data} offset={0} />)
     }
 }

@@ -22,3 +22,4 @@ class App extends Component{
 export {App};
 export {GridList};
 export {Map};
+export {Edit};
