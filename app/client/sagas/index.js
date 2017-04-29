@@ -1,10 +1,15 @@
 import {
   createMapSaga
 } from './mapsaga';
+import {editNodeForTree,addNodeForTree, removeNodeForTree} from './nodesaga';
+import NotifySaga from './notificationSaga';
 
 export default function* rootSaga() {
-  console.log("sagas spawned");
   yield [
-    createMapSaga()
+    createMapSaga(),
+    editNodeForTree(),
+    addNodeForTree(),
+    removeNodeForTree(),
+    NotifySaga()
   ];
 }

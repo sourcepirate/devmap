@@ -43,3 +43,17 @@ export function transform(data) {
     }
     return result;
 }
+
+export function find(data, id) {
+    if (data['id'] === id) {
+        return data;
+    } else {
+        for(let index in data.children){
+            let child = data.children[index];
+            let value = find(child, id);
+            if(value)
+               return value;
+        }
+    }
+    return;
+}

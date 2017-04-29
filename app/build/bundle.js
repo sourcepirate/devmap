@@ -1,42 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 133:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _mapaction = __webpack_require__(370);
-
-Object.keys(_mapaction).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _mapaction[key];
-    }
-  });
-});
-
-var _nodes = __webpack_require__(944);
-
-Object.keys(_nodes).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _nodes[key];
-    }
-  });
-});
-
-/***/ }),
-
-/***/ 209:
+/***/ 134:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49,12 +13,13 @@ exports.parseObjectTree = parseObjectTree;
 exports.parseTree = parseTree;
 exports.draw = draw;
 exports.transform = transform;
+exports.find = find;
 
-var _properties = __webpack_require__(210);
+var _properties = __webpack_require__(211);
 
 var props = _interopRequireWildcard(_properties);
 
-var _node = __webpack_require__(377);
+var _node = __webpack_require__(379);
 
 var _node2 = _interopRequireDefault(_node);
 
@@ -129,9 +94,22 @@ function transform(data) {
     return result;
 }
 
+function find(data, id) {
+    if (data['id'] === id) {
+        return data;
+    } else {
+        for (var index in data.children) {
+            var child = data.children[index];
+            var value = find(child, id);
+            if (value) return value;
+        }
+    }
+    return;
+}
+
 /***/ }),
 
-/***/ 210:
+/***/ 211:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -154,41 +132,38 @@ module.exports.useGrayscale = { label: 'Use grayscale', type: 'boolean', val: 0 
 "use strict";
 
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(24);
+var _reactDom = __webpack_require__(23);
 
-var _routes = __webpack_require__(380);
+var _routes = __webpack_require__(383);
 
 var _routes2 = _interopRequireDefault(_routes);
 
-var _reactRedux = __webpack_require__(87);
+var _reactRedux = __webpack_require__(69);
 
-var _store = __webpack_require__(384);
+var _store = __webpack_require__(387);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _serviceloader = __webpack_require__(383);
+var _serviceloader = __webpack_require__(386);
 
 var _serviceloader2 = _interopRequireDefault(_serviceloader);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-if ('serviceWorker' in navigator) {
-    var loader = new _serviceloader2.default('./sw.js');
-    loader.on('update', function (reg) {
-        console.log('updating');
-        reg.postMessage({
-            action: 'skip'
-        });
-    });
-    loader.on('installed', function () {
-        console.log("installed");
-    });
-}
-
+// if ('serviceWorker' in navigator) {
+//     const loader = new Sloader('./sw.js');
+//     loader.on('update', function(reg){
+//         console.log('updating');
+//         reg.postMessage({
+//             action: 'skip'
+//         });
+//     });
+//     loader.on('installed', () => {console.log("installed")});
+// }
 (0, _reactDom.render)(_react2.default.createElement(
     _reactRedux.Provider,
     { store: _store2.default },
@@ -224,28 +199,74 @@ function update() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.editTreeNode = editTreeNode;
+exports.createTreeNode = createTreeNode;
+exports.removeTreeNode = removeTreeNode;
+function editTreeNode(id, parent, data) {
+    return {
+        type: 'EDIT_TREE_NODE',
+        payload: {
+            id: id,
+            parent: parent,
+            data: data
+        }
+    };
+}
+
+function createTreeNode(id, parent, data) {
+    return {
+        type: 'CREATE_TREE_NODE',
+        payload: {
+            id: id,
+            parent: parent,
+            data: data
+        }
+    };
+}
+
+function removeTreeNode(id, parent) {
+    return {
+        type: 'REMOVE_TREE_NODE',
+        payload: {
+            id: id,
+            parent: parent
+        }
+    };
+}
+
+/***/ }),
+
+/***/ 372:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMdl = __webpack_require__(123);
+var _reactMdl = __webpack_require__(87);
 
-var _reactRedux = __webpack_require__(87);
+var _reactRedux = __webpack_require__(69);
 
-var _redux = __webpack_require__(71);
+var _redux = __webpack_require__(57);
 
-var _actions = __webpack_require__(133);
+var _actions = __webpack_require__(90);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
-var _maps = __webpack_require__(209);
+var _maps = __webpack_require__(134);
 
 var canvasMaps = _interopRequireWildcard(_maps);
 
-var _reactRouter = __webpack_require__(332);
+var _reactRouter = __webpack_require__(201);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -288,6 +309,7 @@ var EditMap = function (_Component) {
             var addUrl = onAdd(id);
             var removeUrl = onClose(id);
             var theme = getRandom(themes);
+            console.log(data.children);
             return _react2.default.createElement(
                 _reactMdl.Card,
                 { shadow: 0, style: { marginLeft: offset, display: "inline-block", width: offsetWidth, border: "0.5px solid " + theme } },
@@ -348,12 +370,6 @@ var Edit = function (_Component2) {
     }
 
     _createClass(Edit, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {
-            console.log("loading", this.props.params.id);
-            this.props.loadTree(this.props.params.id);
-        }
-    }, {
         key: 'render',
         value: function render() {
             var params = this.props.params;
@@ -416,7 +432,166 @@ exports.default = Edit;
 
 /***/ }),
 
-/***/ 372:
+/***/ 373:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(69);
+
+var _reactMdl = __webpack_require__(87);
+
+var _redux = __webpack_require__(57);
+
+var _actions = __webpack_require__(90);
+
+var actionCreators = _interopRequireWildcard(_actions);
+
+var _maps = __webpack_require__(134);
+
+var canvasUtils = _interopRequireWildcard(_maps);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var EditNode = function (_Component) {
+    _inherits(EditNode, _Component);
+
+    function EditNode(props) {
+        _classCallCheck(this, EditNode);
+
+        var _this = _possibleConstructorReturn(this, (EditNode.__proto__ || Object.getPrototypeOf(EditNode)).call(this, props));
+
+        _this.state = {
+            name: '',
+            description: ''
+        };
+        return _this;
+    }
+
+    _createClass(EditNode, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            var _props$params = this.props.params,
+                id = _props$params.id,
+                node = _props$params.node;
+
+            console.log("Current Node ID", node);
+            var data = this.props.maps.filter(function (x) {
+                return x.id == id;
+            });
+            var transformed = data[0].map;
+            var tfm = canvasUtils.transform(transformed);
+            console.log(tfm);
+
+            var _canvasUtils$find = canvasUtils.find(tfm, node),
+                name = _canvasUtils$find.name,
+                description = _canvasUtils$find.description;
+
+            this.setState({
+                name: name,
+                description: description
+            });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {}
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var _state = this.state,
+                name = _state.name,
+                description = _state.description;
+
+            return _react2.default.createElement(
+                _reactMdl.Card,
+                { shadow: 0, style: { margin: "auto", marginTop: 50 } },
+                _react2.default.createElement(
+                    _reactMdl.CardTitle,
+                    null,
+                    ' Edit Node '
+                ),
+                _react2.default.createElement(
+                    _reactMdl.CardText,
+                    null,
+                    _react2.default.createElement(_reactMdl.Textfield, { label: 'Name',
+                        value: name,
+                        style: { marginLeft: 5 },
+                        required: true,
+                        onChange: function onChange(e) {
+                            return _this2.setState({ name: e.target.value });
+                        } }),
+                    _react2.default.createElement(_reactMdl.Textfield, { label: 'Description',
+                        value: description,
+                        rows: 3,
+                        style: { marginLeft: 5 },
+                        required: true,
+                        onChange: function onChange(e) {
+                            return _this2.setState({ description: e.target.value });
+                        } })
+                ),
+                _react2.default.createElement(
+                    _reactMdl.CardActions,
+                    null,
+                    _react2.default.createElement(
+                        _reactMdl.Button,
+                        { primary: true, onClick: this.onOk.bind(this) },
+                        ' Update '
+                    )
+                )
+            );
+        }
+    }, {
+        key: 'onOk',
+        value: function onOk() {
+            var _props$params2 = this.props.params,
+                id = _props$params2.id,
+                node = _props$params2.node;
+
+            this.props.editTreeNode(id, node, this.state);
+        }
+    }]);
+
+    return EditNode;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        maps: state.maps
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)(actionCreators, dispatch);
+};
+
+EditNode = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(EditNode);
+
+exports.default = EditNode;
+
+/***/ }),
+
+/***/ 374:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -430,21 +605,21 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMdl = __webpack_require__(123);
+var _reactMdl = __webpack_require__(87);
 
-var _mapdetail = __webpack_require__(375);
+var _mapdetail = __webpack_require__(377);
 
 var _mapdetail2 = _interopRequireDefault(_mapdetail);
 
-var _reactRedux = __webpack_require__(87);
+var _reactRedux = __webpack_require__(69);
 
-var _redux = __webpack_require__(71);
+var _redux = __webpack_require__(57);
 
-var _actions = __webpack_require__(133);
+var _actions = __webpack_require__(90);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
@@ -511,40 +686,52 @@ exports.default = GridList;
 
 /***/ }),
 
-/***/ 373:
+/***/ 375:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
+
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Edit = exports.Map = exports.GridList = exports.App = undefined;
+exports.RemoveNode = exports.AddNode = exports.EditNode = exports.Edit = exports.Map = exports.GridList = exports.App = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMdl = __webpack_require__(123);
+var _reactMdl = __webpack_require__(87);
 
-var _grid = __webpack_require__(372);
+var _grid = __webpack_require__(374);
 
 var _grid2 = _interopRequireDefault(_grid);
 
-var _map = __webpack_require__(374);
+var _map = __webpack_require__(376);
 
 var _map2 = _interopRequireDefault(_map);
 
-var _edit = __webpack_require__(371);
+var _edit = __webpack_require__(372);
 
 var _edit2 = _interopRequireDefault(_edit);
 
-var _devtool = __webpack_require__(376);
+var _devtool = __webpack_require__(378);
 
 var _devtool2 = _interopRequireDefault(_devtool);
+
+var _editnode = __webpack_require__(373);
+
+var _editnode2 = _interopRequireDefault(_editnode);
+
+var _addnode = __webpack_require__(947);
+
+var _addnode2 = _interopRequireDefault(_addnode);
+
+var _removenode = __webpack_require__(956);
+
+var _removenode2 = _interopRequireDefault(_removenode);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -554,7 +741,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var isProduction = process.env.NODE_ENV === 'production';
+__webpack_require__(954);
+
+var isProduction = "development" === 'production';
 
 var App = function (_Component) {
     _inherits(App, _Component);
@@ -588,11 +777,13 @@ exports.App = App;
 exports.GridList = _grid2.default;
 exports.Map = _map2.default;
 exports.Edit = _edit2.default;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+exports.EditNode = _editnode2.default;
+exports.AddNode = _addnode2.default;
+exports.RemoveNode = _removenode2.default;
 
 /***/ }),
 
-/***/ 374:
+/***/ 376:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -604,19 +795,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(87);
+var _reactRedux = __webpack_require__(69);
 
-var _redux = __webpack_require__(71);
+var _redux = __webpack_require__(57);
 
-var _actions = __webpack_require__(133);
+var _actions = __webpack_require__(90);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
-var _maps = __webpack_require__(209);
+var _maps = __webpack_require__(134);
 
 var canvasMaps = _interopRequireWildcard(_maps);
 
@@ -678,7 +869,7 @@ exports.default = Map;
 
 /***/ }),
 
-/***/ 375:
+/***/ 377:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -690,13 +881,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMdl = __webpack_require__(123);
+var _reactMdl = __webpack_require__(87);
 
-var _reactRouter = __webpack_require__(332);
+var _reactRouter = __webpack_require__(201);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -767,7 +958,7 @@ exports.default = MapDetail;
 
 /***/ }),
 
-/***/ 376:
+/***/ 378:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -777,25 +968,25 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reduxDevtools = __webpack_require__(127);
+var _reduxDevtools = __webpack_require__(128);
 
-var _reduxDevtoolsLogMonitor = __webpack_require__(919);
+var _reduxDevtoolsLogMonitor = __webpack_require__(922);
 
 var _reduxDevtoolsLogMonitor2 = _interopRequireDefault(_reduxDevtoolsLogMonitor);
 
-var _reduxDevtoolsDockMonitor = __webpack_require__(910);
+var _reduxDevtoolsDockMonitor = __webpack_require__(913);
 
 var _reduxDevtoolsDockMonitor2 = _interopRequireDefault(_reduxDevtoolsDockMonitor);
 
-var _reduxDevtoolsDispatch = __webpack_require__(908);
+var _reduxDevtoolsDispatch = __webpack_require__(911);
 
 var _reduxDevtoolsDispatch2 = _interopRequireDefault(_reduxDevtoolsDispatch);
 
-var _reduxSliderMonitor = __webpack_require__(934);
+var _reduxSliderMonitor = __webpack_require__(937);
 
 var _reduxSliderMonitor2 = _interopRequireDefault(_reduxSliderMonitor);
 
@@ -819,7 +1010,7 @@ exports.default = (0, _reduxDevtools.createDevTools)(_react2.default.createEleme
 
 /***/ }),
 
-/***/ 377:
+/***/ 379:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -831,11 +1022,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _utils = __webpack_require__(386);
+var _utils = __webpack_require__(389);
 
 var utils = _interopRequireWildcard(_utils);
 
-var _properties = __webpack_require__(210);
+var _properties = __webpack_require__(211);
 
 var _properties2 = _interopRequireDefault(_properties);
 
@@ -1107,7 +1298,7 @@ exports.default = TreeNode;
 
 /***/ }),
 
-/***/ 378:
+/***/ 380:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1118,13 +1309,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.reducers = undefined;
 
-var _redux = __webpack_require__(71);
+var _redux = __webpack_require__(57);
 
-var _maps = __webpack_require__(379);
+var _maps = __webpack_require__(381);
 
 var _maps2 = _interopRequireDefault(_maps);
 
-var _node = __webpack_require__(945);
+var _node = __webpack_require__(382);
 
 var _node2 = _interopRequireDefault(_node);
 
@@ -1134,7 +1325,7 @@ var reducers = exports.reducers = (0, _redux.combineReducers)({ maps: _maps2.def
 
 /***/ }),
 
-/***/ 379:
+/***/ 381:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1161,7 +1352,29 @@ function maps() {
 
 /***/ }),
 
-/***/ 380:
+/***/ 382:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = nodes;
+function nodes() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var action = arguments[1];
+
+    switch (action.type) {
+        default:
+            return state;
+    }
+}
+
+/***/ }),
+
+/***/ 383:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1171,9 +1384,9 @@ Object.defineProperty(exports, "__esModule", {
    value: true
 });
 
-var _reactRouter = __webpack_require__(332);
+var _reactRouter = __webpack_require__(201);
 
-var _components = __webpack_require__(373);
+var _components = __webpack_require__(375);
 
 var routes = React.createElement(
    _reactRouter.Router,
@@ -1183,16 +1396,19 @@ var routes = React.createElement(
       { path: '/', component: _components.App },
       React.createElement(_reactRouter.IndexRoute, { component: _components.GridList }),
       React.createElement(_reactRouter.Route, { path: '/view/:id', component: _components.Map }),
-      React.createElement(_reactRouter.Route, { path: '/edit/:id', component: _components.Edit })
+      React.createElement(_reactRouter.Route, { path: '/edit/:id', component: _components.Edit }),
+      React.createElement(_reactRouter.Route, { path: '/:id/edit/:node', component: _components.EditNode }),
+      React.createElement(_reactRouter.Route, { path: '/:id/add/:node', component: _components.AddNode }),
+      React.createElement(_reactRouter.Route, { path: '/:id/remove/:node', component: _components.RemoveNode })
    )
 );
 
 exports.default = routes;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
 
-/***/ 381:
+/***/ 384:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1203,7 +1419,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = rootSaga;
 
-var _mapsaga = __webpack_require__(382);
+var _mapsaga = __webpack_require__(385);
+
+var _nodesaga = __webpack_require__(948);
+
+var _notificationSaga = __webpack_require__(949);
+
+var _notificationSaga2 = _interopRequireDefault(_notificationSaga);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _marked = [rootSaga].map(regeneratorRuntime.mark);
 
@@ -1212,12 +1436,11 @@ function rootSaga() {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
-          console.log("sagas spawned");
-          _context.next = 3;
-          return [(0, _mapsaga.createMapSaga)()];
+          _context.next = 2;
+          return [(0, _mapsaga.createMapSaga)(), (0, _nodesaga.editNodeForTree)(), (0, _nodesaga.addNodeForTree)(), (0, _nodesaga.removeNodeForTree)(), (0, _notificationSaga2.default)()];
 
-        case 3:
-        case "end":
+        case 2:
+        case 'end':
           return _context.stop();
       }
     }
@@ -1226,7 +1449,7 @@ function rootSaga() {
 
 /***/ }),
 
-/***/ 382:
+/***/ 385:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1294,7 +1517,7 @@ function createMapSaga() {
 
 /***/ }),
 
-/***/ 383:
+/***/ 386:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1306,7 +1529,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _events = __webpack_require__(602);
+var _events = __webpack_require__(605);
 
 var _events2 = _interopRequireDefault(_events);
 
@@ -1390,11 +1613,11 @@ exports.default = ServiceLoader;
 
 /***/ }),
 
-/***/ 384:
+/***/ 387:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -1402,19 +1625,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _redux = __webpack_require__(71);
+var _redux = __webpack_require__(57);
 
-var _index = __webpack_require__(378);
+var _index = __webpack_require__(380);
 
-var _reduxLogger = __webpack_require__(927);
+var _reduxLogger = __webpack_require__(930);
 
 var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-var _reduxSaga = __webpack_require__(928);
+var _reduxSaga = __webpack_require__(931);
 
 var _reduxSaga2 = _interopRequireDefault(_reduxSaga);
 
-var _sagas = __webpack_require__(381);
+var _sagas = __webpack_require__(384);
 
 var _sagas2 = _interopRequireDefault(_sagas);
 
@@ -1426,7 +1649,7 @@ var middleware = (0, _redux.applyMiddleware)(sagaMiddleWare);
 var composeEnhancers = (typeof window === "undefined" ? "undefined" : _typeof(window)) === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
   // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
 }) : _redux.compose;
-if (process.env.NODE_ENV == 'production') {
+if (false) {
   enhancers = composeEnhancers(middleware);
 } else {
   enhancers = composeEnhancers(middleware);
@@ -1434,11 +1657,10 @@ if (process.env.NODE_ENV == 'production') {
 var store = (0, _redux.createStore)(_index.reducers, {}, enhancers);
 sagaMiddleWare.run(_sagas2.default);
 exports.default = store;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
 
-/***/ 385:
+/***/ 388:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1521,7 +1743,7 @@ function generateRandomColor(useGrayscale) {
 
 /***/ }),
 
-/***/ 386:
+/***/ 389:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1531,7 +1753,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _canvas = __webpack_require__(385);
+var _canvas = __webpack_require__(388);
 
 Object.keys(_canvas).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1545,7 +1767,43 @@ Object.keys(_canvas).forEach(function (key) {
 
 /***/ }),
 
-/***/ 943:
+/***/ 90:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _mapaction = __webpack_require__(370);
+
+Object.keys(_mapaction).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _mapaction[key];
+    }
+  });
+});
+
+var _nodes = __webpack_require__(371);
+
+Object.keys(_nodes).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _nodes[key];
+    }
+  });
+});
+
+/***/ }),
+
+/***/ 946:
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(351);
@@ -1554,7 +1812,7 @@ module.exports = __webpack_require__(350);
 
 /***/ }),
 
-/***/ 944:
+/***/ 947:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1563,48 +1821,419 @@ module.exports = __webpack_require__(350);
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.edit = edit;
-exports.add = add;
-exports.remove = remove;
-exports.loadTree = loadTree;
-exports.close = close;
-function edit(id) {
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(69);
+
+var _reactMdl = __webpack_require__(87);
+
+var _redux = __webpack_require__(57);
+
+var _actions = __webpack_require__(90);
+
+var actionCreators = _interopRequireWildcard(_actions);
+
+var _maps = __webpack_require__(134);
+
+var canvasUtils = _interopRequireWildcard(_maps);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AddNode = function (_Component) {
+    _inherits(AddNode, _Component);
+
+    function AddNode(props) {
+        _classCallCheck(this, AddNode);
+
+        var _this = _possibleConstructorReturn(this, (AddNode.__proto__ || Object.getPrototypeOf(AddNode)).call(this, props));
+
+        _this.state = {
+            name: '',
+            description: ''
+        };
+        return _this;
+    }
+
+    _createClass(AddNode, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var _state = this.state,
+                name = _state.name,
+                description = _state.description;
+
+            return _react2.default.createElement(
+                _reactMdl.Card,
+                { shadow: 0, style: { margin: "auto", marginTop: 50 } },
+                _react2.default.createElement(
+                    _reactMdl.CardTitle,
+                    null,
+                    ' Add New Node '
+                ),
+                _react2.default.createElement(
+                    _reactMdl.CardText,
+                    null,
+                    _react2.default.createElement(_reactMdl.Textfield, { label: 'Name',
+                        value: name,
+                        style: { marginLeft: 5 },
+                        required: true,
+                        onChange: function onChange(e) {
+                            return _this2.setState({ name: e.target.value });
+                        } }),
+                    _react2.default.createElement(_reactMdl.Textfield, { label: 'Description',
+                        value: description,
+                        rows: 3,
+                        style: { marginLeft: 5 },
+                        required: true,
+                        onChange: function onChange(e) {
+                            return _this2.setState({ description: e.target.value });
+                        } })
+                ),
+                _react2.default.createElement(
+                    _reactMdl.CardActions,
+                    null,
+                    _react2.default.createElement(
+                        _reactMdl.Button,
+                        { primary: true, onClick: this.onOk.bind(this) },
+                        ' Create '
+                    )
+                )
+            );
+        }
+    }, {
+        key: 'onOk',
+        value: function onOk() {
+            var _props$params = this.props.params,
+                id = _props$params.id,
+                node = _props$params.node;
+
+            this.props.createTreeNode(id, node, this.state);
+        }
+    }]);
+
+    return AddNode;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
     return {
-        type: 'EDIT_NODE',
-        id: id
+        maps: state.maps
     };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)(actionCreators, dispatch);
+};
+
+AddNode = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AddNode);
+
+exports.default = AddNode;
+
+/***/ }),
+
+/***/ 948:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.editNodeForTree = editNodeForTree;
+exports.addNodeForTree = addNodeForTree;
+exports.removeNodeForTree = removeNodeForTree;
+
+var _axios = __webpack_require__(352);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _effects = __webpack_require__(343);
+
+var _reactRouter = __webpack_require__(201);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _marked = [editNodeDetails, addNodeDetails, removeNodeDetails, editNodeForTree, addNodeForTree, removeNodeForTree].map(regeneratorRuntime.mark);
+
+function editNode(id, parent, data) {
+    return _axios2.default.put('/api/' + id + '/edit/' + parent, data);
 }
 
-function add(id) {
-    return {
-        type: 'ADD_NODE',
-        id: id
-    };
+function editNodeDetails(action) {
+    var _action$payload, id, parent, data, result;
+
+    return regeneratorRuntime.wrap(function editNodeDetails$(_context) {
+        while (1) {
+            switch (_context.prev = _context.next) {
+                case 0:
+                    _action$payload = action.payload, id = _action$payload.id, parent = _action$payload.parent, data = _action$payload.data;
+                    _context.prev = 1;
+                    _context.next = 4;
+                    return (0, _effects.call)(editNode, id, parent, data);
+
+                case 4:
+                    result = _context.sent;
+
+                    console.log(result);
+                    _context.next = 8;
+                    return (0, _effects.put)({
+                        type: 'FETCH_MAPS'
+                    });
+
+                case 8:
+                    _context.next = 10;
+                    return (0, _effects.put)({
+                        type: "NOTIFY",
+                        message: "Node updated done successfully"
+                    });
+
+                case 10:
+                    _reactRouter.browserHistory.goBack();
+                    _context.next = 17;
+                    break;
+
+                case 13:
+                    _context.prev = 13;
+                    _context.t0 = _context['catch'](1);
+                    _context.next = 17;
+                    return (0, _effects.put)({
+                        type: "NOTIFY",
+                        message: "Error while updating node info"
+                    });
+
+                case 17:
+                case 'end':
+                    return _context.stop();
+            }
+        }
+    }, _marked[0], this, [[1, 13]]);
 }
 
-function remove(id) {
-    return {
-        type: 'REMOVE_NODE',
-        id: id
-    };
+function addNode(id, parent, data) {
+    return _axios2.default.post('/api/' + id + '/add/' + parent, data);
 }
 
-function loadTree(id) {
-    return {
-        type: 'LOAD_TREE',
-        id: id
-    };
+function removeNode(id, parent) {
+    return _axios2.default.delete('/api/' + id + '/delete/' + parent);
 }
 
-function close() {
-    return {
-        type: "CLOSE"
-    };
+function addNodeDetails(action) {
+    var _action$payload2, id, parent, data, result;
+
+    return regeneratorRuntime.wrap(function addNodeDetails$(_context2) {
+        while (1) {
+            switch (_context2.prev = _context2.next) {
+                case 0:
+                    _action$payload2 = action.payload, id = _action$payload2.id, parent = _action$payload2.parent, data = _action$payload2.data;
+                    _context2.prev = 1;
+                    _context2.next = 4;
+                    return (0, _effects.call)(addNode, id, parent, data);
+
+                case 4:
+                    result = _context2.sent;
+
+                    console.log(result);
+                    _context2.next = 8;
+                    return (0, _effects.put)({
+                        type: 'FETCH_MAPS'
+                    });
+
+                case 8:
+                    _context2.next = 10;
+                    return (0, _effects.put)({
+                        type: "NOTIFY",
+                        message: "Node updated done successfully"
+                    });
+
+                case 10:
+                    _reactRouter.browserHistory.goBack();
+                    _context2.next = 17;
+                    break;
+
+                case 13:
+                    _context2.prev = 13;
+                    _context2.t0 = _context2['catch'](1);
+                    _context2.next = 17;
+                    return (0, _effects.put)({
+                        type: "NOTIFY",
+                        message: "Error while updating node info"
+                    });
+
+                case 17:
+                case 'end':
+                    return _context2.stop();
+            }
+        }
+    }, _marked[1], this, [[1, 13]]);
+}
+
+function removeNodeDetails(action) {
+    var _action$payload3, id, parent, result;
+
+    return regeneratorRuntime.wrap(function removeNodeDetails$(_context3) {
+        while (1) {
+            switch (_context3.prev = _context3.next) {
+                case 0:
+                    _action$payload3 = action.payload, id = _action$payload3.id, parent = _action$payload3.parent;
+                    _context3.prev = 1;
+                    _context3.next = 4;
+                    return (0, _effects.call)(removeNode, id, parent);
+
+                case 4:
+                    result = _context3.sent;
+                    _context3.next = 7;
+                    return (0, _effects.put)({
+                        type: 'FETCH_MAPS'
+                    });
+
+                case 7:
+                    _context3.next = 9;
+                    return (0, _effects.put)({
+                        type: "NOTIFY",
+                        message: "Node updated done successfully"
+                    });
+
+                case 9:
+                    _reactRouter.browserHistory.goBack();
+
+                    _context3.next = 16;
+                    break;
+
+                case 12:
+                    _context3.prev = 12;
+                    _context3.t0 = _context3['catch'](1);
+                    _context3.next = 16;
+                    return (0, _effects.put)({
+                        type: "NOTIFY",
+                        message: "Error while updating node info"
+                    });
+
+                case 16:
+                case 'end':
+                    return _context3.stop();
+            }
+        }
+    }, _marked[2], this, [[1, 12]]);
+}
+
+function editNodeForTree() {
+    return regeneratorRuntime.wrap(function editNodeForTree$(_context4) {
+        while (1) {
+            switch (_context4.prev = _context4.next) {
+                case 0:
+                    _context4.next = 2;
+                    return (0, _effects.takeEvery)('EDIT_TREE_NODE', editNodeDetails);
+
+                case 2:
+                case 'end':
+                    return _context4.stop();
+            }
+        }
+    }, _marked[3], this);
+}
+
+function addNodeForTree() {
+    return regeneratorRuntime.wrap(function addNodeForTree$(_context5) {
+        while (1) {
+            switch (_context5.prev = _context5.next) {
+                case 0:
+                    _context5.next = 2;
+                    return (0, _effects.takeEvery)('CREATE_TREE_NODE', addNodeDetails);
+
+                case 2:
+                case 'end':
+                    return _context5.stop();
+            }
+        }
+    }, _marked[4], this);
+}
+
+function removeNodeForTree() {
+    return regeneratorRuntime.wrap(function removeNodeForTree$(_context6) {
+        while (1) {
+            switch (_context6.prev = _context6.next) {
+                case 0:
+                    _context6.next = 2;
+                    return (0, _effects.takeEvery)('REMOVE_TREE_NODE', removeNodeDetails);
+
+                case 2:
+                case 'end':
+                    return _context6.stop();
+            }
+        }
+    }, _marked[5], this);
 }
 
 /***/ }),
 
-/***/ 945:
+/***/ 949:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = watch;
+
+var _effects = __webpack_require__(343);
+
+var _jsSnackbar = __webpack_require__(950);
+
+var _marked = [notification, watch].map(regeneratorRuntime.mark);
+
+function notification(action) {
+    var message;
+    return regeneratorRuntime.wrap(function notification$(_context) {
+        while (1) {
+            switch (_context.prev = _context.next) {
+                case 0:
+                    message = action.message;
+
+                    (0, _jsSnackbar.show)({ text: message });
+
+                case 2:
+                case 'end':
+                    return _context.stop();
+            }
+        }
+    }, _marked[0], this);
+}
+
+function watch() {
+    return regeneratorRuntime.wrap(function watch$(_context2) {
+        while (1) {
+            switch (_context2.prev = _context2.next) {
+                case 0:
+                    _context2.next = 2;
+                    return (0, _effects.takeEvery)("NOTIFY", notification);
+
+                case 2:
+                case 'end':
+                    return _context2.stop();
+            }
+        }
+    }, _marked[1], this);
+}
+
+/***/ }),
+
+/***/ 955:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1614,60 +2243,203 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-exports.default = nodes;
-var initialState = {
-    modelEdit: false,
-    modelAdd: false,
-    modelRemove: false,
-    currentActiveNode: null,
-    currentTree: null
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactMdl = __webpack_require__(87);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ModelDialog = function (_Component) {
+    _inherits(ModelDialog, _Component);
+
+    function ModelDialog(props) {
+        _classCallCheck(this, ModelDialog);
+
+        return _possibleConstructorReturn(this, (ModelDialog.__proto__ || Object.getPrototypeOf(ModelDialog)).call(this, props));
+    }
+
+    _createClass(ModelDialog, [{
+        key: 'render',
+        value: function render() {
+            var _props = this.props,
+                title = _props.title,
+                children = _props.children,
+                open = _props.open,
+                okName = _props.okName,
+                cancelName = _props.cancelName,
+                onOk = _props.onOk,
+                onCancel = _props.onCancel,
+                data = _props.data;
+
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    _reactMdl.Dialog,
+                    { open: open },
+                    _react2.default.createElement(
+                        _reactMdl.DialogTitle,
+                        null,
+                        title
+                    ),
+                    _react2.default.createElement(
+                        _reactMdl.DialogContent,
+                        null,
+                        children
+                    ),
+                    _react2.default.createElement(
+                        _reactMdl.DialogActions,
+                        null,
+                        _react2.default.createElement(
+                            _reactMdl.Button,
+                            { type: 'button', onClick: onOk },
+                            okName
+                        ),
+                        _react2.default.createElement(
+                            _reactMdl.Button,
+                            { type: 'button', onClick: onCancel },
+                            cancelName
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ModelDialog;
+}(_react.Component);
+
+exports.default = ModelDialog;
+
+
+ModelDialog.propTypes = {
+    title: _react.PropTypes.string.isRequired,
+    open: _react.PropTypes.bool.isRequired,
+    okName: _react.PropTypes.string.isRequired,
+    cancelName: _react.PropTypes.string.isRequired,
+    onOk: _react.PropTypes.func.isRequired,
+    onCancel: _react.PropTypes.func.isRequired
 };
 
-function nodes() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
-    var action = arguments[1];
+ModelDialog.defaultProps = {
+    open: false,
+    data: {}
+};
+
+/***/ }),
+
+/***/ 956:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
-    switch (action.type) {
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-        case 'ADD_NODE':
-            return _extends({
-                currentActiveNode: action.id,
-                modelAdd: true
-            }, state);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        case 'REMOVE_NODE':
-            return _extends({}, state, {
-                currentActiveNode: action.id,
-                modelRemove: true
-            });
+var _react = __webpack_require__(0);
 
-        case 'CLOSE':
-            return _extends({}, state, {
-                modelAdd: false,
-                modelRemove: false,
-                modelEdit: false
-            });
+var _react2 = _interopRequireDefault(_react);
 
-        case 'LOAD_TREE':
-            return _extends({}, state, {
-                currentTree: action.id
-            });
+var _reactRedux = __webpack_require__(69);
 
-        case 'EDIT_NODE':
-            return _extends({}, state, {
-                currentActiveNode: action.id,
-                modelEdit: true
-            });
+var _reactMdl = __webpack_require__(87);
 
-        default:
-            return state;
+var _redux = __webpack_require__(57);
+
+var _actions = __webpack_require__(90);
+
+var actionCreators = _interopRequireWildcard(_actions);
+
+var _maps = __webpack_require__(134);
+
+var canvasUtils = _interopRequireWildcard(_maps);
+
+var _dialog = __webpack_require__(955);
+
+var _dialog2 = _interopRequireDefault(_dialog);
+
+var _reactRouter = __webpack_require__(201);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var RemoveNode = function (_Component) {
+    _inherits(RemoveNode, _Component);
+
+    function RemoveNode(props) {
+        _classCallCheck(this, RemoveNode);
+
+        return _possibleConstructorReturn(this, (RemoveNode.__proto__ || Object.getPrototypeOf(RemoveNode)).call(this, props));
     }
-}
+
+    _createClass(RemoveNode, [{
+        key: 'onCancel',
+        value: function onCancel() {
+            _reactRouter.browserHistory.goBack();
+        }
+    }, {
+        key: 'onOk',
+        value: function onOk() {
+            var _props$params = this.props.params,
+                id = _props$params.id,
+                node = _props$params.node;
+
+            this.props.removeTreeNode(id, node);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                _dialog2.default,
+                { open: true,
+                    title: 'Confirmation',
+                    okName: 'Delete It!',
+                    cancelName: 'Retreat!',
+                    onOk: this.onOk.bind(this),
+                    onCancel: this.onCancel.bind(this) },
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    ' Are you sure with the action to delete the node ? '
+                )
+            );
+        }
+    }]);
+
+    return RemoveNode;
+}(_react.Component);
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)(actionCreators, dispatch);
+};
+
+RemoveNode = (0, _reactRedux.connect)(null, mapDispatchToProps)(RemoveNode);
+
+exports.default = RemoveNode;
 
 /***/ })
 
-},[943]);
+},[946]);
 //# sourceMappingURL=bundle.js.map

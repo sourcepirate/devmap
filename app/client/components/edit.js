@@ -6,6 +6,7 @@ import * as actionCreators from '../actions';
 import * as canvasMaps from '../maps';
 import {browserHistory} from 'react-router';
 
+
 const themes = ["Indigo", "Teal", "Green", "Red", "Orange"];
 const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -21,6 +22,7 @@ class EditMap extends Component{
     const addUrl = onAdd(id);
     const removeUrl = onClose(id);
     const theme = getRandom(themes);
+    console.log(data.children);
     return (<Card shadow={0} style={{marginLeft: offset, display: "inline-block", width: offsetWidth, border: "0.5px solid "+ theme}}>
                <CardTitle style={{color: "white", textTransform: "uppercase", background: theme}}> {data.name} </CardTitle>
                {
@@ -52,11 +54,6 @@ EditMap.defaultProps = {
 class Edit extends Component{
     constructor(props){
         super(props);
-    }
-
-    componentWillMount(){
-       console.log("loading", this.props.params.id);
-       this.props.loadTree(this.props.params.id);
     }
 
     render(){

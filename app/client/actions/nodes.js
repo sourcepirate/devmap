@@ -1,33 +1,31 @@
-export function edit(id) {
+export function editTreeNode(id, parent, data) {
     return {
-        type: 'EDIT_NODE',
-        id
-    };
+        type: 'EDIT_TREE_NODE',
+        payload: {
+            id,
+            parent,
+            data
+        }
+    }
 }
 
-export function add(id) {
+export function createTreeNode(id, parent, data){
     return {
-        type: 'ADD_NODE',
-        id
-    };
+        type: 'CREATE_TREE_NODE',
+        payload: {
+            id,
+            parent,
+            data
+        }
+    }
 }
 
-export function remove(id) {
+export function removeTreeNode(id, parent){
     return {
-        type: 'REMOVE_NODE',
-        id
-    };
-}
-
-export function loadTree(id) {
-    return {
-        type: 'LOAD_TREE',
-        id: id
-    };
-}
-
-export function close() {
-    return {
-        type: "CLOSE"
-    };
+        type: 'REMOVE_TREE_NODE',
+        payload: {
+            id,
+            parent
+        }
+    }
 }
