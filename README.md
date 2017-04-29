@@ -1,3 +1,11 @@
-## RoadMap [WIP]
+## RoadMap
 
-Organize the devroad maps.
+Organize your roadmaps . 
+
+## Made with
+
+* Sanic
+* Tinydb
+
+## LICENSE
+MIT
