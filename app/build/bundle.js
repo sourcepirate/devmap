@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 128:
+/***/ 133:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10,7 +10,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _mapaction = __webpack_require__(369);
+var _mapaction = __webpack_require__(370);
 
 Object.keys(_mapaction).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -22,9 +22,21 @@ Object.keys(_mapaction).forEach(function (key) {
   });
 });
 
+var _nodes = __webpack_require__(944);
+
+Object.keys(_nodes).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _nodes[key];
+    }
+  });
+});
+
 /***/ }),
 
-/***/ 206:
+/***/ 209:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38,11 +50,11 @@ exports.parseTree = parseTree;
 exports.draw = draw;
 exports.transform = transform;
 
-var _properties = __webpack_require__(207);
+var _properties = __webpack_require__(210);
 
 var props = _interopRequireWildcard(_properties);
 
-var _node = __webpack_require__(376);
+var _node = __webpack_require__(377);
 
 var _node2 = _interopRequireDefault(_node);
 
@@ -119,7 +131,7 @@ function transform(data) {
 
 /***/ }),
 
-/***/ 207:
+/***/ 210:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -136,7 +148,7 @@ module.exports.useGrayscale = { label: 'Use grayscale', type: 'boolean', val: 0 
 
 /***/ }),
 
-/***/ 349:
+/***/ 350:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -146,19 +158,19 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(23);
+var _reactDom = __webpack_require__(24);
 
-var _routes = __webpack_require__(379);
+var _routes = __webpack_require__(380);
 
 var _routes2 = _interopRequireDefault(_routes);
 
-var _reactRedux = __webpack_require__(86);
+var _reactRedux = __webpack_require__(87);
 
-var _store = __webpack_require__(383);
+var _store = __webpack_require__(384);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _serviceloader = __webpack_require__(382);
+var _serviceloader = __webpack_require__(383);
 
 var _serviceloader2 = _interopRequireDefault(_serviceloader);
 
@@ -185,7 +197,7 @@ if ('serviceWorker' in navigator) {
 
 /***/ }),
 
-/***/ 369:
+/***/ 370:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -203,7 +215,7 @@ function update() {
 
 /***/ }),
 
-/***/ 370:
+/***/ 371:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -219,19 +231,21 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMdl = __webpack_require__(118);
+var _reactMdl = __webpack_require__(123);
 
-var _reactRedux = __webpack_require__(86);
+var _reactRedux = __webpack_require__(87);
 
 var _redux = __webpack_require__(71);
 
-var _actions = __webpack_require__(128);
+var _actions = __webpack_require__(133);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
-var _maps = __webpack_require__(206);
+var _maps = __webpack_require__(209);
 
 var canvasMaps = _interopRequireWildcard(_maps);
+
+var _reactRouter = __webpack_require__(332);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -242,6 +256,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var themes = ["Indigo", "Teal", "Green", "Red", "Orange"];
+var getRandom = function getRandom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+};
 
 var EditMap = function (_Component) {
     _inherits(EditMap, _Component);
@@ -255,34 +274,57 @@ var EditMap = function (_Component) {
     _createClass(EditMap, [{
         key: 'render',
         value: function render() {
+            console.log(this.props);
             var _props = this.props,
                 data = _props.data,
                 offset = _props.offset,
-                offsetWidth = _props.offsetWidth;
+                offsetWidth = _props.offsetWidth,
+                id = _props.id,
+                onEdit = _props.onEdit,
+                onAdd = _props.onAdd,
+                onClose = _props.onClose;
 
+            var editUrl = onEdit(id);
+            var addUrl = onAdd(id);
+            var removeUrl = onClose(id);
+            var theme = getRandom(themes);
             return _react2.default.createElement(
                 _reactMdl.Card,
-                { shadow: 0, style: { marginLeft: offset, display: "inline-block", width: offsetWidth } },
+                { shadow: 0, style: { marginLeft: offset, display: "inline-block", width: offsetWidth, border: "0.5px solid " + theme } },
                 _react2.default.createElement(
                     _reactMdl.CardTitle,
-                    null,
+                    { style: { color: "white", textTransform: "uppercase", background: theme } },
                     ' ',
                     data.name,
                     ' '
                 ),
                 data.children.map(function (child) {
-                    return _react2.default.createElement(EditMap, { data: child, key: child.id, offset: offset + 5, offsetWidth: offsetWidth - 9 });
+                    return _react2.default.createElement(EditMap, { data: child,
+                        key: child.id,
+                        offset: offset + 5,
+                        offsetWidth: offsetWidth - 9,
+                        id: child.id,
+                        onAdd: onAdd,
+                        onEdit: onEdit,
+                        onClose: onClose });
                 }),
                 _react2.default.createElement(
                     _reactMdl.CardText,
-                    null,
+                    { style: { color: "black" } },
                     data.description
                 ),
                 _react2.default.createElement(
                     _reactMdl.CardMenu,
-                    { style: { color: 'black' } },
-                    _react2.default.createElement(_reactMdl.IconButton, { name: 'edit' }),
-                    _react2.default.createElement(_reactMdl.IconButton, { name: 'add' })
+                    { style: { color: 'white' } },
+                    _react2.default.createElement(_reactMdl.IconButton, { name: 'edit', onClick: function onClick() {
+                            return _reactRouter.browserHistory.push(editUrl);
+                        } }),
+                    _react2.default.createElement(_reactMdl.IconButton, { name: 'add', onClick: function onClick() {
+                            return _reactRouter.browserHistory.push(addUrl);
+                        } }),
+                    _react2.default.createElement(_reactMdl.IconButton, { name: 'close', onClick: function onClick() {
+                            return _reactRouter.browserHistory.push(removeUrl);
+                        } })
                 )
             );
         }
@@ -293,7 +335,7 @@ var EditMap = function (_Component) {
 
 EditMap.defaultProps = {
     offset: 0,
-    offsetWidth: 900
+    offsetWidth: 500
 };
 
 var Edit = function (_Component2) {
@@ -306,6 +348,12 @@ var Edit = function (_Component2) {
     }
 
     _createClass(Edit, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            console.log("loading", this.props.params.id);
+            this.props.loadTree(this.props.params.id);
+        }
+    }, {
         key: 'render',
         value: function render() {
             var params = this.props.params;
@@ -319,8 +367,33 @@ var Edit = function (_Component2) {
             return _react2.default.createElement(
                 'div',
                 { style: { margin: "auto", textAlign: "center", width: "50%", marginTop: 10 } },
-                _react2.default.createElement(EditMap, { data: data, offset: 0 })
+                _react2.default.createElement(EditMap, { data: data,
+                    offset: 0,
+                    id: data.id,
+                    onEdit: this.onEdit.bind(this),
+                    onAdd: this.onAdd.bind(this),
+                    onClose: this.onRemove.bind(this) })
             );
+        }
+    }, {
+        key: 'getUrlFor',
+        value: function getUrlFor(id, verb) {
+            return '/' + this.props.params.id + '/' + verb + '/' + id;
+        }
+    }, {
+        key: 'onEdit',
+        value: function onEdit(id) {
+            return this.getUrlFor(id, 'edit');
+        }
+    }, {
+        key: 'onRemove',
+        value: function onRemove(id) {
+            return this.getUrlFor(id, 'remove');
+        }
+    }, {
+        key: 'onAdd',
+        value: function onAdd(id) {
+            return this.getUrlFor(id, 'add');
         }
     }]);
 
@@ -343,7 +416,7 @@ exports.default = Edit;
 
 /***/ }),
 
-/***/ 371:
+/***/ 372:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -361,17 +434,17 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMdl = __webpack_require__(118);
+var _reactMdl = __webpack_require__(123);
 
-var _mapdetail = __webpack_require__(374);
+var _mapdetail = __webpack_require__(375);
 
 var _mapdetail2 = _interopRequireDefault(_mapdetail);
 
-var _reactRedux = __webpack_require__(86);
+var _reactRedux = __webpack_require__(87);
 
 var _redux = __webpack_require__(71);
 
-var _actions = __webpack_require__(128);
+var _actions = __webpack_require__(133);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
@@ -438,11 +511,11 @@ exports.default = GridList;
 
 /***/ }),
 
-/***/ 372:
+/***/ 373:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(process) {
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -455,19 +528,23 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMdl = __webpack_require__(118);
+var _reactMdl = __webpack_require__(123);
 
-var _grid = __webpack_require__(371);
+var _grid = __webpack_require__(372);
 
 var _grid2 = _interopRequireDefault(_grid);
 
-var _map = __webpack_require__(373);
+var _map = __webpack_require__(374);
 
 var _map2 = _interopRequireDefault(_map);
 
-var _edit = __webpack_require__(370);
+var _edit = __webpack_require__(371);
 
 var _edit2 = _interopRequireDefault(_edit);
+
+var _devtool = __webpack_require__(376);
+
+var _devtool2 = _interopRequireDefault(_devtool);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -476,6 +553,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var isProduction = process.env.NODE_ENV === 'production';
 
 var App = function (_Component) {
     _inherits(App, _Component);
@@ -509,10 +588,11 @@ exports.App = App;
 exports.GridList = _grid2.default;
 exports.Map = _map2.default;
 exports.Edit = _edit2.default;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
 
-/***/ 373:
+/***/ 374:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -528,15 +608,15 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(86);
+var _reactRedux = __webpack_require__(87);
 
 var _redux = __webpack_require__(71);
 
-var _actions = __webpack_require__(128);
+var _actions = __webpack_require__(133);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
-var _maps = __webpack_require__(206);
+var _maps = __webpack_require__(209);
 
 var canvasMaps = _interopRequireWildcard(_maps);
 
@@ -598,7 +678,7 @@ exports.default = Map;
 
 /***/ }),
 
-/***/ 374:
+/***/ 375:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -614,9 +694,9 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactMdl = __webpack_require__(118);
+var _reactMdl = __webpack_require__(123);
 
-var _reactRouter = __webpack_require__(331);
+var _reactRouter = __webpack_require__(332);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -663,21 +743,17 @@ var MapDetail = function (_Component) {
                     { border: true },
                     _react2.default.createElement(
                         _reactMdl.Button,
-                        { primary: true },
-                        _react2.default.createElement(
-                            _reactRouter.Link,
-                            { to: viewName },
-                            'View Map'
-                        )
+                        { primary: true, ripple: true, onClick: function onClick() {
+                                return _reactRouter.browserHistory.push(viewName);
+                            } },
+                        'View Map'
                     ),
                     _react2.default.createElement(
                         _reactMdl.Button,
-                        { primary: true },
-                        _react2.default.createElement(
-                            _reactRouter.Link,
-                            { to: editName },
-                            'Edit Map'
-                        )
+                        { primary: true, ripple: true, onClick: function onClick() {
+                                return _reactRouter.browserHistory.push(editName);
+                            } },
+                        'Edit Map'
                     )
                 )
             );
@@ -691,7 +767,7 @@ exports.default = MapDetail;
 
 /***/ }),
 
-/***/ 375:
+/***/ 376:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -705,21 +781,21 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reduxDevtools = __webpack_require__(122);
+var _reduxDevtools = __webpack_require__(127);
 
-var _reduxDevtoolsLogMonitor = __webpack_require__(900);
+var _reduxDevtoolsLogMonitor = __webpack_require__(919);
 
 var _reduxDevtoolsLogMonitor2 = _interopRequireDefault(_reduxDevtoolsLogMonitor);
 
-var _reduxDevtoolsDockMonitor = __webpack_require__(891);
+var _reduxDevtoolsDockMonitor = __webpack_require__(910);
 
 var _reduxDevtoolsDockMonitor2 = _interopRequireDefault(_reduxDevtoolsDockMonitor);
 
-var _reduxDevtoolsDispatch = __webpack_require__(889);
+var _reduxDevtoolsDispatch = __webpack_require__(908);
 
 var _reduxDevtoolsDispatch2 = _interopRequireDefault(_reduxDevtoolsDispatch);
 
-var _reduxSliderMonitor = __webpack_require__(915);
+var _reduxSliderMonitor = __webpack_require__(934);
 
 var _reduxSliderMonitor2 = _interopRequireDefault(_reduxSliderMonitor);
 
@@ -743,7 +819,7 @@ exports.default = (0, _reduxDevtools.createDevTools)(_react2.default.createEleme
 
 /***/ }),
 
-/***/ 376:
+/***/ 377:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -755,11 +831,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _utils = __webpack_require__(385);
+var _utils = __webpack_require__(386);
 
 var utils = _interopRequireWildcard(_utils);
 
-var _properties = __webpack_require__(207);
+var _properties = __webpack_require__(210);
 
 var _properties2 = _interopRequireDefault(_properties);
 
@@ -1031,7 +1107,7 @@ exports.default = TreeNode;
 
 /***/ }),
 
-/***/ 377:
+/***/ 378:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1044,17 +1120,21 @@ exports.reducers = undefined;
 
 var _redux = __webpack_require__(71);
 
-var _maps = __webpack_require__(378);
+var _maps = __webpack_require__(379);
 
 var _maps2 = _interopRequireDefault(_maps);
 
+var _node = __webpack_require__(945);
+
+var _node2 = _interopRequireDefault(_node);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var reducers = exports.reducers = (0, _redux.combineReducers)({ maps: _maps2.default });
+var reducers = exports.reducers = (0, _redux.combineReducers)({ maps: _maps2.default, nodes: _node2.default });
 
 /***/ }),
 
-/***/ 378:
+/***/ 379:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1081,7 +1161,7 @@ function maps() {
 
 /***/ }),
 
-/***/ 379:
+/***/ 380:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1091,9 +1171,9 @@ Object.defineProperty(exports, "__esModule", {
    value: true
 });
 
-var _reactRouter = __webpack_require__(331);
+var _reactRouter = __webpack_require__(332);
 
-var _components = __webpack_require__(372);
+var _components = __webpack_require__(373);
 
 var routes = React.createElement(
    _reactRouter.Router,
@@ -1112,7 +1192,7 @@ exports.default = routes;
 
 /***/ }),
 
-/***/ 380:
+/***/ 381:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1123,7 +1203,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = rootSaga;
 
-var _mapsaga = __webpack_require__(381);
+var _mapsaga = __webpack_require__(382);
 
 var _marked = [rootSaga].map(regeneratorRuntime.mark);
 
@@ -1146,7 +1226,7 @@ function rootSaga() {
 
 /***/ }),
 
-/***/ 381:
+/***/ 382:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1157,11 +1237,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createMapSaga = createMapSaga;
 
-var _axios = __webpack_require__(351);
+var _axios = __webpack_require__(352);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _effects = __webpack_require__(342);
+var _effects = __webpack_require__(343);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1214,7 +1294,7 @@ function createMapSaga() {
 
 /***/ }),
 
-/***/ 382:
+/***/ 383:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1226,7 +1306,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _events = __webpack_require__(582);
+var _events = __webpack_require__(602);
 
 var _events2 = _interopRequireDefault(_events);
 
@@ -1310,7 +1390,7 @@ exports.default = ServiceLoader;
 
 /***/ }),
 
-/***/ 383:
+/***/ 384:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1320,23 +1400,21 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _redux = __webpack_require__(71);
 
-var _devtool = __webpack_require__(375);
+var _index = __webpack_require__(378);
 
-var _devtool2 = _interopRequireDefault(_devtool);
-
-var _index = __webpack_require__(377);
-
-var _reduxLogger = __webpack_require__(908);
+var _reduxLogger = __webpack_require__(927);
 
 var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-var _reduxSaga = __webpack_require__(909);
+var _reduxSaga = __webpack_require__(928);
 
 var _reduxSaga2 = _interopRequireDefault(_reduxSaga);
 
-var _sagas = __webpack_require__(380);
+var _sagas = __webpack_require__(381);
 
 var _sagas2 = _interopRequireDefault(_sagas);
 
@@ -1345,10 +1423,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var enhancers = void 0;
 var sagaMiddleWare = (0, _reduxSaga2.default)();
 var middleware = (0, _redux.applyMiddleware)(sagaMiddleWare);
+var composeEnhancers = (typeof window === "undefined" ? "undefined" : _typeof(window)) === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+  // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+}) : _redux.compose;
 if (process.env.NODE_ENV == 'production') {
-  enhancers = (0, _redux.compose)(middleware);
+  enhancers = composeEnhancers(middleware);
 } else {
-  enhancers = (0, _redux.compose)(middleware, _devtool2.default.instrument());
+  enhancers = composeEnhancers(middleware);
 }
 var store = (0, _redux.createStore)(_index.reducers, {}, enhancers);
 sagaMiddleWare.run(_sagas2.default);
@@ -1357,7 +1438,7 @@ exports.default = store;
 
 /***/ }),
 
-/***/ 384:
+/***/ 385:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1440,7 +1521,7 @@ function generateRandomColor(useGrayscale) {
 
 /***/ }),
 
-/***/ 385:
+/***/ 386:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1450,7 +1531,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _canvas = __webpack_require__(384);
+var _canvas = __webpack_require__(385);
 
 Object.keys(_canvas).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1464,14 +1545,129 @@ Object.keys(_canvas).forEach(function (key) {
 
 /***/ }),
 
-/***/ 924:
+/***/ 943:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(350);
-module.exports = __webpack_require__(349);
+__webpack_require__(351);
+module.exports = __webpack_require__(350);
 
+
+/***/ }),
+
+/***/ 944:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.edit = edit;
+exports.add = add;
+exports.remove = remove;
+exports.loadTree = loadTree;
+exports.close = close;
+function edit(id) {
+    return {
+        type: 'EDIT_NODE',
+        id: id
+    };
+}
+
+function add(id) {
+    return {
+        type: 'ADD_NODE',
+        id: id
+    };
+}
+
+function remove(id) {
+    return {
+        type: 'REMOVE_NODE',
+        id: id
+    };
+}
+
+function loadTree(id) {
+    return {
+        type: 'LOAD_TREE',
+        id: id
+    };
+}
+
+function close() {
+    return {
+        type: "CLOSE"
+    };
+}
+
+/***/ }),
+
+/***/ 945:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = nodes;
+var initialState = {
+    modelEdit: false,
+    modelAdd: false,
+    modelRemove: false,
+    currentActiveNode: null,
+    currentTree: null
+};
+
+function nodes() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+    var action = arguments[1];
+
+
+    switch (action.type) {
+
+        case 'ADD_NODE':
+            return _extends({
+                currentActiveNode: action.id,
+                modelAdd: true
+            }, state);
+
+        case 'REMOVE_NODE':
+            return _extends({}, state, {
+                currentActiveNode: action.id,
+                modelRemove: true
+            });
+
+        case 'CLOSE':
+            return _extends({}, state, {
+                modelAdd: false,
+                modelRemove: false,
+                modelEdit: false
+            });
+
+        case 'LOAD_TREE':
+            return _extends({}, state, {
+                currentTree: action.id
+            });
+
+        case 'EDIT_NODE':
+            return _extends({}, state, {
+                currentActiveNode: action.id,
+                modelEdit: true
+            });
+
+        default:
+            return state;
+    }
+}
 
 /***/ })
 
-},[924]);
+},[943]);
 //# sourceMappingURL=bundle.js.map

@@ -3,6 +3,10 @@ import {Layout, Header, Navigation, Content} from 'react-mdl';
 import GridList from './grid';
 import Map from './map';
 import Edit from './edit';
+import DevTools from '../devtool';
+
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 class App extends Component{
     constructor(props){

@@ -20,6 +20,11 @@ module.exports = Object.assign({}, baseConfig, {
         new webpack.ProvidePlugin({
             "React": "react",
         }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify('development')
+            }
+        }),
         // new BundleAnalyzerPlugin({
         //     analyzerMode: 'static'
         // }),
