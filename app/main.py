@@ -4,7 +4,7 @@ from sanic import Sanic
 from sanic.response import html
 from sanic_compress import Compress
 from jinja2 import Environment, PackageLoader
-from roadmap.blueprint import endpoints
+from roadmap.mapblueprint import endpoints
 
 __VERSION__ = "1.0.1"
 
