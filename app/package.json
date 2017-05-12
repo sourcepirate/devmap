@@ -46,6 +46,7 @@
     "js-snackbar": "^0.3.0",
     "offline-plugin": "^4.7.0",
     "react": "^15.4.2",
+    "react-autolinker": "^1.0.4",
     "react-dom": "^15.4.2",
     "react-mdl": "^1.10.0",
     "react-redux": "^5.0.3",

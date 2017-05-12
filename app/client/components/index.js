@@ -8,6 +8,7 @@ import DevTools from '../devtool';
 import EditNode from './editnode';
 import AddNode from './addnode';
 import RemoveNode from './removenode';
+import AddNewMap from './addmap';
 require('js-snackbar/dist/snackbar.css');
 
 
@@ -39,3 +40,4 @@ export {Edit};
 export {EditNode};
 export {AddNode};
 export {RemoveNode};
+export {AddNewMap};

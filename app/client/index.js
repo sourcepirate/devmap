@@ -9,7 +9,8 @@ import {
 }
 from 'react-redux';
 import store from './store';
-import Sloader from './serviceloader';
+// import Sloader from './serviceloader';
+// import './loaders/autolink';
 
 // if ('serviceWorker' in navigator) {
 //     const loader = new Sloader('./sw.js');

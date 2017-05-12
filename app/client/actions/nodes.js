@@ -29,3 +29,10 @@ export function removeTreeNode(id, parent){
         }
     }
 }
+
+export function createNewMap(payload){
+    return {
+        type: "NEW_MAP",
+        data: payload
+    }
+}

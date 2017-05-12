@@ -1,5 +1,8 @@
 import axios from 'axios';
 import {
+    browserHistory
+} from 'react-router';
+import {
     put,
     call,
     takeEvery
@@ -20,4 +23,32 @@ function* getMapDetails() {
 
 export function* createMapSaga() {
     yield takeEvery('FETCH_MAPS', getMapDetails);
+}
+
+function createMap(payload){
+    return axios.post('/api/new', payload);
+}
+
+function* createNewMap(action){
+    try{
+        const results = yield call(createMap, action.data);
+        yield put({
+            type: 'FETCH_MAPS'
+        });
+        yield put({
+            type: "NOTIFY",
+            message: "Map Creates Successfully"
+        })
+        browserHistory.goBack();
+    }
+    catch(e){
+        yield put({
+            type: "NOTIFY",
+            message: "Failed Creating New Map"
+        })
+    }
+}
+
+export function *newMapSaga(){
+    yield takeEvery("NEW_MAP", createNewMap)
 }

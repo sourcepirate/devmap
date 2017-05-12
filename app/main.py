@@ -6,6 +6,8 @@ from sanic_compress import Compress
 from jinja2 import Environment, PackageLoader
 from roadmap.blueprint import endpoints
 
+__VERSION__ = "1.0.1"
+
 APP = Sanic("Roadmap")
 APP.blueprint(endpoints)
 JINJA = Environment(loader=PackageLoader('main', 'templates'))

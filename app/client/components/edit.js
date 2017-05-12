@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as actionCreators from '../actions';
 import * as canvasMaps from '../maps';
 import {hashHistory} from 'react-router';
+import ReactAutoLinker from 'react-autolinker';
 
 
 const themes = ["Indigo", "Teal", "Green", "Red", "Orange"];
@@ -35,7 +36,7 @@ class EditMap extends Component{
                                                          onEdit={onEdit}
                                                          onClose={onClose}/>)
                }
-               <CardText style={{color: "black"}}>{data.description}</CardText>
+               <CardText style={{color: "black"}}><ReactAutoLinker text={data.description} /></CardText>
                <CardMenu style={{color: 'white'}}>
                     <IconButton name="edit" onClick={() =>  hashHistory.push(editUrl)}/>
                     <IconButton name="add"  onClick={() =>  hashHistory.push(addUrl)}/>
