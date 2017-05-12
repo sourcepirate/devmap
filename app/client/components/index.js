@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Layout, Header, Navigation, Content} from 'react-mdl';
+import {Link} from 'react-router';
 import GridList from './grid';
 import Map from './map';
 import Edit from './edit';
@@ -20,7 +21,11 @@ class App extends Component{
     render(){
         return (<div style={{width: 100}}>
             <Layout fixedHeader>
-                <Header title="DEVMAP"/>
+                <Header title="DEVMAP">
+                   <Navigation>
+                       <Link to="/add/new">Add New</Link>
+                   </Navigation>    
+                </Header>
                 {this.props.children}
             </Layout>
         </div>);

@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../actions';
 import * as canvasMaps from '../maps';
-import {browserHistory} from 'react-router';
+import {hashHistory} from 'react-router';
 
 
 const themes = ["Indigo", "Teal", "Green", "Red", "Orange"];
@@ -37,9 +37,9 @@ class EditMap extends Component{
                }
                <CardText style={{color: "black"}}>{data.description}</CardText>
                <CardMenu style={{color: 'white'}}>
-                    <IconButton name="edit" onClick={() =>  browserHistory.push(editUrl)}/>
-                    <IconButton name="add"  onClick={() =>  browserHistory.push(addUrl)}/>
-                    <IconButton name="close" onClick={() => browserHistory.push(removeUrl)} />
+                    <IconButton name="edit" onClick={() =>  hashHistory.push(editUrl)}/>
+                    <IconButton name="add"  onClick={() =>  hashHistory.push(addUrl)}/>
+                    <IconButton name="close" onClick={() => hashHistory.push(removeUrl)} />
               </CardMenu>
            </Card>)
     }

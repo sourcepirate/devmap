@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {Card, CardText, CardTitle, CardActions, Button} from 'react-mdl';
-import { Link , browserHistory} from 'react-router';
+import { Link , hashHistory} from 'react-router';
 
 class MapDetail extends Component{
     constructor(props){
@@ -17,8 +17,8 @@ class MapDetail extends Component{
               {description}
          </CardText>
           <CardActions border>
-            <Button primary ripple={true} onClick={() => browserHistory.push(viewName)}>View Map</Button>
-            <Button primary ripple={true} onClick={() => browserHistory.push(editName)}>Edit Map</Button>
+            <Button primary ripple={true} onClick={() => hashHistory.push(viewName)}>View Map</Button>
+            <Button primary ripple={true} onClick={() => hashHistory.push(editName)}>Edit Map</Button>
           </CardActions>
         </Card>);
     }

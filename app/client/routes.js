@@ -1,8 +1,8 @@
-import {Router, Route, IndexRoute, Link, browserHistory} from 'react-router';
+import {Router, Route, IndexRoute, Link, hashHistory} from 'react-router';
 import {App, GridList, Map, Edit, EditNode, AddNode, RemoveNode} from './components';
 
 const routes = (
-  <Router history={browserHistory}>
+  <Router history={hashHistory}>
       <Route path="/" component={App}>
          <IndexRoute component = {GridList} />
          <Route path = "/view/:id" component = {Map} />
