@@ -17,7 +17,6 @@ def get_root_map(request, _id):
         return response.json({"Error": "Not Found"}, status=404)
     return response.json(dct.to_dict(), status=200)
 
-
 @endpoints.post("/api/new")
 def create_root_map(request):
     """creating root map"""
@@ -65,7 +64,6 @@ def remove_child(request, _id, _node):
     dct.put()
     return response.json(dct.to_dict(), status=200)
 
-
 @endpoints.put("/api/<_id>/edit/<_node>")
 def edit_child(request, _id, _node):
     """edit child to the existing tree"""
@@ -83,3 +81,12 @@ def list_maps(request):
     if not dct:
         return response.json({"Error": "Not Found"}, status=404)
     return response.json(dct, status=200)
+
+@endpoints.delete('/api/delete/<_id>')
+def delete_map(request, _id):
+    """delete the maps"""
+    flag = RoadMap.delete_map(_id)
+    if flag:
+        return response.json({"Success": True}, status=200)
+    else:
+        return response.json({"Error": "Not Found"}, status=404)

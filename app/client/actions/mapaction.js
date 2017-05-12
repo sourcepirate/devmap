@@ -3,3 +3,10 @@ export function update(){
         type: 'FETCH_MAPS'
     }
 }
+
+export function removeMap(id){
+    return {
+        type: "REMOVE_MAP",
+        id
+    }
+}

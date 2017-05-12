@@ -1,6 +1,7 @@
 import {
   createMapSaga,
-  newMapSaga
+  newMapSaga,
+  deleteMapSage
 } from './mapsaga';
 import {editNodeForTree,addNodeForTree, removeNodeForTree} from './nodesaga';
 import NotifySaga from './notificationSaga';
@@ -12,6 +13,7 @@ export default function* rootSaga() {
     addNodeForTree(),
     removeNodeForTree(),
     NotifySaga(),
-    newMapSaga()
+    newMapSaga(),
+    deleteMapSage()
   ];
 }

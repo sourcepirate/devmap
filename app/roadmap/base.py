@@ -1,5 +1,6 @@
 """ base objects for the app"""
 import os
+import traceback
 from tinydb import TinyDB, Query
 
 def touch_db(path):
@@ -200,6 +201,19 @@ class RoadMap(object):
     def list(cls):
         """getting list of classes"""
         return cls.db.all()
+        
+    @classmethod
+    def delete_map(cls, _id):
+        _map = cls.get_map(_id)
+        try:
+            if _map:
+                cls.db.remove(eids=[_map.sno])
+                return True
+            else:
+                return False
+        except:
+            print(traceback.format_exc())
+            return False
 
 
 ##test

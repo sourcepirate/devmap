@@ -1,5 +1,5 @@
 import {Router, Route, IndexRoute, Link, hashHistory} from 'react-router';
-import {App, GridList, Map, Edit, EditNode, AddNode, RemoveNode, AddNewMap} from './components';
+import {App, GridList, Map, Edit, EditNode, AddNode, RemoveNode, AddNewMap, RemoveMap} from './components';
 
 const routes = (
   <Router history={hashHistory}>
@@ -11,6 +11,7 @@ const routes = (
          <Route path = "/:id/edit/:node" component = {EditNode} />
          <Route path = "/:id/add/:node" component={AddNode} />
          <Route path = "/:id/remove/:node" component={RemoveNode} />
+         <Route path = "/deletemap/:id" component={RemoveMap} />
       </Route>
   </Router>
 )

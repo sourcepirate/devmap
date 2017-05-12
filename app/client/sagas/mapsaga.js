@@ -52,3 +52,25 @@ function* createNewMap(action){
 export function *newMapSaga(){
     yield takeEvery("NEW_MAP", createNewMap)
 }
+
+function deleteMap(id){
+    return axios.delete(`/api/delete/${id}`)
+}
+
+
+function *deleteMapDetails(action){
+    try{
+        const result = yield call(deleteMap, action.id);
+        console.log(result);
+        yield put({type: 'FETCH_MAPS'})
+        yield put({type: 'NOTIFY', message: "Deleted Successfully"})
+        browserHistory.goBack()
+    }
+    catch(e){
+        yield put({type: 'NOTIFY', message: "Failed To delete"})
+    }
+}
+
+export function *deleteMapSage(){
+    yield takeEvery("REMOVE_MAP", deleteMapDetails);
+}
