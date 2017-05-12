@@ -21,7 +21,7 @@ class App extends Component{
     }
 
     render(){
-        return (<div style={{width: 100}}>
+        return (<div>
             <Layout fixedHeader>
                 <Header title="DEVMAP">
                    <Navigation>
