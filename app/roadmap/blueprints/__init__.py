@@ -1,0 +1,1 @@
+from .mapblueprint import endpoints as mapendpoints

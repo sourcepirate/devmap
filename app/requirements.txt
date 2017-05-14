@@ -2,3 +2,5 @@ sanic
 sanic_compress
 jinja2
 tinydb
+peewee
+github3.py

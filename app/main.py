@@ -4,12 +4,13 @@ from sanic import Sanic
 from sanic.response import html
 from sanic_compress import Compress
 from jinja2 import Environment, PackageLoader
-from roadmap.mapblueprint import endpoints
+from roadmap.blueprints import mapendpoints
+from roadmap.model import create_required
 
 __VERSION__ = "1.0.1"
 
 APP = Sanic("Roadmap")
-APP.blueprint(endpoints)
+APP.blueprint(mapendpoints)
 JINJA = Environment(loader=PackageLoader('main', 'templates'))
 Compress(APP)
 APP.static('/', os.path.join(os.path.dirname(__file__), 'build'))
@@ -24,6 +25,7 @@ async def test(request):
 async def bind_render_env(app, loop):
     """bind jinja2 env with app"""
     app.jinja2 = JINJA
+    create_required()
     def inner(template, **kwargs):
         """inner function to render template"""
         _html = app.jinja2.get_template(template)
