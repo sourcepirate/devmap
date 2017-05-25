@@ -13,12 +13,17 @@ function getMaps() {
 }
 
 function* getMapDetails() {
-    const results = yield call(getMaps);
+    try{
+        const results = yield call(getMaps);
     // console.log(results.data);
     yield put({
         type: 'UPDATE_MAPS',
         maps: results.data
     });
+    }
+    catch(e){
+        console.log("error", e);
+    }
 }
 
 export function* createMapSaga() {

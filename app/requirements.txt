@@ -1,4 +1,4 @@
 sanic
 sanic_compress
 jinja2
-tinydb
+peewee
