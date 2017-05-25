@@ -60,7 +60,8 @@ class Edit extends Component{
     render(){
         const {params} = this.props;
         const maps = this.props.maps.filter((x) => x.id == params.id);
-        const data = canvasMaps.transform(maps[0].map);
+        const to_transform = maps[0].map;
+        const data = canvasMaps.transform(JSON.parse(to_transform));
         console.log(data);
         console.log("rendering");
         return (<div style={{margin: "auto", textAlign: "center", width: "50%", marginTop: 10}}>

@@ -14,7 +14,8 @@ class Map extends Component {
        const {params} = this.props;
        const maps = this.props.maps.filter((x) => x.id == params.id);
        console.log(maps[0].map);
-       const treedata = canvasMaps.transform(maps[0].map);
+       const to_transform = maps[0].map;
+       const treedata = canvasMaps.transform(JSON.parse(to_transform));
        canvasMaps.draw(canvas, treedata);
     }
 

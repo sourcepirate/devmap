@@ -1,10 +1,12 @@
 """main.py"""
 import os
+import peewee as db
 from sanic import Sanic
 from sanic.response import html
 from sanic_compress import Compress
 from jinja2 import Environment, PackageLoader
-from roadmap.mapblueprint import endpoints
+from roadmap.models import create_tables, RoadMap
+from roadmap.blueprints.mapblueprint import endpoints
 
 __VERSION__ = "1.0.1"
 
@@ -24,6 +26,7 @@ async def test(request):
 async def bind_render_env(app, loop):
     """bind jinja2 env with app"""
     app.jinja2 = JINJA
+    create_tables((RoadMap,))
     def inner(template, **kwargs):
         """inner function to render template"""
         _html = app.jinja2.get_template(template)

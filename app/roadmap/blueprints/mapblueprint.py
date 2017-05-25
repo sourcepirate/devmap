@@ -3,7 +3,7 @@
 from uuid import uuid4
 from sanic import Blueprint
 from sanic import response
-from .base import RoadMap
+from roadmap.base import RoadMap
 
 
 endpoints = Blueprint("MapEndpoints")

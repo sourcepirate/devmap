@@ -20,7 +20,7 @@ class EditNode extends Component{
         const data = this.props.maps
                                .filter((x) => x.id == id);
         const transformed = data[0].map;
-        const tfm = canvasUtils.transform(transformed);
+        const tfm = canvasUtils.transform(JSON.parse(transformed));
         console.log(tfm);
         const {name, description} = canvasUtils.find(tfm, node);
         this.setState({

@@ -1,12 +1,7 @@
 """ base objects for the app"""
 import os
 import traceback
-from tinydb import TinyDB, Query
-
-def touch_db(path):
-    """get new database file"""
-    join_dir = os.path.join(os.path.dirname(__file__), path)
-    return TinyDB(join_dir)
+from roadmap.models import RoadMap as RoadMapModel
 
 class Map(object):
     """Map Object"""
@@ -135,7 +130,7 @@ class Map(object):
 class RoadMap(object):
     """Adding RoadMap base object"""
 
-    db = touch_db("../data/data.json")
+    db = RoadMapModel
 
     def __init__(self, no_id, name, start=(None, None)):
         self._id = no_id
@@ -173,47 +168,63 @@ class RoadMap(object):
 
     def put(self):
         """put it to disk"""
-        payload = {"id": self._id,
-                   "name": self.name,
-                   "map": self.root.to_dict()}
-        if self.sno:
-            self.db.update(payload, eids=[self.sno])
-            return self
-        else:
-            self.sno = self.db.insert(payload)
-            return self
+        entity, flag = self.db.get_or_create(id=self._id, defaults={
+            "name": "",
+            "map":"",
+            "description": ""
+        })
+        print("getting entity", entity)
+        entity.name = self.name
+        entity.map_json = self.root.to_dict()
+        print(dir(entity))
+        entity.save()
+        return entity.id
+        # payload = {"id": self._id,
+        #            "name": self.name,
+        #            "map": self.root.to_dict()}
+        # if self.sno:
+        #     self.db.update(payload, eids=[self.sno])
+        #     return self
+        # else:
+        #     self.sno = self.db.insert(payload)
+        #     return self
 
     @classmethod
     def get_map(cls, _id):
         """getting the class map object"""
-        _map = Query()
-        _dict = cls.db.search(_map.id == _id)
-        if len(_dict) > 0:
-            _dict = _dict[0]
-            _root = Map.loads(_dict["map"])
-            _instance = cls(_dict["id"], _dict["name"])
+        _dict = cls.db.search(_id)
+        if _dict:
+            _root = Map.loads(_dict.map_json)
+            _instance = cls(_dict.id, _dict.name)
             _instance.root = _root
-            _instance.sno = _dict.eid
+            _instance.sno = _dict.id
             return _instance
         return None
 
     @classmethod
     def list(cls):
         """getting list of classes"""
-        return cls.db.all()
-        
+        return cls.db.select().execute()
+
     @classmethod
     def delete_map(cls, _id):
-        _map = cls.get_map(_id)
+        """delete the map"""
         try:
-            if _map:
-                cls.db.remove(eids=[_map.sno])
-                return True
-            else:
-                return False
+            _map = cls.db.delete().where(cls.db.id == _id)
+            _map.execute()
+            return True
         except:
             print(traceback.format_exc())
             return False
+        # try:
+        #     if _map:
+        #         cls.db.remove(eids=[_map.sno])
+        #         return True
+        #     else:
+        #         return False
+        # except:
+        #     print(traceback.format_exc())
+        #     return False
 
 
 ##test
