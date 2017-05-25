@@ -8,7 +8,7 @@ from jinja2 import Environment, PackageLoader
 from roadmap.models import create_tables, RoadMap
 from roadmap.blueprints.mapblueprint import endpoints
 
-__VERSION__ = "1.0.1"
+__VERSION__ = "1.0.2"
 
 APP = Sanic("Roadmap")
 APP.blueprint(endpoints)
