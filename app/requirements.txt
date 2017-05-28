@@ -2,3 +2,4 @@ sanic
 sanic_compress
 jinja2
 peewee
+aiohttp

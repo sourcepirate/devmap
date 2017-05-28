@@ -74,6 +74,15 @@ def edit_child(request, _id, _node):
     dct.put()
     return response.json(dct.to_dict(), status=200)
 
+@endpoints.get("/api/<_id>/feeds")
+async def get_keys(request, _id):
+    """Get all named keys"""
+    dct = RoadMap.get_map(_id)
+    if not dct:
+        return response.json({"Error": "Not Found"}, status=404)
+    res = await dct.feeds()
+    return response.json(res, status=200)
+
 @endpoints.get('/api/list')
 def list_maps(request):
     """list all the maps"""

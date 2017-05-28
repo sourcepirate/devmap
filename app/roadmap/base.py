@@ -1,6 +1,8 @@
 """ base objects for the app"""
 import os
 import traceback
+import asyncio
+from .util import hacker_news_feeds
 from roadmap.models import RoadMap as RoadMapModel
 
 class Map(object):
@@ -126,6 +128,13 @@ class Map(object):
             result[i] = self.level(i)
         return result
 
+    @property
+    def keys(self):
+        _keys = [self.name]
+        for child in self.children:
+            _keys += self.children[child].keys
+        return _keys
+
 
 class RoadMap(object):
     """Adding RoadMap base object"""
@@ -173,21 +182,10 @@ class RoadMap(object):
             "map":"",
             "description": ""
         })
-        print("getting entity", entity)
         entity.name = self.name
         entity.map_json = self.root.to_dict()
-        print(dir(entity))
         entity.save()
         return entity.id
-        # payload = {"id": self._id,
-        #            "name": self.name,
-        #            "map": self.root.to_dict()}
-        # if self.sno:
-        #     self.db.update(payload, eids=[self.sno])
-        #     return self
-        # else:
-        #     self.sno = self.db.insert(payload)
-        #     return self
 
     @classmethod
     def get_map(cls, _id):
@@ -216,16 +214,16 @@ class RoadMap(object):
         except:
             print(traceback.format_exc())
             return False
-        # try:
-        #     if _map:
-        #         cls.db.remove(eids=[_map.sno])
-        #         return True
-        #     else:
-        #         return False
-        # except:
-        #     print(traceback.format_exc())
-        #     return False
 
+    def keys(self):
+        """ Get all named values"""
+        return self.root.keys
+
+    async def feeds(self):
+        """get all related news"""
+        news_tags = self.keys()
+        response = await hacker_news_feeds(*news_tags)
+        return response
 
 ##test
 if __name__ == "__main__":
@@ -236,3 +234,4 @@ if __name__ == "__main__":
     root.put()
     mapped = RoadMap.get_map("1")
     print(mapped.name)
+    print(mapped.keys)
