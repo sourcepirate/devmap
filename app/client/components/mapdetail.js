@@ -1,31 +1,54 @@
-import React, {Component, PropTypes} from 'react';
-import {Card, CardText, CardTitle, CardActions, Button, CardMenu, IconButton} from 'react-mdl';
-import { Link , hashHistory} from 'react-router';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import Tile from 'grommet/components/Tile';
+import Box from 'grommet/components/Box';
+import Heading from 'grommet/components/Heading';
+import EditIcon from 'grommet/components/icons/base/Edit';
+import ViewIcon from 'grommet/components/icons/base/View';
+import CloseIcon from 'grommet/components/icons/base/Close';
+import Anchor from 'grommet/components/Anchor';
 
-class MapDetail extends Component{
-    constructor(props){
-        super(props);
-    }
+class MapDetail extends Component {
 
-    render(){
-        const {name, description, id} = this.props;
-        const viewName = "/view/"+id;
-        const editName = "/edit/"+id;
-        const deleteName = "/deletemap/"+id;
-        return (<Card  shadow={1} style={{margin: '5px auto'}}>
-          <CardTitle expand style={{color: 'blue', align: 'center'}}>{name}</CardTitle>
-          <CardText>
-              {description}
-         </CardText>
-          <CardActions border>
-            <Button primary ripple={true} onClick={() => hashHistory.push(viewName)}>View Map</Button>
-            <Button primary ripple={true} onClick={() => hashHistory.push(editName)}>Edit Map</Button>
-          </CardActions>
-          <CardMenu style={{color: 'red'}}>
-             <IconButton name="close" onClick={() => hashHistory.push(deleteName)}/>
-          </CardMenu>
-        </Card>);
-    }
+  render () {
+    let { name, description, id} = this.props;
+    let editControl = (
+        <Anchor icon={<EditIcon />}
+          path={`/edit/${id}`}
+          a11yTitle={`Edit ${name} Map`} />
+      );
+    
+    let viewControl = (
+        <Anchor icon={<ViewIcon />}
+          path={`/view/${id}`}
+          a11yTitle={`View ${name} Map`} />
+      );
+    
+    let deleteControl =  (
+        <Anchor icon={<CloseIcon />}
+          path={`/deletemap/${id}`}
+          a11yTitle={`Delete ${name} Map`} />
+      );
+    
+    return (
+      <Tile separator="all" pad='medium'
+        margin="small"
+        size="medium"
+        onClick={this.props.onClick} selected={this.props.selected}>
+        <Box>
+          <Heading tag="h3" align="center" strong={true}>
+            {name}
+          </Heading>
+        </Box>
+        <Box direction="row">
+        {editControl}
+        {viewControl}
+        {deleteControl}
+        </Box>
+      </Tile>
+    );
+  }
 }
+
 
 export default MapDetail;

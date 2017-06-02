@@ -1,47 +1,62 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import Form from 'grommet/components/Form';
+import FormField from 'grommet/components/FormField';
+import FormFields from 'grommet/components/FormFields';
+import TextInput from 'grommet/components/TextInput';
+import Header from 'grommet/components/Header';
+import Heading from 'grommet/components/Heading';
+import Footer from 'grommet/components/Footer';
+import Button from 'grommet/components/Button';
+import Box from 'grommet/components/Box';
 import {connect} from 'react-redux';
-import {Textfield, Button, Card, CardTitle, CardText, CardActions} from 'react-mdl';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../actions';
-import * as canvasUtils from '../maps';
 
-class AddNode extends Component{
+class AddNode extends Component {
     constructor(props){
-        super(props);
-        this.state = {
+       super(props);
+       this.state = {
             name: '',
             description: ''
         };
     }
-
+    
     render(){
         const {name, description} = this.state;
-        return (<Card shadow={0} style={{margin: "auto", marginTop: 50}}>
-                <CardTitle> Add New Node </CardTitle>
-                <CardText>
-                <Textfield label="Name"
-                           value={name}
-                           style={{marginLeft: 5}}
-                           required
-                           onChange={(e) => this.setState({name: e.target.value})}/>
-                <Textfield label="Description"
-                           value={description}
-                           rows={3}
-                           style={{marginLeft: 5}}
-                           required
-                           onChange={(e) => this.setState({description: e.target.value})}/>
-                </CardText>
-                <CardActions>
-                <Button primary onClick={this.onOk.bind(this)}> Create </Button>
-                </CardActions>
-               </Card>)
+        
+        return (<Box align="center">
+        <Form onSubmit={this.onSubmit.bind(this)}>
+           <Header><Heading>
+           Add new node
+           </Heading></Header>
+           <FormFields>
+            <FormField label="Name">
+              <TextInput onDOMChange = {(e) => this.setState({name: e.target.value})} 
+                         placeHolder = "Enter the node name" />
+            </FormField>
+            <FormField label="Description">
+              <TextInput onDOMChange = {(e) => this.setState({description: e.target.value})}
+                         placeHolder = "Enter the node description" />
+            </FormField>
+           </FormFields>
+           <Footer pad={{"vertical": "medium"}}>
+            <Button label='Submit'
+              type='submit'
+              primary={true} />
+          </Footer>
+        </Form>
+        </Box>)
     }
-
-    onOk(){
-        const {id, node} = this.props.params;
+    
+    
+    onSubmit(e){
+        e.preventDefault();
+         const {id, node} = this.props.params;
         this.props.createTreeNode(id, node, this.state);
     }
 }
+
+
 
 
 let mapStateToProps = (state) => ({

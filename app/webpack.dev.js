@@ -9,7 +9,7 @@ module.exports = Object.assign({}, baseConfig, {
     watch: true,
     plugins: [
         new webpack.optimize.AggressiveMergingPlugin(),
-        new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
+        // new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
         new CompressionPlugin({
             asset: "[path].gz[query]",
             algorithm: "gzip",

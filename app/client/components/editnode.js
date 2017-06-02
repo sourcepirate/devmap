@@ -1,6 +1,14 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import Form from 'grommet/components/Form';
+import FormField from 'grommet/components/FormField';
+import FormFields from 'grommet/components/FormFields';
+import TextInput from 'grommet/components/TextInput';
+import Header from 'grommet/components/Header';
+import Heading from 'grommet/components/Heading';
+import Footer from 'grommet/components/Footer';
+import Button from 'grommet/components/Button';
+import Box from 'grommet/components/Box';
 import {connect} from 'react-redux';
-import {Textfield, Button, Card, CardTitle, CardText, CardActions} from 'react-mdl';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../actions';
 import * as canvasUtils from '../maps';
@@ -9,16 +17,16 @@ class EditNode extends Component{
     constructor(props){
         super(props);
         this.state = {
-            name: '',
-            description: ''
-        };
+            name: "",
+            description: ""
+        }
     }
-
+    
     componentWillMount(){
         const {id, node} = this.props.params;
         console.log("Current Node ID", node);
         const data = this.props.maps
-                               .filter((x) => x.id == id);
+                              .filter((x) => x.id == id);
         const transformed = data[0].map;
         const tfm = canvasUtils.transform(JSON.parse(transformed));
         console.log(tfm);
@@ -28,39 +36,45 @@ class EditNode extends Component{
             description
         });
     }
-
-    componentDidMount(){
-
-    }
-
-    render(){
-        const {name, description} = this.state;
-        return (<Card shadow={0} style={{margin: "auto", marginTop: 50}}>
-                <CardTitle> Edit Node </CardTitle>
-                <CardText>
-                <Textfield label="Name"
-                           value={name}
-                           style={{marginLeft: 5}}
-                           required
-                           onChange={(e) => this.setState({name: e.target.value})}/>
-                <Textfield label="Description"
-                           value={description}
-                           rows={3}
-                           style={{marginLeft: 5}}
-                           required
-                           onChange={(e) => this.setState({description: e.target.value})}/>
-                </CardText>
-                <CardActions>
-                <Button primary onClick={this.onOk.bind(this)}> Update </Button>
-                </CardActions>
-               </Card>)
-    }
-
-    onOk(){
+    
+    onSubmit(e){
+        e.preventDefault();
         const {id, node} = this.props.params;
         this.props.editTreeNode(id, node, this.state);
     }
+    
+    render(){
+        const {name, description} = this.state;
+        
+        return (<Box align="center">
+        <Form onSubmit={this.onSubmit.bind(this)}>
+           <Header>
+             <Heading>
+                Edit map node
+             </Heading>
+           </Header>
+           <FormFields>
+              <FormField label="Name">
+              <TextInput onDOMChange = {(e) => this.setState({name: e.target.value})}
+                         value={name}
+                         placeHolder = "Enter the node name" />
+            </FormField>
+            <FormField label="Description">
+              <TextInput onDOMChange = {(e) => this.setState({description: e.target.value})}
+                         value={description}
+                         placeHolder = "Enter the node description" />
+            </FormField>
+           </FormFields>
+           <Footer pad={{"vertical": "medium"}}>
+            <Button label='Submit'
+              type='submit'
+              primary={true} />
+           </Footer>
+        </Form>
+        </Box>)
+    }
 }
+
 
 
 let mapStateToProps = (state) => ({
