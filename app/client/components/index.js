@@ -19,6 +19,8 @@ import RemoveNode from './removenode';
 import AddNewMap from './addmap';
 import RemoveMap from './removemap';
 import RoadMapNav from './roadmapnav';
+import ViewNode from './viewnode';
+
 require('js-snackbar/dist/snackbar.css');
 import '../../node_modules/grommet/grommet.min.css';
 
@@ -61,3 +63,4 @@ export {RemoveNode};
 export {AddNewMap};
 export {RemoveMap};
 export {RoadMapNav};
+export {ViewNode};

@@ -14,7 +14,7 @@ class MapDetail extends Component {
     let { name, description, id} = this.props;
     let editControl = (
         <Anchor icon={<EditIcon />}
-          path={`/edit/${id}`}
+          path={`${id}/viewnode/${id}`}
           a11yTitle={`Edit ${name} Map`} />
       );
     
