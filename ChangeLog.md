@@ -11,3 +11,7 @@ Release Notes Changes
 ## Version 1.0.2
 * moved to sqlite3 from tinydb
 * minor bug fixes
+
+## Version 1.0.3
+* updated to grommet
+* added hacker feeds to each roadmaps.
