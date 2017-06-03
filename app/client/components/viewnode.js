@@ -54,7 +54,7 @@ class ViewNode extends Component{
     }
     
     componentWillReceiveProps(nextProps){
-        let nodedata = this.props.params;
+        let nodedata = nextProps.params;
         const mapid = nodedata.id;
         const node = nodedata.node;
         console.log("Current Node ID", node);

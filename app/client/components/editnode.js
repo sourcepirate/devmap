@@ -60,9 +60,9 @@ class EditNode extends Component{
                          placeHolder = "Enter the node name" />
             </FormField>
             <FormField label="Description">
-              <TextInput onDOMChange = {(e) => this.setState({description: e.target.value})}
+              <textarea onChange = {(e) => this.setState({description: e.target.value})}
                          value={description}
-                         placeHolder = "Enter the node description" />
+                         placeholder = "Enter the node description" />
             </FormField>
            </FormFields>
            <Footer pad={{"vertical": "medium"}}>

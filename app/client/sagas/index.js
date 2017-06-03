@@ -5,6 +5,7 @@ import {
 } from './mapsaga';
 import {editNodeForTree,addNodeForTree, removeNodeForTree} from './nodesaga';
 import NotifySaga from './notificationSaga';
+import FeedSaga from './feedSaga';
 
 export default function* rootSaga() {
   yield [
@@ -14,6 +15,7 @@ export default function* rootSaga() {
     removeNodeForTree(),
     NotifySaga(),
     newMapSaga(),
-    deleteMapSage()
+    deleteMapSage(),
+    FeedSaga()
   ];
 }

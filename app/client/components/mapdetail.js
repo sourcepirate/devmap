@@ -6,6 +6,7 @@ import Heading from 'grommet/components/Heading';
 import EditIcon from 'grommet/components/icons/base/Edit';
 import ViewIcon from 'grommet/components/icons/base/View';
 import CloseIcon from 'grommet/components/icons/base/Close';
+import AppIcon from 'grommet/components/icons/base/Apps';
 import Anchor from 'grommet/components/Anchor';
 
 class MapDetail extends Component {
@@ -30,10 +31,17 @@ class MapDetail extends Component {
           a11yTitle={`Delete ${name} Map`} />
       );
     
+    let feedControl = (
+      <Anchor icon={<AppIcon />}
+          path={`/feeds/${id}`}
+          a11yTitle={`Feeds ${name} Map`} />
+    )
+    
     return (
-      <Tile separator="all" pad='medium'
-        margin="small"
-        size="medium"
+      <Box separator="all"
+        align="center"
+        direction="column"
+        pad="medium"
         onClick={this.props.onClick} selected={this.props.selected}>
         <Box>
           <Heading tag="h3" align="center" strong={true}>
@@ -44,8 +52,9 @@ class MapDetail extends Component {
         {editControl}
         {viewControl}
         {deleteControl}
+        {feedControl}
         </Box>
-      </Tile>
+      </Box>
     );
   }
 }

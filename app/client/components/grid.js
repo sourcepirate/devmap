@@ -17,7 +17,7 @@ class GridList extends Component{
     render(){
         const {maps} = this.props;
         console.log(maps);
-        return (<Box align="center" fill={true} direction="column">
+        return (<Box flex="grow">
                 {maps.map((x, i) => <MapDetail {...x} key={i}/>)}
                 </Box>);
     }

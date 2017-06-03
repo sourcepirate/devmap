@@ -26,8 +26,8 @@ import * as actionCreators from '../actions';
 class RoadMapNav extends Component {
 		render() {
 				return (
-						<Box full={true} margin="small" pad="large">
-								<Header fixed={false} float={false} splash={false} size='medium'>
+						<Box full={true}  pad="medium">
+								<Header fixed={true} float={false} splash={false} size='small'>
 										<Title>
 											 Roadmaps
 										</Title>

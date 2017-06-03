@@ -35,8 +35,8 @@ class AddNode extends Component {
                          placeHolder = "Enter the node name" />
             </FormField>
             <FormField label="Description">
-              <TextInput onDOMChange = {(e) => this.setState({description: e.target.value})}
-                         placeHolder = "Enter the node description" />
+              <textarea onChange = {(e) => this.setState({description: e.target.value})}
+                         placeholder = "Enter the node description" rows={6}/>
             </FormField>
            </FormFields>
            <Footer pad={{"vertical": "medium"}}>

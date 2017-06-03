@@ -41,7 +41,7 @@ class AddNewMap extends Component {
            <TextInput onDOMChange={(e) => this.setState({start_node: e.target.value})} placeHolder="Enter the name of the start node" />
          </FormField>
          <FormField label="Roadmap Description">
-           <TextInput onDOMChange={(e) => this.setState({start_description: e.target.value})} placeHolder="Roadmap Description" />
+           <textarea onChange={(e) => this.setState({start_description: e.target.value})} placeholder="Roadmap Description" rows={6}/>
          </FormField>
          </FormFields>
           <Footer pad={{"vertical": "medium"}}>
