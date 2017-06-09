@@ -19,6 +19,7 @@ import AddNewMap from './addmap';
 import RemoveMap from './removemap';
 import RoadMapNav from './roadmapnav';
 import ViewNode from './viewnode';
+import NotebookReader from './notebook';
 import 'js-snackbar/dist/snackbar.css'
 import 'grommet/grommet.min.css';
 
@@ -62,3 +63,4 @@ export {AddNewMap};
 export {RemoveMap};
 export {RoadMapNav};
 export {ViewNode};
+export {NotebookReader};

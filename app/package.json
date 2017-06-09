@@ -52,6 +52,7 @@
     "react-autolinker": "^1.0.4",
     "react-dom": "^15.4.2",
     "react-jsonschema-form": "^0.48.2",
+    "react-jupyter": "^0.1.0",
     "react-mdl": "^1.10.0",
     "react-redux": "^5.0.3",
     "react-redux-form": "^1.7.0",

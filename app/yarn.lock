@@ -85,6 +85,10 @@ ansi-styles@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-2.2.1.tgz#b432dd3358b634cf75e1e4664368240533c1ddbe"
 
+ansi_up@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/ansi_up/-/ansi_up-1.3.0.tgz#c9c946bfc0b9bb5eaa060684bf2abaafe68bbd44"
+
 anymatch@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/anymatch/-/anymatch-1.3.0.tgz#a3e52fa39168c825ff57b0248126ce5a8ff95507"
@@ -1705,6 +1709,10 @@ enhanced-resolve@^3.0.0:
     object-assign "^4.0.1"
     tapable "^0.2.5"
 
+entities@~1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.1.tgz#6e5c2d0a5621b5dadaecef80b90edfb5cd7772f0"
+
 errno@^0.1.3:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/errno/-/errno-0.1.4.tgz#b896e23a9e5e8ba33871fc996abd3635fc9a1c7d"
@@ -2202,6 +2210,10 @@ hawk@~3.1.3:
 hex-rgba@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hex-rgba/-/hex-rgba-1.0.1.tgz#dd79a764c660f0d5613021766b80c9b06d973b1d"
+
+highlight.js@^9.10.0:
+  version "9.12.0"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.12.0.tgz#e6d9dbe57cbefe60751f02af336195870c90c01e"
 
 history@^3.0.0:
   version "3.3.0"
@@ -2755,6 +2767,12 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
+linkify-it@^2.0.0:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/linkify-it/-/linkify-it-2.0.3.tgz#d94a4648f9b1c179d64fa97291268bdb6ce9434f"
+  dependencies:
+    uc.micro "^1.0.1"
+
 load-json-file@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-1.1.0.tgz#956905708d58b4bab4c2261b04f59f31c99374c0"
@@ -2900,6 +2918,20 @@ markdown-escapes@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/markdown-escapes/-/markdown-escapes-1.0.0.tgz#c8ca19f1d94d682459e0a93c86db27a7ef716b23"
 
+markdown-it-mathjax@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/markdown-it-mathjax/-/markdown-it-mathjax-2.0.0.tgz#ae2b4f4c5c719a03f9e475c664f7b2685231d9e9"
+
+markdown-it@^8.3.1:
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-8.3.1.tgz#2f4b622948ccdc193d66f3ca2d43125ac4ac7323"
+  dependencies:
+    argparse "^1.0.7"
+    entities "~1.1.1"
+    linkify-it "^2.0.0"
+    mdurl "^1.0.1"
+    uc.micro "^1.0.3"
+
 markdown-to-jsx@^5.3.3:
   version "5.3.3"
   resolved "https://registry.yarnpkg.com/markdown-to-jsx/-/markdown-to-jsx-5.3.3.tgz#3e48548e15da0426f019eb95fa96f3397b95e012"
@@ -2912,6 +2944,10 @@ markdown-to-jsx@^5.3.3:
 math-expression-evaluator@^1.2.14:
   version "1.2.17"
   resolved "https://registry.yarnpkg.com/math-expression-evaluator/-/math-expression-evaluator-1.2.17.tgz#de819fdbcd84dccd8fae59c6aeb79615b9d266ac"
+
+mdurl@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/mdurl/-/mdurl-1.0.1.tgz#fe85b2ec75a59037f2adfec100fd6c601761152e"
 
 media-typer@0.3.0:
   version "0.3.0"
@@ -3872,6 +3908,17 @@ react-jsonschema-form@^0.48.2:
     prop-types "^15.5.8"
     setimmediate "^1.0.5"
 
+react-jupyter@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/react-jupyter/-/react-jupyter-0.1.0.tgz#134b1ad9fc197aabb232a7b60da38fd8a8f953be"
+  dependencies:
+    ansi_up "^1.3.0"
+    highlight.js "^9.10.0"
+    markdown-it "^8.3.1"
+    markdown-it-mathjax "^2.0.0"
+    react "^15.4.2"
+    react-dom "^15.4.2"
+
 react-mdl@^1.10.0:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/react-mdl/-/react-mdl-1.10.3.tgz#f783e26a5eea4154a32129ab2562c09d5eeacf0d"
@@ -4701,6 +4748,10 @@ type-is@~1.6.15:
 ua-parser-js@^0.7.9:
   version "0.7.12"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.12.tgz#04c81a99bdd5dc52263ea29d24c6bf8d4818a4bb"
+
+uc.micro@^1.0.1, uc.micro@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/uc.micro/-/uc.micro-1.0.3.tgz#7ed50d5e0f9a9fb0a573379259f2a77458d50192"
 
 uglify-js@^2.8.27:
   version "2.8.28"
