@@ -1,6 +1,6 @@
 export function fetchNotes(){
     return {
-        type: "FETCH_NOTES"
+        type: "FETCH_NOTEBOOKS"
     }
 }
 
@@ -13,7 +13,7 @@ export function updateNotes(notes){
 
 export function createNotes(name, content){
     return {
-        type: "CREATE_NOTES",
+        type: "CREATE_NOTEBOOK",
         payload: {
             name,
             content
@@ -24,7 +24,7 @@ export function createNotes(name, content){
 
 export function getNote(id){
     return {
-        type: "GET_NOTE",
+        type: "VIEW_NOTEBOOK",
         id
     }
 }
@@ -32,7 +32,7 @@ export function getNote(id){
 
 export function deleteNote(id){
     return {
-        type: "DELETE_NOTE",
+        type: "DELETE_NOTEBOOK",
         id
     }
 }

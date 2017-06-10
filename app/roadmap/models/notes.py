@@ -8,13 +8,13 @@ class ResearchNotes(BaseModel):
     id = db.CharField(primary_key=True)
     name = db.CharField(null=False)
     content = db.TextField(null=True)
-    
+
     @classmethod
     def create_notes(cls, name, content):
         entity = cls.create(name=name, content=content, id=str(uuid4()))
         entity.save()
         return entity
-    
+
     @classmethod
     def all_notes(cls):
         try:
@@ -24,7 +24,7 @@ class ResearchNotes(BaseModel):
         except:
             print(traceback.format_exc())
             return []
-            
+
     @classmethod
     def delete_note(cls, id):
         try:

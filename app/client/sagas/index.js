@@ -6,6 +6,12 @@ import {
 import {editNodeForTree,addNodeForTree, removeNodeForTree} from './nodesaga';
 import NotifySaga from './notificationSaga';
 import FeedSaga from './feedsaga';
+import {
+  createNotebook,
+  viewNotebook,
+  deleteNotebook,
+  fetchNotebook
+} from './notebooksaga';
 
 export default function* rootSaga() {
   yield [
@@ -16,6 +22,10 @@ export default function* rootSaga() {
     NotifySaga(),
     newMapSaga(),
     deleteMapSage(),
-    FeedSaga()
+    FeedSaga(),
+    createNotebook(),
+    viewNotebook(),
+    deleteNotebook(),
+    fetchNotebook()
   ];
 }

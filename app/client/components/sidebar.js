@@ -33,10 +33,10 @@ class RoadMapSidebar extends Component{
                         className='active'>
                         RoadMaps
                       </Anchor>
-                      <Anchor href='#/' >
+                      <Anchor href='#/notes' >
                         Notes
                       </Anchor>
-                      <Anchor href='#/'>
+                      <Anchor href='#/tables'>
                         Open Tables
                       </Anchor>
                     </Menu>

@@ -1,12 +1,14 @@
 import {Router, Route, IndexRoute, Link, hashHistory} from 'react-router';
 import {App, GridList, Map, EditNode, AddNode, RemoveNode, AddNewMap, RemoveMap, RoadMapNav, ViewNode, Feeds} from './components';
-import {NotebookReader, NotebookNavBar, NoteBookList} from './components/notebook/';
+import {NotebookReader, NotebookNavBar, NoteBookList, NoteBookDelete} from './components/notebook/';
 
 const routes = (
   <Router history={hashHistory}>
       <Route path="/" component={App}>
          <Route path="/notes" component={NotebookNavBar}>
             <IndexRoute component={NoteBookList} />
+            <Route path="/notes/view/:id" component={NotebookReader} />
+            <Route path="/notes/delete/:id" component={NoteBookDelete} />
          </Route>
          <Route component={RoadMapNav}>
              <IndexRoute component = {GridList} />

@@ -20,6 +20,10 @@ import Section from 'grommet/components/Section';
 import List from 'grommet/components/List';
 import ListItem from 'grommet/components/ListItem';
 import {reader} from '../../utils/';
+import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actionCreators from '../../actions';
+import {hashHistory} from 'react-router';
 
 class NotebookNavBar extends Component{
     constructor(props){
@@ -51,12 +55,18 @@ class NotebookNavBar extends Component{
     
     onFileChange(){
         const files = this.refs.fupload.files;
+        const self = this;
         reader(files[0]).then(function(txt){
-            console.log(JSON.parse(txt));
+            const content = JSON.parse(txt);
+            const filename = files[0].name;
+            console.log("createing notebook", filename);
+            self.props.createNotes(filename, content);
         }).catch(function(e){
             console.error(e);
         })
     }
 }
 
+let mapDistpatchToProps = (dispatch) => bindActionCreators(actionCreators, dispatch);
+NotebookNavBar = connect(null, mapDistpatchToProps)(NotebookNavBar);
 export default NotebookNavBar;

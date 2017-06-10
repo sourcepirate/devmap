@@ -1,39 +1,50 @@
 import React, {Component} from 'react';
-import Form from 'grommet/components/Form';
-import Header from 'grommet/components/Header';
-import Heading from 'grommet/components/Heading';
-import FormFields from 'grommet/components/FormFields';
-import FormField from 'grommet/components/FormField';
-import Footer from 'grommet/components/Footer';
-import Button from 'grommet/components/Button';
-import TextInput from 'grommet/components/TextInput';
-import DateTime from 'grommet/components/DateTime';
-import SearchInput from 'grommet/components/SearchInput';
-import Toast from 'grommet/components/Toast';
-import Title from 'grommet/components/Title';
-import Search from 'grommet/components/Search';
-import Box from 'grommet/components/Box';
-import Menu from 'grommet/components/Menu';
 import Anchor from'grommet/components/Anchor';
+import Box from'grommet/components/Box';
 import Close from 'grommet/components/icons/base/Close';
-import Section from 'grommet/components/Section';
 import List from 'grommet/components/List';
 import ListItem from 'grommet/components/ListItem';
+import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actionCreators from '../../actions';
+import {hashHistory} from 'react-router';
 
 class NoteBookList extends Component {
+
+    componentWillMount(){
+       this.props.fetchNotes();
+    }
+    
     render(){
-        return (<List>
-            <ListItem justify='between'
-    separator='horizontal'>
-    <span>
-      Alan
-    </span>
-    <span className='secondary'>
-      <Anchor icon={<Close />}></Anchor>
-    </span>
-  </ListItem>
+        const {books} = this.props;
+        return (<List selectable={true}>
+          {
+            books.map((book) => (<ListItem key={book.id} justify='between'
+            separator='horizontal'>
+            <Box onClick={this.onClick.bind(this, book.id)}>
+              <span>{book.name}</span>
+            </Box>
+            <span className='secondary'>
+              <Anchor path={"notes/delete/"+ book.id} icon={<Close />}></Anchor>
+            </span>
+          </ListItem>))
+          }
         </List>);
     }
+
+    onClick(id, e){
+      console.log(id);
+      hashHistory.push(`notes/view/${id}`)
+    }
 }
+
+
+let mapStateToProps = (state) => ({
+  books: state.notebook
+});
+
+let mapDispatchToProps = (dispatch) => bindActionCreators(actionCreators, dispatch)
+
+NoteBookList = connect(mapStateToProps, mapDispatchToProps)(NoteBookList);
 
 export default NoteBookList;

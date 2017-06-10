@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 124:
+/***/ 125:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15,7 +15,7 @@ exports.draw = draw;
 exports.transform = transform;
 exports.find = find;
 
-var _properties = __webpack_require__(303);
+var _properties = __webpack_require__(297);
 
 var props = _interopRequireWildcard(_properties);
 
@@ -109,13 +109,6 @@ function find(data, id) {
 
 /***/ }),
 
-/***/ 1338:
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
-
 /***/ 1339:
 /***/ (function(module, exports) {
 
@@ -138,6 +131,13 @@ function find(data, id) {
 /***/ }),
 
 /***/ 1342:
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ 1343:
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(585);
@@ -146,7 +146,7 @@ module.exports = __webpack_require__(584);
 
 /***/ }),
 
-/***/ 1343:
+/***/ 1344:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -155,44 +155,475 @@ module.exports = __webpack_require__(584);
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.notebook = notebook;
-exports.showing = showing;
+exports.viewNotebook = viewNotebook;
+exports.deleteNotebook = deleteNotebook;
+exports.fetchNotebook = fetchNotebook;
+exports.createNotebook = createNotebook;
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+var _axios = __webpack_require__(182);
 
-function notebook() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    var action = arguments[1];
+var _axios2 = _interopRequireDefault(_axios);
 
-    switch (action.type) {
-        case 'UPDATE_NOTES':
-            return [].concat(_toConsumableArray(notes));
-        case 'NEW_NOTE':
-            return [].concat(_toConsumableArray(state), [{ name: action.name, id: action.id }]);
-        case 'DELETE_NOTE':
-            return state.map(function (x) {
-                return x.id != action.id;
-            });
-        default:
-            return state;
-    }
+var _effects = __webpack_require__(142);
+
+var _reactRouter = __webpack_require__(60);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _marked = [getNotebooksTask, createNotebookTask, getByIdTask, deleteNoteTask, viewNotebook, deleteNotebook, fetchNotebook, createNotebook].map(regeneratorRuntime.mark);
+
+function getNote(id) {
+    return _axios2.default.get('/notes/get/' + id);
 }
 
-function showing() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { id: '', name: '', content: '' };
-    var action = arguments[1];
+function getList() {
+    return _axios2.default.get("notes/list");
+}
 
-    switch (action.type) {
-        case 'SHOW_NOTE':
-            return action.note;
-        default:
-            return state;
-    }
+function deleteNote(id) {
+    return _axios2.default.delete('notes/delete/' + id);
+}
+
+function createNote(name, content) {
+    var payload = {
+        name: name,
+        content: content
+    };
+    return _axios2.default.post("notes/create", payload);
+}
+
+function getNotebooksTask(action) {
+    var result;
+    return regeneratorRuntime.wrap(function getNotebooksTask$(_context) {
+        while (1) {
+            switch (_context.prev = _context.next) {
+                case 0:
+                    _context.prev = 0;
+                    _context.next = 3;
+                    return (0, _effects.call)(getList);
+
+                case 3:
+                    result = _context.sent;
+                    _context.next = 6;
+                    return (0, _effects.put)({
+                        type: "UPDATE_NOTES",
+                        notes: result.data
+                    });
+
+                case 6:
+                    _context.next = 12;
+                    break;
+
+                case 8:
+                    _context.prev = 8;
+                    _context.t0 = _context['catch'](0);
+                    _context.next = 12;
+                    return (0, _effects.put)({
+                        type: "NOTIFY",
+                        message: "Unable to fetch notebooks"
+                    });
+
+                case 12:
+                case 'end':
+                    return _context.stop();
+            }
+        }
+    }, _marked[0], this, [[0, 8]]);
+}
+
+function createNotebookTask(action) {
+    var _action$payload, name, content, result;
+
+    return regeneratorRuntime.wrap(function createNotebookTask$(_context2) {
+        while (1) {
+            switch (_context2.prev = _context2.next) {
+                case 0:
+                    _context2.prev = 0;
+                    _action$payload = action.payload, name = _action$payload.name, content = _action$payload.content;
+                    _context2.next = 4;
+                    return (0, _effects.call)(createNote, name, content);
+
+                case 4:
+                    result = _context2.sent;
+                    _context2.next = 7;
+                    return (0, _effects.put)({
+                        type: "NEW_NOTE",
+                        name: result.data.name,
+                        id: result.data.id
+                    });
+
+                case 7:
+                    _context2.next = 9;
+                    return (0, _effects.put)({
+                        type: "NOTIFY",
+                        message: "Notebook created successfully"
+                    });
+
+                case 9:
+                    _context2.next = 15;
+                    break;
+
+                case 11:
+                    _context2.prev = 11;
+                    _context2.t0 = _context2['catch'](0);
+                    _context2.next = 15;
+                    return (0, _effects.put)({
+                        type: "NOTIFY",
+                        message: "Unable to create notebooks"
+                    });
+
+                case 15:
+                case 'end':
+                    return _context2.stop();
+            }
+        }
+    }, _marked[1], this, [[0, 11]]);
+}
+
+function getByIdTask(action) {
+    var id, result;
+    return regeneratorRuntime.wrap(function getByIdTask$(_context3) {
+        while (1) {
+            switch (_context3.prev = _context3.next) {
+                case 0:
+                    _context3.prev = 0;
+                    id = action.id;
+                    _context3.next = 4;
+                    return (0, _effects.call)(getNote, id);
+
+                case 4:
+                    result = _context3.sent;
+                    _context3.next = 7;
+                    return (0, _effects.put)({
+                        type: "SHOW_NOTE",
+                        note: result.data
+                    });
+
+                case 7:
+                    _context3.next = 13;
+                    break;
+
+                case 9:
+                    _context3.prev = 9;
+                    _context3.t0 = _context3['catch'](0);
+                    _context3.next = 13;
+                    return (0, _effects.put)({
+                        type: "NOTIFY",
+                        message: "unable get notebook by id"
+                    });
+
+                case 13:
+                case 'end':
+                    return _context3.stop();
+            }
+        }
+    }, _marked[2], this, [[0, 9]]);
+}
+
+function deleteNoteTask(action) {
+    var id, result;
+    return regeneratorRuntime.wrap(function deleteNoteTask$(_context4) {
+        while (1) {
+            switch (_context4.prev = _context4.next) {
+                case 0:
+                    _context4.prev = 0;
+                    id = action.id;
+
+                    console.log("deleting", id);
+                    _context4.next = 5;
+                    return (0, _effects.call)(deleteNote, id);
+
+                case 5:
+                    result = _context4.sent;
+                    _context4.next = 8;
+                    return (0, _effects.put)({
+                        type: "DELETE_NOTE",
+                        id: id
+                    });
+
+                case 8:
+                    _context4.next = 10;
+                    return (0, _effects.put)({
+                        type: "NOTIFY",
+                        message: "Notebook deleted successfully"
+                    });
+
+                case 10:
+                    _context4.next = 16;
+                    break;
+
+                case 12:
+                    _context4.prev = 12;
+                    _context4.t0 = _context4['catch'](0);
+                    _context4.next = 16;
+                    return (0, _effects.put)({
+                        type: "NOTIFY",
+                        message: "Unable to delete notebook by id"
+                    });
+
+                case 16:
+                case 'end':
+                    return _context4.stop();
+            }
+        }
+    }, _marked[3], this, [[0, 12]]);
+}
+
+function viewNotebook() {
+    return regeneratorRuntime.wrap(function viewNotebook$(_context5) {
+        while (1) {
+            switch (_context5.prev = _context5.next) {
+                case 0:
+                    _context5.next = 2;
+                    return (0, _effects.takeEvery)("VIEW_NOTEBOOK", getByIdTask);
+
+                case 2:
+                case 'end':
+                    return _context5.stop();
+            }
+        }
+    }, _marked[4], this);
+}
+
+function deleteNotebook() {
+    return regeneratorRuntime.wrap(function deleteNotebook$(_context6) {
+        while (1) {
+            switch (_context6.prev = _context6.next) {
+                case 0:
+                    _context6.next = 2;
+                    return (0, _effects.takeEvery)("DELETE_NOTEBOOK", deleteNoteTask);
+
+                case 2:
+                case 'end':
+                    return _context6.stop();
+            }
+        }
+    }, _marked[5], this);
+}
+
+function fetchNotebook() {
+    return regeneratorRuntime.wrap(function fetchNotebook$(_context7) {
+        while (1) {
+            switch (_context7.prev = _context7.next) {
+                case 0:
+                    _context7.next = 2;
+                    return (0, _effects.takeEvery)("FETCH_NOTEBOOKS", getNotebooksTask);
+
+                case 2:
+                case 'end':
+                    return _context7.stop();
+            }
+        }
+    }, _marked[6], this);
+}
+
+function createNotebook() {
+    return regeneratorRuntime.wrap(function createNotebook$(_context8) {
+        while (1) {
+            switch (_context8.prev = _context8.next) {
+                case 0:
+                    _context8.next = 2;
+                    return (0, _effects.takeEvery)("CREATE_NOTEBOOK", createNotebookTask);
+
+                case 2:
+                case 'end':
+                    return _context8.stop();
+            }
+        }
+    }, _marked[7], this);
 }
 
 /***/ }),
 
-/***/ 302:
+/***/ 1345:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.fetchNotes = fetchNotes;
+exports.updateNotes = updateNotes;
+exports.createNotes = createNotes;
+exports.getNote = getNote;
+exports.deleteNote = deleteNote;
+function fetchNotes() {
+    return {
+        type: "FETCH_NOTEBOOKS"
+    };
+}
+
+function updateNotes(notes) {
+    return {
+        type: "UPDATE_NOTES",
+        notes: notes
+    };
+}
+
+function createNotes(name, content) {
+    return {
+        type: "CREATE_NOTEBOOK",
+        payload: {
+            name: name,
+            content: content
+        }
+    };
+}
+
+function getNote(id) {
+    return {
+        type: "VIEW_NOTEBOOK",
+        id: id
+    };
+}
+
+function deleteNote(id) {
+    return {
+        type: "DELETE_NOTEBOOK",
+        id: id
+    };
+}
+
+/***/ }),
+
+/***/ 1347:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(2);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Header = __webpack_require__(48);
+
+var _Header2 = _interopRequireDefault(_Header);
+
+var _Heading = __webpack_require__(49);
+
+var _Heading2 = _interopRequireDefault(_Heading);
+
+var _Button = __webpack_require__(21);
+
+var _Button2 = _interopRequireDefault(_Button);
+
+var _Box = __webpack_require__(13);
+
+var _Box2 = _interopRequireDefault(_Box);
+
+var _reactRedux = __webpack_require__(26);
+
+var _redux = __webpack_require__(27);
+
+var _actions = __webpack_require__(39);
+
+var actionCreators = _interopRequireWildcard(_actions);
+
+var _reactRouter = __webpack_require__(60);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var NoteBookDelete = function (_Component) {
+    _inherits(NoteBookDelete, _Component);
+
+    function NoteBookDelete(props) {
+        _classCallCheck(this, NoteBookDelete);
+
+        return _possibleConstructorReturn(this, (NoteBookDelete.__proto__ || Object.getPrototypeOf(NoteBookDelete)).call(this, props));
+    }
+
+    _createClass(NoteBookDelete, [{
+        key: 'onCancel',
+        value: function onCancel(e) {
+            e.preventDefault();
+            _reactRouter.hashHistory.goBack();
+        }
+    }, {
+        key: 'onOk',
+        value: function onOk(e) {
+            e.preventDefault();
+            var id = this.props.params.id;
+
+            console.log("deleting ", id);
+            this.props.deleteNote(id);
+            _reactRouter.hashHistory.goBack();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                _Box2.default,
+                { align: 'center' },
+                _react2.default.createElement(
+                    _Box2.default,
+                    { pad: 'large' },
+                    _react2.default.createElement(
+                        _Box2.default,
+                        { pad: 'large' },
+                        _react2.default.createElement(
+                            _Header2.default,
+                            null,
+                            _react2.default.createElement(
+                                _Heading2.default,
+                                null,
+                                ' Are you sure to delete this notes ? '
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        _Box2.default,
+                        { pad: 'large', align: 'center' },
+                        _react2.default.createElement(
+                            _Box2.default,
+                            { pad: 'medium' },
+                            ' ',
+                            _react2.default.createElement(_Button2.default, { label: 'Delete It', primary: true, onClick: this.onOk.bind(this) }),
+                            ' '
+                        ),
+                        _react2.default.createElement(
+                            _Box2.default,
+                            { pad: 'medium' },
+                            ' ',
+                            _react2.default.createElement(_Button2.default, { label: 'Retreat!', onClick: this.onCancel.bind(this) }),
+                            ' '
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return NoteBookDelete;
+}(_react.Component);
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)(actionCreators, dispatch);
+};
+
+NoteBookDelete = (0, _reactRedux.connect)(null, mapDispatchToProps)(NoteBookDelete);
+
+exports.default = NoteBookDelete;
+
+/***/ }),
+
+/***/ 296:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -201,7 +632,7 @@ function showing() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.NoteBookList = exports.NotebookNavBar = exports.NotebookReader = undefined;
+exports.NoteBookDelete = exports.NoteBookList = exports.NotebookNavBar = exports.NotebookReader = undefined;
 
 var _notebook = __webpack_require__(614);
 
@@ -215,15 +646,20 @@ var _notebooklist = __webpack_require__(615);
 
 var _notebooklist2 = _interopRequireDefault(_notebooklist);
 
+var _notebookdelete = __webpack_require__(1347);
+
+var _notebookdelete2 = _interopRequireDefault(_notebookdelete);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.NotebookReader = _notebook2.default;
 exports.NotebookNavBar = _notebooknav2.default;
 exports.NoteBookList = _notebooklist2.default;
+exports.NoteBookDelete = _notebookdelete2.default;
 
 /***/ }),
 
-/***/ 303:
+/***/ 297:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -240,7 +676,7 @@ module.exports.useGrayscale = { label: 'Use grayscale', type: 'boolean', val: 0 
 
 /***/ }),
 
-/***/ 304:
+/***/ 298:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -250,7 +686,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _canvas = __webpack_require__(635);
+var _canvas = __webpack_require__(636);
 
 Object.keys(_canvas).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -262,7 +698,7 @@ Object.keys(_canvas).forEach(function (key) {
   });
 });
 
-var _reader = __webpack_require__(636);
+var _reader = __webpack_require__(637);
 
 Object.keys(_reader).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -276,7 +712,7 @@ Object.keys(_reader).forEach(function (key) {
 
 /***/ }),
 
-/***/ 53:
+/***/ 39:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -322,6 +758,18 @@ Object.keys(_feedaction).forEach(function (key) {
   });
 });
 
+var _noteactions = __webpack_require__(1345);
+
+Object.keys(_noteactions).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _noteactions[key];
+    }
+  });
+});
+
 /***/ }),
 
 /***/ 584:
@@ -334,15 +782,15 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(43);
+var _reactDom = __webpack_require__(42);
 
-var _routes = __webpack_require__(628);
+var _routes = __webpack_require__(629);
 
 var _routes2 = _interopRequireDefault(_routes);
 
-var _reactRedux = __webpack_require__(34);
+var _reactRedux = __webpack_require__(26);
 
-var _store = __webpack_require__(634);
+var _store = __webpack_require__(635);
 
 var _store2 = _interopRequireDefault(_store);
 
@@ -484,31 +932,31 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Form = __webpack_require__(50);
+var _Form = __webpack_require__(56);
 
 var _Form2 = _interopRequireDefault(_Form);
 
-var _FormField = __webpack_require__(58);
+var _FormField = __webpack_require__(70);
 
 var _FormField2 = _interopRequireDefault(_FormField);
 
-var _FormFields = __webpack_require__(59);
+var _FormFields = __webpack_require__(71);
 
 var _FormFields2 = _interopRequireDefault(_FormFields);
 
-var _TextInput = __webpack_require__(51);
+var _TextInput = __webpack_require__(57);
 
 var _TextInput2 = _interopRequireDefault(_TextInput);
 
-var _Header = __webpack_require__(41);
+var _Header = __webpack_require__(48);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _Heading = __webpack_require__(42);
+var _Heading = __webpack_require__(49);
 
 var _Heading2 = _interopRequireDefault(_Heading);
 
-var _Footer = __webpack_require__(49);
+var _Footer = __webpack_require__(55);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -516,15 +964,15 @@ var _Button = __webpack_require__(21);
 
 var _Button2 = _interopRequireDefault(_Button);
 
-var _Box = __webpack_require__(14);
+var _Box = __webpack_require__(13);
 
 var _Box2 = _interopRequireDefault(_Box);
 
-var _reactRedux = __webpack_require__(34);
+var _reactRedux = __webpack_require__(26);
 
-var _redux = __webpack_require__(36);
+var _redux = __webpack_require__(27);
 
-var _actions = __webpack_require__(53);
+var _actions = __webpack_require__(39);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
@@ -650,31 +1098,31 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Form = __webpack_require__(50);
+var _Form = __webpack_require__(56);
 
 var _Form2 = _interopRequireDefault(_Form);
 
-var _FormField = __webpack_require__(58);
+var _FormField = __webpack_require__(70);
 
 var _FormField2 = _interopRequireDefault(_FormField);
 
-var _FormFields = __webpack_require__(59);
+var _FormFields = __webpack_require__(71);
 
 var _FormFields2 = _interopRequireDefault(_FormFields);
 
-var _TextInput = __webpack_require__(51);
+var _TextInput = __webpack_require__(57);
 
 var _TextInput2 = _interopRequireDefault(_TextInput);
 
-var _Header = __webpack_require__(41);
+var _Header = __webpack_require__(48);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _Heading = __webpack_require__(42);
+var _Heading = __webpack_require__(49);
 
 var _Heading2 = _interopRequireDefault(_Heading);
 
-var _Footer = __webpack_require__(49);
+var _Footer = __webpack_require__(55);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -682,15 +1130,15 @@ var _Button = __webpack_require__(21);
 
 var _Button2 = _interopRequireDefault(_Button);
 
-var _Box = __webpack_require__(14);
+var _Box = __webpack_require__(13);
 
 var _Box2 = _interopRequireDefault(_Box);
 
-var _reactRedux = __webpack_require__(34);
+var _reactRedux = __webpack_require__(26);
 
-var _redux = __webpack_require__(36);
+var _redux = __webpack_require__(27);
 
-var _actions = __webpack_require__(53);
+var _actions = __webpack_require__(39);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
@@ -821,31 +1269,31 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Form = __webpack_require__(50);
+var _Form = __webpack_require__(56);
 
 var _Form2 = _interopRequireDefault(_Form);
 
-var _FormField = __webpack_require__(58);
+var _FormField = __webpack_require__(70);
 
 var _FormField2 = _interopRequireDefault(_FormField);
 
-var _FormFields = __webpack_require__(59);
+var _FormFields = __webpack_require__(71);
 
 var _FormFields2 = _interopRequireDefault(_FormFields);
 
-var _TextInput = __webpack_require__(51);
+var _TextInput = __webpack_require__(57);
 
 var _TextInput2 = _interopRequireDefault(_TextInput);
 
-var _Header = __webpack_require__(41);
+var _Header = __webpack_require__(48);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _Heading = __webpack_require__(42);
+var _Heading = __webpack_require__(49);
 
 var _Heading2 = _interopRequireDefault(_Heading);
 
-var _Footer = __webpack_require__(49);
+var _Footer = __webpack_require__(55);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -853,19 +1301,19 @@ var _Button = __webpack_require__(21);
 
 var _Button2 = _interopRequireDefault(_Button);
 
-var _Box = __webpack_require__(14);
+var _Box = __webpack_require__(13);
 
 var _Box2 = _interopRequireDefault(_Box);
 
-var _reactRedux = __webpack_require__(34);
+var _reactRedux = __webpack_require__(26);
 
-var _redux = __webpack_require__(36);
+var _redux = __webpack_require__(27);
 
-var _actions = __webpack_require__(53);
+var _actions = __webpack_require__(39);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
-var _maps = __webpack_require__(124);
+var _maps = __webpack_require__(125);
 
 var canvasUtils = _interopRequireWildcard(_maps);
 
@@ -1022,31 +1470,31 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Form = __webpack_require__(50);
+var _Form = __webpack_require__(56);
 
 var _Form2 = _interopRequireDefault(_Form);
 
-var _FormField = __webpack_require__(58);
+var _FormField = __webpack_require__(70);
 
 var _FormField2 = _interopRequireDefault(_FormField);
 
-var _FormFields = __webpack_require__(59);
+var _FormFields = __webpack_require__(71);
 
 var _FormFields2 = _interopRequireDefault(_FormFields);
 
-var _TextInput = __webpack_require__(51);
+var _TextInput = __webpack_require__(57);
 
 var _TextInput2 = _interopRequireDefault(_TextInput);
 
-var _Header = __webpack_require__(41);
+var _Header = __webpack_require__(48);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _Heading = __webpack_require__(42);
+var _Heading = __webpack_require__(49);
 
 var _Heading2 = _interopRequireDefault(_Heading);
 
-var _Footer = __webpack_require__(49);
+var _Footer = __webpack_require__(55);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -1054,47 +1502,47 @@ var _Button = __webpack_require__(21);
 
 var _Button2 = _interopRequireDefault(_Button);
 
-var _Markdown = __webpack_require__(353);
+var _Markdown = __webpack_require__(348);
 
 var _Markdown2 = _interopRequireDefault(_Markdown);
 
-var _Paragraph = __webpack_require__(233);
+var _Paragraph = __webpack_require__(232);
 
 var _Paragraph2 = _interopRequireDefault(_Paragraph);
 
-var _Box = __webpack_require__(14);
+var _Box = __webpack_require__(13);
 
 var _Box2 = _interopRequireDefault(_Box);
 
-var _Edit = __webpack_require__(240);
+var _Edit = __webpack_require__(234);
 
 var _Edit2 = _interopRequireDefault(_Edit);
 
-var _Add = __webpack_require__(239);
+var _Add = __webpack_require__(233);
 
 var _Add2 = _interopRequireDefault(_Add);
 
-var _Close = __webpack_require__(132);
+var _Close = __webpack_require__(96);
 
 var _Close2 = _interopRequireDefault(_Close);
 
-var _Anchor = __webpack_require__(78);
+var _Anchor = __webpack_require__(69);
 
 var _Anchor2 = _interopRequireDefault(_Anchor);
 
-var _List = __webpack_require__(159);
+var _List = __webpack_require__(131);
 
 var _List2 = _interopRequireDefault(_List);
 
-var _ListItem = __webpack_require__(160);
+var _ListItem = __webpack_require__(132);
 
 var _ListItem2 = _interopRequireDefault(_ListItem);
 
-var _reactRedux = __webpack_require__(34);
+var _reactRedux = __webpack_require__(26);
 
-var _redux = __webpack_require__(36);
+var _redux = __webpack_require__(27);
 
-var _actions = __webpack_require__(53);
+var _actions = __webpack_require__(39);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
@@ -1194,7 +1642,7 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Box = __webpack_require__(14);
+var _Box = __webpack_require__(13);
 
 var _Box2 = _interopRequireDefault(_Box);
 
@@ -1202,11 +1650,11 @@ var _mapdetail = __webpack_require__(613);
 
 var _mapdetail2 = _interopRequireDefault(_mapdetail);
 
-var _reactRedux = __webpack_require__(34);
+var _reactRedux = __webpack_require__(26);
 
-var _redux = __webpack_require__(36);
+var _redux = __webpack_require__(27);
 
-var _actions = __webpack_require__(53);
+var _actions = __webpack_require__(39);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
@@ -1286,33 +1734,33 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouter = __webpack_require__(82);
+var _reactRouter = __webpack_require__(60);
 
-var _App = __webpack_require__(934);
+var _App = __webpack_require__(935);
 
 var _App2 = _interopRequireDefault(_App);
 
-var _Split = __webpack_require__(944);
+var _Split = __webpack_require__(945);
 
 var _Split2 = _interopRequireDefault(_Split);
 
-var _Box = __webpack_require__(14);
+var _Box = __webpack_require__(13);
 
 var _Box2 = _interopRequireDefault(_Box);
 
-var _TextInput = __webpack_require__(51);
+var _TextInput = __webpack_require__(57);
 
 var _TextInput2 = _interopRequireDefault(_TextInput);
 
-var _CheckBox = __webpack_require__(936);
+var _CheckBox = __webpack_require__(937);
 
 var _CheckBox2 = _interopRequireDefault(_CheckBox);
 
-var _Form = __webpack_require__(50);
+var _Form = __webpack_require__(56);
 
 var _Form2 = _interopRequireDefault(_Form);
 
-var _Article = __webpack_require__(935);
+var _Article = __webpack_require__(936);
 
 var _Article2 = _interopRequireDefault(_Article);
 
@@ -1364,13 +1812,13 @@ var _viewnode = __webpack_require__(621);
 
 var _viewnode2 = _interopRequireDefault(_viewnode);
 
-var _notebook = __webpack_require__(302);
+var _notebook = __webpack_require__(296);
 
 var _notebook2 = _interopRequireDefault(_notebook);
 
-__webpack_require__(1325);
+__webpack_require__(1326);
 
-__webpack_require__(1324);
+__webpack_require__(1325);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1458,15 +1906,15 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(34);
+var _reactRedux = __webpack_require__(26);
 
-var _redux = __webpack_require__(36);
+var _redux = __webpack_require__(27);
 
-var _actions = __webpack_require__(53);
+var _actions = __webpack_require__(39);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
-var _maps = __webpack_require__(124);
+var _maps = __webpack_require__(125);
 
 var canvasMaps = _interopRequireWildcard(_maps);
 
@@ -1545,37 +1993,37 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(34);
+var _reactRedux = __webpack_require__(26);
 
-var _Tile = __webpack_require__(946);
+var _Tile = __webpack_require__(947);
 
 var _Tile2 = _interopRequireDefault(_Tile);
 
-var _Box = __webpack_require__(14);
+var _Box = __webpack_require__(13);
 
 var _Box2 = _interopRequireDefault(_Box);
 
-var _Heading = __webpack_require__(42);
+var _Heading = __webpack_require__(49);
 
 var _Heading2 = _interopRequireDefault(_Heading);
 
-var _Edit = __webpack_require__(240);
+var _Edit = __webpack_require__(234);
 
 var _Edit2 = _interopRequireDefault(_Edit);
 
-var _View = __webpack_require__(955);
+var _View = __webpack_require__(956);
 
 var _View2 = _interopRequireDefault(_View);
 
-var _Close = __webpack_require__(132);
+var _Close = __webpack_require__(96);
 
 var _Close2 = _interopRequireDefault(_Close);
 
-var _Apps = __webpack_require__(948);
+var _Apps = __webpack_require__(949);
 
 var _Apps2 = _interopRequireDefault(_Apps);
 
-var _Anchor = __webpack_require__(78);
+var _Anchor = __webpack_require__(69);
 
 var _Anchor2 = _interopRequireDefault(_Anchor);
 
@@ -1671,6 +2119,42 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _Anchor = __webpack_require__(69);
+
+var _Anchor2 = _interopRequireDefault(_Anchor);
+
+var _Box = __webpack_require__(13);
+
+var _Box2 = _interopRequireDefault(_Box);
+
+var _Close = __webpack_require__(96);
+
+var _Close2 = _interopRequireDefault(_Close);
+
+var _List = __webpack_require__(131);
+
+var _List2 = _interopRequireDefault(_List);
+
+var _ListItem = __webpack_require__(132);
+
+var _ListItem2 = _interopRequireDefault(_ListItem);
+
+var _reactRedux = __webpack_require__(26);
+
+var _redux = __webpack_require__(27);
+
+var _actions = __webpack_require__(39);
+
+var actionCreators = _interopRequireWildcard(_actions);
+
+var _reactRouter = __webpack_require__(60);
+
+var _reactJupyter = __webpack_require__(1346);
+
+var _reactJupyter2 = _interopRequireDefault(_reactJupyter);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1689,18 +2173,54 @@ var NotebookReader = function (_Component) {
     }
 
     _createClass(NotebookReader, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            var id = this.props.params.id;
+
+            this.props.getNote(id);
+        }
+    }, {
+        key: 'safeParse',
+        value: function safeParse(data) {
+            try {
+                return JSON.parse(data);
+            } catch (e) {
+                return {};
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _props$showing = this.props.showing,
+                name = _props$showing.name,
+                content = _props$showing.content;
+
             return _react2.default.createElement(
-                'div',
-                null,
-                ' hello '
+                _Box2.default,
+                { pad: 'large' },
+                _react2.default.createElement(_reactJupyter2.default, {
+                    notebook: this.safeParse(content),
+                    showCode: true,
+                    loadMathjax: true })
             );
         }
     }]);
 
     return NotebookReader;
 }(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        books: state.notebook,
+        showing: state.showing
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)(actionCreators, dispatch);
+};
+
+NotebookReader = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NotebookReader);
 
 exports.default = NotebookReader;
 
@@ -1722,85 +2242,37 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Form = __webpack_require__(50);
-
-var _Form2 = _interopRequireDefault(_Form);
-
-var _Header = __webpack_require__(41);
-
-var _Header2 = _interopRequireDefault(_Header);
-
-var _Heading = __webpack_require__(42);
-
-var _Heading2 = _interopRequireDefault(_Heading);
-
-var _FormFields = __webpack_require__(59);
-
-var _FormFields2 = _interopRequireDefault(_FormFields);
-
-var _FormField = __webpack_require__(58);
-
-var _FormField2 = _interopRequireDefault(_FormField);
-
-var _Footer = __webpack_require__(49);
-
-var _Footer2 = _interopRequireDefault(_Footer);
-
-var _Button = __webpack_require__(21);
-
-var _Button2 = _interopRequireDefault(_Button);
-
-var _TextInput = __webpack_require__(51);
-
-var _TextInput2 = _interopRequireDefault(_TextInput);
-
-var _DateTime = __webpack_require__(232);
-
-var _DateTime2 = _interopRequireDefault(_DateTime);
-
-var _SearchInput = __webpack_require__(235);
-
-var _SearchInput2 = _interopRequireDefault(_SearchInput);
-
-var _Toast = __webpack_require__(237);
-
-var _Toast2 = _interopRequireDefault(_Toast);
-
-var _Title = __webpack_require__(131);
-
-var _Title2 = _interopRequireDefault(_Title);
-
-var _Search = __webpack_require__(234);
-
-var _Search2 = _interopRequireDefault(_Search);
-
-var _Box = __webpack_require__(14);
-
-var _Box2 = _interopRequireDefault(_Box);
-
-var _Menu = __webpack_require__(130);
-
-var _Menu2 = _interopRequireDefault(_Menu);
-
-var _Anchor = __webpack_require__(78);
+var _Anchor = __webpack_require__(69);
 
 var _Anchor2 = _interopRequireDefault(_Anchor);
 
-var _Close = __webpack_require__(132);
+var _Box = __webpack_require__(13);
+
+var _Box2 = _interopRequireDefault(_Box);
+
+var _Close = __webpack_require__(96);
 
 var _Close2 = _interopRequireDefault(_Close);
 
-var _Section = __webpack_require__(236);
-
-var _Section2 = _interopRequireDefault(_Section);
-
-var _List = __webpack_require__(159);
+var _List = __webpack_require__(131);
 
 var _List2 = _interopRequireDefault(_List);
 
-var _ListItem = __webpack_require__(160);
+var _ListItem = __webpack_require__(132);
 
 var _ListItem2 = _interopRequireDefault(_ListItem);
+
+var _reactRedux = __webpack_require__(26);
+
+var _redux = __webpack_require__(27);
+
+var _actions = __webpack_require__(39);
+
+var actionCreators = _interopRequireWildcard(_actions);
+
+var _reactRouter = __webpack_require__(60);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1820,32 +2292,65 @@ var NoteBookList = function (_Component) {
   }
 
   _createClass(NoteBookList, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      this.props.fetchNotes();
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
+      var books = this.props.books;
+
       return _react2.default.createElement(
         _List2.default,
-        null,
-        _react2.default.createElement(
-          _ListItem2.default,
-          { justify: 'between',
-            separator: 'horizontal' },
-          _react2.default.createElement(
-            'span',
-            null,
-            'Alan'
-          ),
-          _react2.default.createElement(
-            'span',
-            { className: 'secondary' },
-            _react2.default.createElement(_Anchor2.default, { icon: _react2.default.createElement(_Close2.default, null) })
-          )
-        )
+        { selectable: true },
+        books.map(function (book) {
+          return _react2.default.createElement(
+            _ListItem2.default,
+            { key: book.id, justify: 'between',
+              separator: 'horizontal' },
+            _react2.default.createElement(
+              _Box2.default,
+              { onClick: _this2.onClick.bind(_this2, book.id) },
+              _react2.default.createElement(
+                'span',
+                null,
+                book.name
+              )
+            ),
+            _react2.default.createElement(
+              'span',
+              { className: 'secondary' },
+              _react2.default.createElement(_Anchor2.default, { path: "notes/delete/" + book.id, icon: _react2.default.createElement(_Close2.default, null) })
+            )
+          );
+        })
       );
+    }
+  }, {
+    key: 'onClick',
+    value: function onClick(id, e) {
+      console.log(id);
+      _reactRouter.hashHistory.push('notes/view/' + id);
     }
   }]);
 
   return NoteBookList;
 }(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    books: state.notebook
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return (0, _redux.bindActionCreators)(actionCreators, dispatch);
+};
+
+NoteBookList = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NoteBookList);
 
 exports.default = NoteBookList;
 
@@ -1867,27 +2372,27 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Form = __webpack_require__(50);
+var _Form = __webpack_require__(56);
 
 var _Form2 = _interopRequireDefault(_Form);
 
-var _Header = __webpack_require__(41);
+var _Header = __webpack_require__(48);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _Heading = __webpack_require__(42);
+var _Heading = __webpack_require__(49);
 
 var _Heading2 = _interopRequireDefault(_Heading);
 
-var _FormFields = __webpack_require__(59);
+var _FormFields = __webpack_require__(71);
 
 var _FormFields2 = _interopRequireDefault(_FormFields);
 
-var _FormField = __webpack_require__(58);
+var _FormField = __webpack_require__(70);
 
 var _FormField2 = _interopRequireDefault(_FormField);
 
-var _Footer = __webpack_require__(49);
+var _Footer = __webpack_require__(55);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -1895,59 +2400,71 @@ var _Button = __webpack_require__(21);
 
 var _Button2 = _interopRequireDefault(_Button);
 
-var _TextInput = __webpack_require__(51);
+var _TextInput = __webpack_require__(57);
 
 var _TextInput2 = _interopRequireDefault(_TextInput);
 
-var _DateTime = __webpack_require__(232);
+var _DateTime = __webpack_require__(347);
 
 var _DateTime2 = _interopRequireDefault(_DateTime);
 
-var _SearchInput = __webpack_require__(235);
+var _SearchInput = __webpack_require__(350);
 
 var _SearchInput2 = _interopRequireDefault(_SearchInput);
 
-var _Toast = __webpack_require__(237);
+var _Toast = __webpack_require__(353);
 
 var _Toast2 = _interopRequireDefault(_Toast);
 
-var _Title = __webpack_require__(131);
+var _Title = __webpack_require__(160);
 
 var _Title2 = _interopRequireDefault(_Title);
 
-var _Search = __webpack_require__(234);
+var _Search = __webpack_require__(349);
 
 var _Search2 = _interopRequireDefault(_Search);
 
-var _Box = __webpack_require__(14);
+var _Box = __webpack_require__(13);
 
 var _Box2 = _interopRequireDefault(_Box);
 
-var _Menu = __webpack_require__(130);
+var _Menu = __webpack_require__(159);
 
 var _Menu2 = _interopRequireDefault(_Menu);
 
-var _Anchor = __webpack_require__(78);
+var _Anchor = __webpack_require__(69);
 
 var _Anchor2 = _interopRequireDefault(_Anchor);
 
-var _Actions = __webpack_require__(238);
+var _Actions = __webpack_require__(355);
 
 var _Actions2 = _interopRequireDefault(_Actions);
 
-var _Section = __webpack_require__(236);
+var _Section = __webpack_require__(351);
 
 var _Section2 = _interopRequireDefault(_Section);
 
-var _List = __webpack_require__(159);
+var _List = __webpack_require__(131);
 
 var _List2 = _interopRequireDefault(_List);
 
-var _ListItem = __webpack_require__(160);
+var _ListItem = __webpack_require__(132);
 
 var _ListItem2 = _interopRequireDefault(_ListItem);
 
-var _utils = __webpack_require__(304);
+var _utils = __webpack_require__(298);
+
+var _reactRedux = __webpack_require__(26);
+
+var _redux = __webpack_require__(27);
+
+var _actions = __webpack_require__(39);
+
+var actionCreators = _interopRequireWildcard(_actions);
+
+var _reactRouter = __webpack_require__(60);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2004,8 +2521,12 @@ var NotebookNavBar = function (_Component) {
         key: 'onFileChange',
         value: function onFileChange() {
             var files = this.refs.fupload.files;
+            var self = this;
             (0, _utils.reader)(files[0]).then(function (txt) {
-                console.log(JSON.parse(txt));
+                var content = JSON.parse(txt);
+                var filename = files[0].name;
+                console.log("createing notebook", filename);
+                self.props.createNotes(filename, content);
             }).catch(function (e) {
                 console.error(e);
             });
@@ -2015,6 +2536,10 @@ var NotebookNavBar = function (_Component) {
     return NotebookNavBar;
 }(_react.Component);
 
+var mapDistpatchToProps = function mapDistpatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)(actionCreators, dispatch);
+};
+NotebookNavBar = (0, _reactRedux.connect)(null, mapDistpatchToProps)(NotebookNavBar);
 exports.default = NotebookNavBar;
 
 /***/ }),
@@ -2035,31 +2560,31 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Form = __webpack_require__(50);
+var _Form = __webpack_require__(56);
 
 var _Form2 = _interopRequireDefault(_Form);
 
-var _FormField = __webpack_require__(58);
+var _FormField = __webpack_require__(70);
 
 var _FormField2 = _interopRequireDefault(_FormField);
 
-var _FormFields = __webpack_require__(59);
+var _FormFields = __webpack_require__(71);
 
 var _FormFields2 = _interopRequireDefault(_FormFields);
 
-var _TextInput = __webpack_require__(51);
+var _TextInput = __webpack_require__(57);
 
 var _TextInput2 = _interopRequireDefault(_TextInput);
 
-var _Header = __webpack_require__(41);
+var _Header = __webpack_require__(48);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _Heading = __webpack_require__(42);
+var _Heading = __webpack_require__(49);
 
 var _Heading2 = _interopRequireDefault(_Heading);
 
-var _Footer = __webpack_require__(49);
+var _Footer = __webpack_require__(55);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -2067,23 +2592,23 @@ var _Button = __webpack_require__(21);
 
 var _Button2 = _interopRequireDefault(_Button);
 
-var _Box = __webpack_require__(14);
+var _Box = __webpack_require__(13);
 
 var _Box2 = _interopRequireDefault(_Box);
 
-var _reactRedux = __webpack_require__(34);
+var _reactRedux = __webpack_require__(26);
 
-var _redux = __webpack_require__(36);
+var _redux = __webpack_require__(27);
 
-var _actions = __webpack_require__(53);
+var _actions = __webpack_require__(39);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
-var _maps = __webpack_require__(124);
+var _maps = __webpack_require__(125);
 
 var canvasUtils = _interopRequireWildcard(_maps);
 
-var _reactRouter = __webpack_require__(82);
+var _reactRouter = __webpack_require__(60);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -2190,31 +2715,31 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Form = __webpack_require__(50);
+var _Form = __webpack_require__(56);
 
 var _Form2 = _interopRequireDefault(_Form);
 
-var _FormField = __webpack_require__(58);
+var _FormField = __webpack_require__(70);
 
 var _FormField2 = _interopRequireDefault(_FormField);
 
-var _FormFields = __webpack_require__(59);
+var _FormFields = __webpack_require__(71);
 
 var _FormFields2 = _interopRequireDefault(_FormFields);
 
-var _TextInput = __webpack_require__(51);
+var _TextInput = __webpack_require__(57);
 
 var _TextInput2 = _interopRequireDefault(_TextInput);
 
-var _Header = __webpack_require__(41);
+var _Header = __webpack_require__(48);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _Heading = __webpack_require__(42);
+var _Heading = __webpack_require__(49);
 
 var _Heading2 = _interopRequireDefault(_Heading);
 
-var _Footer = __webpack_require__(49);
+var _Footer = __webpack_require__(55);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -2222,23 +2747,23 @@ var _Button = __webpack_require__(21);
 
 var _Button2 = _interopRequireDefault(_Button);
 
-var _Box = __webpack_require__(14);
+var _Box = __webpack_require__(13);
 
 var _Box2 = _interopRequireDefault(_Box);
 
-var _reactRedux = __webpack_require__(34);
+var _reactRedux = __webpack_require__(26);
 
-var _redux = __webpack_require__(36);
+var _redux = __webpack_require__(27);
 
-var _actions = __webpack_require__(53);
+var _actions = __webpack_require__(39);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
-var _maps = __webpack_require__(124);
+var _maps = __webpack_require__(125);
 
 var canvasUtils = _interopRequireWildcard(_maps);
 
-var _reactRouter = __webpack_require__(82);
+var _reactRouter = __webpack_require__(60);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -2349,27 +2874,27 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Form = __webpack_require__(50);
+var _Form = __webpack_require__(56);
 
 var _Form2 = _interopRequireDefault(_Form);
 
-var _Header = __webpack_require__(41);
+var _Header = __webpack_require__(48);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _Heading = __webpack_require__(42);
+var _Heading = __webpack_require__(49);
 
 var _Heading2 = _interopRequireDefault(_Heading);
 
-var _FormFields = __webpack_require__(59);
+var _FormFields = __webpack_require__(71);
 
 var _FormFields2 = _interopRequireDefault(_FormFields);
 
-var _FormField = __webpack_require__(58);
+var _FormField = __webpack_require__(70);
 
 var _FormField2 = _interopRequireDefault(_FormField);
 
-var _Footer = __webpack_require__(49);
+var _Footer = __webpack_require__(55);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -2377,63 +2902,63 @@ var _Button = __webpack_require__(21);
 
 var _Button2 = _interopRequireDefault(_Button);
 
-var _TextInput = __webpack_require__(51);
+var _TextInput = __webpack_require__(57);
 
 var _TextInput2 = _interopRequireDefault(_TextInput);
 
-var _DateTime = __webpack_require__(232);
+var _DateTime = __webpack_require__(347);
 
 var _DateTime2 = _interopRequireDefault(_DateTime);
 
-var _SearchInput = __webpack_require__(235);
+var _SearchInput = __webpack_require__(350);
 
 var _SearchInput2 = _interopRequireDefault(_SearchInput);
 
-var _Toast = __webpack_require__(237);
+var _Toast = __webpack_require__(353);
 
 var _Toast2 = _interopRequireDefault(_Toast);
 
-var _Title = __webpack_require__(131);
+var _Title = __webpack_require__(160);
 
 var _Title2 = _interopRequireDefault(_Title);
 
-var _Search = __webpack_require__(234);
+var _Search = __webpack_require__(349);
 
 var _Search2 = _interopRequireDefault(_Search);
 
-var _Box = __webpack_require__(14);
+var _Box = __webpack_require__(13);
 
 var _Box2 = _interopRequireDefault(_Box);
 
-var _Menu = __webpack_require__(130);
+var _Menu = __webpack_require__(159);
 
 var _Menu2 = _interopRequireDefault(_Menu);
 
-var _Anchor = __webpack_require__(78);
+var _Anchor = __webpack_require__(69);
 
 var _Anchor2 = _interopRequireDefault(_Anchor);
 
-var _Actions = __webpack_require__(238);
+var _Actions = __webpack_require__(355);
 
 var _Actions2 = _interopRequireDefault(_Actions);
 
-var _Section = __webpack_require__(236);
+var _Section = __webpack_require__(351);
 
 var _Section2 = _interopRequireDefault(_Section);
 
-var _List = __webpack_require__(159);
+var _List = __webpack_require__(131);
 
 var _List2 = _interopRequireDefault(_List);
 
-var _ListItem = __webpack_require__(160);
+var _ListItem = __webpack_require__(132);
 
 var _ListItem2 = _interopRequireDefault(_ListItem);
 
-var _reactRedux = __webpack_require__(34);
+var _reactRedux = __webpack_require__(26);
 
-var _redux = __webpack_require__(36);
+var _redux = __webpack_require__(27);
 
-var _actions = __webpack_require__(53);
+var _actions = __webpack_require__(39);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
@@ -2534,27 +3059,27 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Sidebar = __webpack_require__(942);
+var _Sidebar = __webpack_require__(943);
 
 var _Sidebar2 = _interopRequireDefault(_Sidebar);
 
-var _Header = __webpack_require__(41);
+var _Header = __webpack_require__(48);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _Title = __webpack_require__(131);
+var _Title = __webpack_require__(160);
 
 var _Title2 = _interopRequireDefault(_Title);
 
-var _Menu = __webpack_require__(130);
+var _Menu = __webpack_require__(159);
 
 var _Menu2 = _interopRequireDefault(_Menu);
 
-var _Anchor = __webpack_require__(78);
+var _Anchor = __webpack_require__(69);
 
 var _Anchor2 = _interopRequireDefault(_Anchor);
 
-var _Footer = __webpack_require__(49);
+var _Footer = __webpack_require__(55);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -2562,11 +3087,11 @@ var _Button = __webpack_require__(21);
 
 var _Button2 = _interopRequireDefault(_Button);
 
-var _User = __webpack_require__(954);
+var _User = __webpack_require__(955);
 
 var _User2 = _interopRequireDefault(_User);
 
-var _Box = __webpack_require__(14);
+var _Box = __webpack_require__(13);
 
 var _Box2 = _interopRequireDefault(_Box);
 
@@ -2618,12 +3143,12 @@ var RoadMapSidebar = function (_Component) {
             ),
             _react2.default.createElement(
               _Anchor2.default,
-              { href: '#/' },
+              { href: '#/notes' },
               'Notes'
             ),
             _react2.default.createElement(
               _Anchor2.default,
-              { href: '#/' },
+              { href: '#/tables' },
               'Open Tables'
             )
           )
@@ -2656,31 +3181,31 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Form = __webpack_require__(50);
+var _Form = __webpack_require__(56);
 
 var _Form2 = _interopRequireDefault(_Form);
 
-var _FormField = __webpack_require__(58);
+var _FormField = __webpack_require__(70);
 
 var _FormField2 = _interopRequireDefault(_FormField);
 
-var _FormFields = __webpack_require__(59);
+var _FormFields = __webpack_require__(71);
 
 var _FormFields2 = _interopRequireDefault(_FormFields);
 
-var _TextInput = __webpack_require__(51);
+var _TextInput = __webpack_require__(57);
 
 var _TextInput2 = _interopRequireDefault(_TextInput);
 
-var _Header = __webpack_require__(41);
+var _Header = __webpack_require__(48);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _Heading = __webpack_require__(42);
+var _Heading = __webpack_require__(49);
 
 var _Heading2 = _interopRequireDefault(_Heading);
 
-var _Footer = __webpack_require__(49);
+var _Footer = __webpack_require__(55);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
@@ -2688,47 +3213,47 @@ var _Button = __webpack_require__(21);
 
 var _Button2 = _interopRequireDefault(_Button);
 
-var _Markdown = __webpack_require__(353);
+var _Markdown = __webpack_require__(348);
 
 var _Markdown2 = _interopRequireDefault(_Markdown);
 
-var _Paragraph = __webpack_require__(233);
+var _Paragraph = __webpack_require__(232);
 
 var _Paragraph2 = _interopRequireDefault(_Paragraph);
 
-var _Box = __webpack_require__(14);
+var _Box = __webpack_require__(13);
 
 var _Box2 = _interopRequireDefault(_Box);
 
-var _Edit = __webpack_require__(240);
+var _Edit = __webpack_require__(234);
 
 var _Edit2 = _interopRequireDefault(_Edit);
 
-var _Add = __webpack_require__(239);
+var _Add = __webpack_require__(233);
 
 var _Add2 = _interopRequireDefault(_Add);
 
-var _Close = __webpack_require__(132);
+var _Close = __webpack_require__(96);
 
 var _Close2 = _interopRequireDefault(_Close);
 
-var _Anchor = __webpack_require__(78);
+var _Anchor = __webpack_require__(69);
 
 var _Anchor2 = _interopRequireDefault(_Anchor);
 
-var _reactRedux = __webpack_require__(34);
+var _reactRedux = __webpack_require__(26);
 
-var _redux = __webpack_require__(36);
+var _redux = __webpack_require__(27);
 
-var _actions = __webpack_require__(53);
+var _actions = __webpack_require__(39);
 
 var actionCreators = _interopRequireWildcard(_actions);
 
-var _maps = __webpack_require__(124);
+var _maps = __webpack_require__(125);
 
 var canvasUtils = _interopRequireWildcard(_maps);
 
-var _reactRouter = __webpack_require__(82);
+var _reactRouter = __webpack_require__(60);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -2923,19 +3448,19 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reduxDevtools = __webpack_require__(177);
 
-var _reduxDevtoolsLogMonitor = __webpack_require__(1258);
+var _reduxDevtoolsLogMonitor = __webpack_require__(1259);
 
 var _reduxDevtoolsLogMonitor2 = _interopRequireDefault(_reduxDevtoolsLogMonitor);
 
-var _reduxDevtoolsDockMonitor = __webpack_require__(1249);
+var _reduxDevtoolsDockMonitor = __webpack_require__(1250);
 
 var _reduxDevtoolsDockMonitor2 = _interopRequireDefault(_reduxDevtoolsDockMonitor);
 
-var _reduxDevtoolsDispatch = __webpack_require__(1247);
+var _reduxDevtoolsDispatch = __webpack_require__(1248);
 
 var _reduxDevtoolsDispatch2 = _interopRequireDefault(_reduxDevtoolsDispatch);
 
-var _reduxSliderMonitor = __webpack_require__(1273);
+var _reduxSliderMonitor = __webpack_require__(1274);
 
 var _reduxSliderMonitor2 = _interopRequireDefault(_reduxSliderMonitor);
 
@@ -2971,11 +3496,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _utils = __webpack_require__(304);
+var _utils = __webpack_require__(298);
 
 var utils = _interopRequireWildcard(_utils);
 
-var _properties = __webpack_require__(303);
+var _properties = __webpack_require__(297);
 
 var _properties2 = _interopRequireDefault(_properties);
 
@@ -3285,7 +3810,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.reducers = undefined;
 
-var _redux = __webpack_require__(36);
+var _redux = __webpack_require__(27);
 
 var _maps = __webpack_require__(626);
 
@@ -3299,7 +3824,7 @@ var _feeds = __webpack_require__(624);
 
 var _feeds2 = _interopRequireDefault(_feeds);
 
-var _notebooks = __webpack_require__(1343);
+var _notebooks = __webpack_require__(628);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3360,17 +3885,75 @@ function nodes() {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.notebook = notebook;
+exports.showing = showing;
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function notebook() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var action = arguments[1];
+
+    switch (action.type) {
+        case 'UPDATE_NOTES':
+            return [].concat(_toConsumableArray(action.notes));
+        case 'NEW_NOTE':
+            return [].concat(_toConsumableArray(state), [{
+                name: action.name,
+                id: action.id
+            }]);
+        case 'DELETE_NOTE':
+            return state.map(function (x) {
+                return x.id != action.id;
+            });
+        default:
+            return state;
+    }
+}
+
+function showing() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+        id: '',
+        name: '',
+        content: JSON.stringify({
+            "cells": [],
+            "metadata": {},
+            "nbformat": 4,
+            "nbformat_minor": 2
+        })
+    };
+    var action = arguments[1];
+
+    switch (action.type) {
+        case 'SHOW_NOTE':
+            return action.note;
+        default:
+            return state;
+    }
+}
+
+/***/ }),
+
+/***/ 629:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(React) {
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _reactRouter = __webpack_require__(82);
+var _reactRouter = __webpack_require__(60);
 
 var _components = __webpack_require__(611);
 
-var _notebook = __webpack_require__(302);
+var _notebook = __webpack_require__(296);
 
 var routes = React.createElement(
     _reactRouter.Router,
@@ -3381,7 +3964,9 @@ var routes = React.createElement(
         React.createElement(
             _reactRouter.Route,
             { path: '/notes', component: _notebook.NotebookNavBar },
-            React.createElement(_reactRouter.IndexRoute, { component: _notebook.NoteBookList })
+            React.createElement(_reactRouter.IndexRoute, { component: _notebook.NoteBookList }),
+            React.createElement(_reactRouter.Route, { path: '/notes/view/:id', component: _notebook.NotebookReader }),
+            React.createElement(_reactRouter.Route, { path: '/notes/delete/:id', component: _notebook.NoteBookDelete })
         ),
         React.createElement(
             _reactRouter.Route,
@@ -3404,7 +3989,7 @@ exports.default = routes;
 
 /***/ }),
 
-/***/ 629:
+/***/ 630:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3505,7 +4090,7 @@ function feedSaga() {
 
 /***/ }),
 
-/***/ 630:
+/***/ 631:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3516,17 +4101,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = rootSaga;
 
-var _mapsaga = __webpack_require__(631);
+var _mapsaga = __webpack_require__(632);
 
-var _nodesaga = __webpack_require__(632);
+var _nodesaga = __webpack_require__(633);
 
-var _notificationSaga = __webpack_require__(633);
+var _notificationSaga = __webpack_require__(634);
 
 var _notificationSaga2 = _interopRequireDefault(_notificationSaga);
 
-var _feedsaga = __webpack_require__(629);
+var _feedsaga = __webpack_require__(630);
 
 var _feedsaga2 = _interopRequireDefault(_feedsaga);
+
+var _notebooksaga = __webpack_require__(1344);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3538,7 +4125,7 @@ function rootSaga() {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return [(0, _mapsaga.createMapSaga)(), (0, _nodesaga.editNodeForTree)(), (0, _nodesaga.addNodeForTree)(), (0, _nodesaga.removeNodeForTree)(), (0, _notificationSaga2.default)(), (0, _mapsaga.newMapSaga)(), (0, _mapsaga.deleteMapSage)(), (0, _feedsaga2.default)()];
+          return [(0, _mapsaga.createMapSaga)(), (0, _nodesaga.editNodeForTree)(), (0, _nodesaga.addNodeForTree)(), (0, _nodesaga.removeNodeForTree)(), (0, _notificationSaga2.default)(), (0, _mapsaga.newMapSaga)(), (0, _mapsaga.deleteMapSage)(), (0, _feedsaga2.default)(), (0, _notebooksaga.createNotebook)(), (0, _notebooksaga.viewNotebook)(), (0, _notebooksaga.deleteNotebook)(), (0, _notebooksaga.fetchNotebook)()];
 
         case 2:
         case 'end':
@@ -3550,7 +4137,7 @@ function rootSaga() {
 
 /***/ }),
 
-/***/ 631:
+/***/ 632:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3567,7 +4154,7 @@ var _axios = __webpack_require__(182);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _reactRouter = __webpack_require__(82);
+var _reactRouter = __webpack_require__(60);
 
 var _effects = __webpack_require__(142);
 
@@ -3759,7 +4346,7 @@ function deleteMapSage() {
 
 /***/ }),
 
-/***/ 632:
+/***/ 633:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3778,7 +4365,7 @@ var _axios2 = _interopRequireDefault(_axios);
 
 var _effects = __webpack_require__(142);
 
-var _reactRouter = __webpack_require__(82);
+var _reactRouter = __webpack_require__(60);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3995,7 +4582,7 @@ function removeNodeForTree() {
 
 /***/ }),
 
-/***/ 633:
+/***/ 634:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4008,7 +4595,7 @@ exports.default = watch;
 
 var _effects = __webpack_require__(142);
 
-var _jsSnackbar = __webpack_require__(1000);
+var _jsSnackbar = __webpack_require__(1001);
 
 var _marked = [notification, watch].map(regeneratorRuntime.mark);
 
@@ -4048,7 +4635,7 @@ function watch() {
 
 /***/ }),
 
-/***/ 634:
+/***/ 635:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4060,19 +4647,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _redux = __webpack_require__(36);
+var _redux = __webpack_require__(27);
 
 var _index = __webpack_require__(625);
 
-var _reduxLogger = __webpack_require__(1266);
+var _reduxLogger = __webpack_require__(1267);
 
 var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-var _reduxSaga = __webpack_require__(1267);
+var _reduxSaga = __webpack_require__(1268);
 
 var _reduxSaga2 = _interopRequireDefault(_reduxSaga);
 
-var _sagas = __webpack_require__(630);
+var _sagas = __webpack_require__(631);
 
 var _sagas2 = _interopRequireDefault(_sagas);
 
@@ -4095,7 +4682,7 @@ exports.default = store;
 
 /***/ }),
 
-/***/ 635:
+/***/ 636:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4178,7 +4765,7 @@ function generateRandomColor(useGrayscale) {
 
 /***/ }),
 
-/***/ 636:
+/***/ 637:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4203,5 +4790,5 @@ function reader(file) {
 
 /***/ })
 
-},[1342]);
+},[1343]);
 //# sourceMappingURL=bundle.js.map
