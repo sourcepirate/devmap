@@ -9,7 +9,7 @@ from roadmap.models import create_tables, RoadMap, ResearchNotes
 from roadmap.blueprints.mapblueprint import endpoints
 from roadmap.blueprints.notesblueprint import notes
 
-__VERSION__ = "1.0.3"
+__VERSION__ = "1.0.4"
 
 APP = Sanic("Roadmap")
 APP.blueprint(endpoints)

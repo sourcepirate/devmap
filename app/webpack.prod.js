@@ -25,7 +25,6 @@ module.exports = Object.assign({}, baseConfig, {
             exclude: [/\.min\.js$/gi]
         }),
         new webpack.optimize.AggressiveMergingPlugin(),
-        new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
         new CompressionPlugin({
             asset: "[path].gz[query]",
             algorithm: "gzip",

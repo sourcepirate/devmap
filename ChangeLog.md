@@ -15,3 +15,7 @@ Release Notes Changes
 ## Version 1.0.3
 * updated to grommet
 * added hacker feeds to each roadmaps.
+
+## Version 1.0.4
+* added support to ipython notebook.
+* minor bug fixes.
