@@ -36,3 +36,7 @@ async def bind_render_env(app, loop):
         return html(_content)
     app.render_template = inner
 
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT"))
+    APP.run(port=port, workers=4, host="0.0.0.0")

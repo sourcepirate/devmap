@@ -5,7 +5,7 @@ import os.path as path
 from threading import RLock
 import peewee as db
 
-DB_PATH = path.join(path.dirname(__file__), "../../data/data.db")
+DB_PATH = "/tmp/data.db"
 DATABASE = db.SqliteDatabase(DB_PATH)
 
 class BaseModel(db.Model):
