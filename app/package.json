@@ -41,7 +41,7 @@
     "webpack-manifest-plugin": "latest"
   },
   "dependencies": {
-    "axios": "^0.15.3",
+    "axios": "^0.21.1",
     "belle": "^3.0.1",
     "grommet": "^1.4.0",
     "js-snackbar": "^0.3.0",
