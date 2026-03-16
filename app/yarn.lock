@@ -2477,8 +2477,8 @@ ieee754@^1.1.4:
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
 
 immutable@^3.7.6:
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.1.tgz#200807f11ab0f72710ea485542de088075f68cd2"
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.3.tgz#0a8d2494a94d4b2d4f0e99986e74dd25d1e9a859"
 
 in-publish@^2.0.0:
   version "2.0.0"
